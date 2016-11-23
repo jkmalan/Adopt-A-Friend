@@ -41,4 +41,28 @@ public class DatabaseManager {
 
 	}
 
+	public void insertListing() {
+
+    }
+
+    public void insertUser() {
+
+    }
+
+    public void updateListing() {
+
+    }
+
+    public void updateUser() {
+
+    }
+
+    public void deleteListing() {
+
+    }
+
+    public void deleteUser() {
+
+    }
+
 }
