@@ -52,13 +52,37 @@ public class LoginFrame extends JFrame
 	private void createSignInButton()
 	{
 		SignInButton = new JButton("Sign In");
-		
+		class AddSignInListener implements ActionListener
+	      {
+	         public void actionPerformed(ActionEvent event)
+	         {
+	        	 JFrame frame = new MainPageFrame();
+	             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	             frame.setTitle("Main Page");
+	             frame.setVisible(true);    
+	         }            
+	      }
+	      
+	      ActionListener listener = new AddSignInListener();
+	      SignInButton.addActionListener(listener);
 	}
 
 	private void createClickHereButton() 
 	{
 		ClickHereButton = new JButton("Click Here");
-		
+		class AddClickHereListener implements ActionListener
+	      {
+	         public void actionPerformed(ActionEvent event)
+	         {
+	        	 JFrame frame = new ProfileFrame();
+	             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	             frame.setTitle("Create your account");
+	             frame.setVisible(true);  
+	         }            
+	      }
+	      
+	      ActionListener listener = new AddClickHereListener();
+	      ClickHereButton.addActionListener(listener);
 	}
 	
 	private void createPanel()
