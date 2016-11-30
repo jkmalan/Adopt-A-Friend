@@ -84,18 +84,22 @@ public class ProfileFrame extends JFrame
     private void createOpenFileButton()
 	{
 		OpenFileButton = new JButton("Open File");
-		OpenFileButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ae) {
+		
+		OpenFileButton.addActionListener(new ActionListener() 
+		{
+            public void actionPerformed(ActionEvent ae) 
+            {
                 JFileChooser fc = new JFileChooser();
                 int result = fc.showOpenDialog(null);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File file = fc.getSelectedFile();
-                    String sname = file.getAbsolutePath(); //THIS WAS THE PROBLEM
-                    Image = new JLabel("", new ImageIcon(sname), JLabel.CENTER);
-                    jpanel.add(Image, BorderLayout.CENTER);
-                    jpanel.revalidate(); //ADD THIS AS WELL
-                    jpanel.repaint();  //ADD THIS AS WELL
-                }
+                if (result == JFileChooser.APPROVE_OPTION) 
+                	{
+	                    File file = fc.getSelectedFile();
+	                    String sname = file.getAbsolutePath(); 
+	                    Image = new JLabel("", new ImageIcon(sname), JLabel.CENTER);
+	                    jpanel.add(Image, BorderLayout.CENTER);
+	                    jpanel.revalidate(); 
+	                    jpanel.repaint(); 
+                	}
             }
         });
 		
