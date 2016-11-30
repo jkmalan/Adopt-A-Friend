@@ -1,13 +1,20 @@
 package com.jkmalan.adoptafriend.database;
 
+import com.jkmalan.adoptafriend.user.User;
+
+import java.io.File;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class DatabaseManager {
 
 	private final Database database;
 
 	public DatabaseManager() {
-		database = new Database();
+        // 2
+		database = new Database(new File(".\\adoptafriend.db"));
 	}
 
 	// checks the tables
@@ -32,7 +39,6 @@ public class DatabaseManager {
 
 		database.executeStatement(PROFILE_TABLE);
 		database.executeStatement(LISTING_TABLE);
-
 	}
 
 	// updates the tables
@@ -54,7 +60,11 @@ public class DatabaseManager {
     }
 
     public void updateUser() {
-
+        /*
+        PreparedStatement ps = database.getPreparedStatement("");
+        ps.setString(1, "");
+        ps.executeQuery();
+        */
     }
 
     public void deleteListing() {
@@ -62,7 +72,33 @@ public class DatabaseManager {
     }
 
     public void deleteUser() {
-
+        /*
+        PreparedStatement ps = database.getPreparedStatement("");
+        ps.setString(1, "");
+        ps.executeQuery();
+        */
     }
+
+    public List<User> getUsers() {
+        try {
+            PreparedStatement ps = database.getPreparedStatement("");
+            ps.setString(1, "");
+            ResultSet rs = ps.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /*
+    ResultSet rs = database.getPreparedStatement("").executeQuery(); // name, email, pass, desc
+        while (rs.next()) {
+        String name = rs.getString(1);
+        String email = rs.getString(2);
+        String pass = rs.getString(3);
+        String desc = rs.getString(4);
+        User user = new User(name, email, pass, desc);
+    }
+    */
 
 }

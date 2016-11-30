@@ -1,64 +1,70 @@
 package com.jkmalan.adoptafriend.database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.File;
+import java.sql.*;
 
 public class Database {
 
-    private Connection connect = null;
+    private final String SQLDRIVER = "org.sqlite.JDBC";
+    private final File file;
 
-    public Database() {
+    private Connection connection = null;
 
-    }
-
-    // tests the connection
-
-    public boolean connect() {
-
+    // 1
+    public Database(File file) {
         try {
-            getConnection();
-            return true;
-        } catch (SQLException ex) {
-            return false;
+            Class d = Class.forName(SQLDRIVER);
+            Object o = d.newInstance();
+            if (!(o instanceof Driver)) {
+                // Not driver, go away
+            } else {
+                Driver driver = (Driver) o;
+                DriverManager.registerDriver(driver);
+            }
+        } catch (Exception e) {
+            // Error message
         }
+        file.getParentFile().mkdirs();
+        this.file = file;
     }
 
-    public void disconnect() {
+    // Making a connection to the database file
 
+    public void connect() throws SQLException {
+        setConnection(DriverManager.getConnection("jdbc:sqlite://" + file.getAbsolutePath()));
+    }
+
+    public void disconnect() throws SQLException {
+        if (connection != null && !connection.isClosed()) {
+            connection.close();
+        }
     }
 
     // gets the connection
 
     public Connection getConnection() throws SQLException {
-        if (connect == null || connect.isClosed()) {
-            getConnection();
+        if (connection == null || connection.isClosed()) {
+            connect();
         }
-
-        return null;
+        return connection;
     }
 
     // reactivates the connection
 
-    public void setConnection(Connection connect) {
-
-        this.connect = connect;
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
 
     // creates a new Statement and executes it
 
     public void executeStatement(String query) throws SQLException {
-
-        Statement statement = getStatement(query);
+        Statement statement = getStatement();
         statement.execute(query);
         closeStatement(statement);
-
     }
 
-    public Statement getStatement(String query) {
-        return null;
+    public Statement getStatement() throws SQLException {
+        return getConnection().createStatement();
     }
 
     // creates a new PreparedStatement
@@ -75,7 +81,6 @@ public class Database {
         if (statement != null) {
             statement.close();
         }
-
     }
 
     // closes a ResultSet
@@ -84,7 +89,6 @@ public class Database {
         if (result != null) {
             result.close();
         }
-
     }
 
 }
