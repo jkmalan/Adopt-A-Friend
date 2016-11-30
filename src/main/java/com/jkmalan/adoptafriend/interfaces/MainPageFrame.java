@@ -1,17 +1,15 @@
 package com.jkmalan.adoptafriend.interfaces;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 
+@SuppressWarnings("serial")
 public class MainPageFrame extends JFrame
 {
 	private static final int FRAME_WIDTH = 500;
@@ -25,8 +23,7 @@ public class MainPageFrame extends JFrame
         setJMenuBar(menuBar);
         menuBar.add(createEditProfileMenu());
         menuBar.add(createSearchMenu());
-    	menuBar.add(createCreateListingMenu());
-    	menuBar.add(createViewListingMenu());
+    	menuBar.add(createListingMenu());
     	
     	JLabel label = new JLabel("WELCOME!");
     	add(label, BorderLayout.NORTH);
@@ -37,32 +34,60 @@ public class MainPageFrame extends JFrame
 
 	private JMenu createEditProfileMenu() 
 	{
-		JMenu menu = new JMenu("Edit Profile");
+		JMenu menu = new JMenu("Edit your Profile");
+		menu.add(createEditItem());
 	      return menu;
 	}
 
-
+	private JMenuItem createEditItem() 
+	{
+		JMenuItem item = new JMenuItem("Edit");
+		return item;
+	}
 
 	private JMenu createSearchMenu() 
 	{
 		JMenu menu = new JMenu("Search");
+		menu.add(createSearchItem());
 	      return menu;
 	}
 
-
-
-	private JMenu createCreateListingMenu() 
+	private JMenuItem createSearchItem() 
 	{
-		JMenu menu = new JMenu("Create new Listing");
+		JMenuItem item = new JMenuItem("Search");
+		return item;
+	}
+
+	private JMenu createListingMenu() 
+	{
+		JMenu menu = new JMenu("Listing");
+		menu.add(createCreateListingItem());
+		menu.add(createViewListingItem());
 	      return menu;
 	}
 
-
-
-	private JMenu createViewListingMenu() 
+	private JMenuItem createCreateListingItem() 
 	{
-		JMenu menu = new JMenu("View Listings");
-	      return menu;
+		JMenuItem item = new JMenuItem("Create New Listing");      
+	      class MenuItemListener implements ActionListener
+	      {
+	         public void actionPerformed(ActionEvent event)
+	         {
+	        	 JFrame frame = new CreateListingFrame();
+	             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	             frame.setTitle("Create a Listing");
+	             frame.setVisible(true);  
+	         }
+	      }      
+	      ActionListener listener = new MenuItemListener();
+	      item.addActionListener(listener);
+	      return item;
+	}
+
+	private JMenuItem createViewListingItem()
+	{
+		JMenuItem item = new JMenuItem("View your Listings");
+		return item;
 	}
 
 }
