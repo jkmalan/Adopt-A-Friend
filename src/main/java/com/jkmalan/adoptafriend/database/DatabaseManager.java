@@ -17,7 +17,7 @@ public class DatabaseManager {
 		database = new Database(new File(".\\adoptafriend.db"));
 	}
 
-	// checks the tables
+	// check the tables
 
 	public void checkTables() {
 
