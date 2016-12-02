@@ -1,29 +1,32 @@
 package com.jkmalan.adoptafriend.listing;
 
 import java.io.File;
-import java.util.List;
-import java.util.UUID;
 
 public class Listing {
 
-    private final UUID uuid;
+    private final int lid;
+    private final int owner;
 
     private String title;
-    private String sex;
-    private String age;
-    private String type;
     private String zip;
+    private String type;
+    private String age;
+    private String sex;
     private String desc;
 
-    private List<File> photos;
-    private List<String> attributes;
+    private File photo;
 
-    public Listing(UUID uuid) {
-        this.uuid = uuid;
+    public Listing(int lid, int owner) {
+        this.lid = lid;
+        this.owner = owner;
     }
 
-    public UUID getUUID() {
-        return uuid;
+    public int getLID() {
+        return lid;
+    }
+
+    public int getOwner() {
+        return owner;
     }
 
     public String getTitle() {
@@ -34,20 +37,12 @@ public class Listing {
         this.title = title;
     }
 
-    public String getSex() {
-        return sex;
+    public String getZip() {
+        return zip;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public String getAge() {
-        return age;
-    }
-
-    public void setAge(String age) {
-        this.age = age;
+    public void setZip(String zip) {
+        this.zip = zip;
     }
 
     public String getType() {
@@ -58,12 +53,20 @@ public class Listing {
         this.type = type;
     }
 
-    public String getZip() {
-        return zip;
+    public String getAge() {
+        return age;
     }
 
-    public void setZip(String zip) {
-        this.zip = zip;
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
     public String getDesc() {
@@ -74,20 +77,12 @@ public class Listing {
         this.desc = desc;
     }
 
-    public List<File> getPhotos() {
-        return photos;
+    public File getPhoto() {
+        return photo;
     }
 
-    public void setPhotos(List<File> photos) {
-        this.photos = photos;
-    }
-
-    public List<String> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<String> attributes) {
-        this.attributes = attributes;
+    public void setPhoto(File photo) {
+        this.photo = photo;
     }
 
 }
