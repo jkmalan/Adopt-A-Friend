@@ -8,7 +8,7 @@ public class SelectedResultViewer {
 		// TODO Auto-generated method stub
 		JFrame frame = new SelectedResultFrame();
 	      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	      frame.setTitle("Selected Pet Lisitng");
+	      frame.setTitle("Selected Pet Information");
 	      frame.setVisible(true);  
 	}
 

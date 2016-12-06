@@ -42,6 +42,18 @@ public class MainPageFrame extends JFrame
 	private JMenuItem createEditItem() 
 	{
 		JMenuItem item = new JMenuItem("Edit");
+		class MenuItemListener implements ActionListener
+	      {
+	         public void actionPerformed(ActionEvent event)
+	         {
+	        	 JFrame frame = new EditProfileFrame();
+	             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	             frame.setTitle("Edit your account");
+	             frame.setVisible(true); 
+	         }
+	      }      
+	      ActionListener listener = new MenuItemListener();
+	      item.addActionListener(listener);
 		return item;
 	}
 
@@ -55,6 +67,18 @@ public class MainPageFrame extends JFrame
 	private JMenuItem createSearchItem() 
 	{
 		JMenuItem item = new JMenuItem("Search");
+		 class MenuItemListener implements ActionListener
+	      {
+	         public void actionPerformed(ActionEvent event)
+	         {
+	          JFrame frame = new SearchFrame();
+	   	      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	   	      frame.setTitle("Search");
+	   	      frame.setVisible(true);  
+	         }
+	      }      
+	      ActionListener listener = new MenuItemListener();
+	      item.addActionListener(listener);
 		return item;
 	}
 

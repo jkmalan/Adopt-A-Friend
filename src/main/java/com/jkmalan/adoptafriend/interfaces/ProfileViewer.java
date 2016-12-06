@@ -7,9 +7,9 @@ public class ProfileViewer
 {  
    public static void main(String[] args)
    {  
-      JFrame frame = new EditProfileFrame();
+      JFrame frame = new ProfileFrame();
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      frame.setTitle("Edit your account");
+      frame.setTitle("Create an account");
       frame.setVisible(true);      
    }
 }
