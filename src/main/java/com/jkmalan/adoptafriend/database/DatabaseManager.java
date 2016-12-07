@@ -1,11 +1,9 @@
 package com.jkmalan.adoptafriend.database;
 
 import java.io.File;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
+import java.sql.*;
 
 import com.jkmalan.adoptafriend.listing.Listing;
 import com.jkmalan.adoptafriend.user.User;
@@ -13,6 +11,12 @@ import com.jkmalan.adoptafriend.user.User;
 public class DatabaseManager {
 
 	private final Database database;
+	Connection dbConnection=DriverManager.getConnection("");	//connects to DB
+	Statement search=dbConnection.createStatement();	//creates java statement
+	String Query= "SELECT * FROM ";	//sql query
+	ResultSet rs=search.executeQuery(Query);	//Runs query and gets javaresult
+
+	PreparedStatement preparedStatement=null;
 
 	public DatabaseManager() {
 
@@ -249,6 +253,91 @@ public class DatabaseManager {
 		}
 		return null;
 
+	}
+
+	public Resultset search(String...attributes)
+	{
+
+		preparedStatement=dbConnection.prepareStatement(Query);
+		preparedStatement.setArray(attributes);
+		ResultSet rs=preparedStatement.executeQuery();
+	
+		while(rs.next())
+		{
+			String attributes=rs.getString("Attributes");
+			System.out.println("Attributes: "+ attributes +"\n");
+		}
+		search.close();
+	}
+	public ResultSet search(String type, String age, String...attributes)
+	{
+		preparedStatement=dbConnection.prepareStatement(Query);
+		preparedStatement.setArray(type, age, attributes);
+		ResultSet rs=preparedStatement.executeQuery();
+		
+		while(rs.next())
+		{
+			String type=rs.getString("breed");
+			String age= rs.getString("age");
+			String attributes=rs.getString("attributes");
+			
+			System.out.println("Breed: " + breed +"\n");
+			System.out.println("Age: " + age +"\n");
+			System.out.println("Attributes: " + attributes +"\n");
+		}
+		search.close();
+	}
+	public List<User> getUsers(String...attributes)
+	{
+		preparedStatement=dbConnection.prepareStatement(Query);
+		preparedStatement.setArray(username, userId);
+		ResultSet rs=preparedStatement.executeQuery();
+		
+		while(rs.next())
+		{
+			String username=rs.getString("User");
+			String userId=rs.getString("userId");
+			
+			System.out.println("Username: " + username +"\n UserID: " + userId + "\n");
+		}
+		search.close();
+		
+	}
+	public List<Listing>getListings(String...attributes)
+	{
+		preparedStatement=dbConnection.prepareStatement(Query);
+		preparedStatement.setArray(attributes);
+		ResultSet rs=preparedStatement.executeQuery();
+		
+		while(rs.next())
+		{
+			String attribtues=rs.getString("attributes");
+			
+			System.out.println("Attributes: " + attributes + "\n");
+		}
+		search.close();
+	}
+	public List<Listing>getListings(String terms)
+	{
+		term.split(" ");
+		getListings();
+		
+		while(rs.next())
+		{
+			String terms=rs.getString("Term");
+			System.out.println("Terms: "+ terms +"\n");
+		}
+	}
+	public final PreparedStatement getPreparedStatement(String query) 
+	{
+		return prepareStatement(query);
+		
+	}
+	public final void executeStatement(String query) throws SQLException
+	{
+		Statement search=getStatement();
+		search.execute(query);
+		closeStatement(search);
 	}
 }
 
