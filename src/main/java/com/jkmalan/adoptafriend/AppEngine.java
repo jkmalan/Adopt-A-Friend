@@ -18,7 +18,7 @@ public class AppEngine {
         userManager = new UserManager();
     }
 
-    public static void init() {
+    protected static void init() {
         ENGINE = new AppEngine();
     }
 

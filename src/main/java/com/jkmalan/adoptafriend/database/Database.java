@@ -15,13 +15,13 @@ public class Database {
             Class d = Class.forName(SQLDRIVER);
             Object o = d.newInstance();
             if (!(o instanceof Driver)) {
-
+                // TODO Handle errors
             } else {
                 Driver driver = (Driver) o;
                 DriverManager.registerDriver(driver);
             }
         } catch (Exception e) {
-
+            // TODO Handle errors
         }
         file.getParentFile().mkdirs();
         this.file = file;
