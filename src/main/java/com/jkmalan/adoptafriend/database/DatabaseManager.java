@@ -27,17 +27,18 @@ public class DatabaseManager {
 
 	// creates tables for Profile and Listings
 
+	// change the names to match the queries
 	public void createTables() throws SQLException {
 
-		String PROFILE_TABLE = "CREATE TABLE PROFILE ( " + " UID    CHAR   NOT NULL," + " UFName  CHAR(25)  NOT NULL,"
-				+ " ULName   CHAR(25) NOT NULL," + " UEmail CHAR(60)  NOT NULL," + " UStreet CHAR(45) NOT NULL,"
-				+ " UState  CHAR(2) NOT NULL," + " UZip    CHAR(10) NOT NULL," + " UPhone INT(10),"
-				+ " UDescription CHAR(255)," + " PRIMARY KEY(UID));";
-		String LISTING_TABLE = " CREATE TABLE LISTING ( " + " LID  CHAR(15)  NOT NULL, "
-				+ " LTitle CHAR(40)  NOT NULL, " + " LAge   INT(2)    NOT NULL, " + " LType  CHAR(40)   NOT NULL, "
-				+ " LSex   CHAR(1)     NOT NULL, " + " LAttributes CHAR(255) NOT NULL, " + " LDescription  CHAR(255), "
-				+ " LRegion     CHAR(60)   NOT NULL, " + " PRIMARY KEY(LID), "
-				+ " FOREIGN KEY(LID) REFERENCES PROFILE(UID)); ";
+		String PROFILE_TABLE = "CREATE TABLE PROFILE ( " + " userId    INT(15)   NOT NULL,"
+				+ " username CHAR(20) NOT NULL" + " fName  CHAR(25)  NOT NULL," + " lName   CHAR(25) NOT NULL,"
+				+ " emailAddress CHAR(60)  NOT NULL," + " streetAddress CHAR(45) NOT NULL,"
+				+ " state  CHAR(2) NOT NULL," + " zipCode    CHAR(10) NOT NULL," + " phoneNumber CHAR(10) NOT NULL,"
+				+ " bio CHAR(255)," + " PRIMARY KEY(userId));";
+		String LISTING_TABLE = " CREATE TABLE LISTING ( " + " lid  INT(15)  NOT NULL, " + " title CHAR(40)  NOT NULL, "
+				+ " age   INT(2)    NOT NULL, " + " type  CHAR(40)   NOT NULL, " + " sex   CHAR(1)     NOT NULL, "
+				+ " attributes CHAR(255), " + "desc CHAR(255)," + "photos CHAR(128)," + " zip     CHAR(10)   NOT NULL, "
+				+ " PRIMARY KEY(lid), " + " FOREIGN KEY(lid) REFERENCES PROFILE(userId)); ";
 
 		database.executeStatement(PROFILE_TABLE);
 		database.executeStatement(LISTING_TABLE);
@@ -51,26 +52,27 @@ public class DatabaseManager {
 
 	// inserts a new listing
 
-	public void insertListing(Listing listing, Database database) {
-		String query = "INSERT INTO Listing (" + "uuid," + "title," + "sex," + "age," + "type," + "zip," + "desc,"
+	public void insertListing(int lid, String title, String sex, int age, String type, String zip, String desc,
+			String photos, String attributes) {
+
+		String query = "INSERT INTO Listing (" + "lid," + "title," + "sex," + "age," + "type," + "zip," + "desc,"
 				+ "photos," + "attributes,) VALUES " + "(null, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try {
 			PreparedStatement ps = database.getPreparedStatement(query);
-			ps.setUUID(1, listing.getUUID());
-			ps.setString(2, listing.getTitle());
-			ps.setString(3, listing.getSex());
-			ps.setString(4, listing.getAge());
-			ps.setString(5, listing.getType());
-			ps.setString(6, listing.getZip());
-			ps.setString(7, listing.getDesc());
-			ps.setFile(8, listing.getPhotos());
-			ps.setString(9, listing.getAttributes());
+			ps.setInt(1, lid);
+			ps.setString(2, title);
+			ps.setString(3, sex);
+			ps.setInt(4, age);
+			ps.setString(5, type);
+			ps.setString(6, zip);
+			ps.setString(7, desc);
+			ps.setString(8, photos);
+			ps.setString(9, attributes);
 
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException se) {
-			throw se;
 
 		}
 	}
@@ -83,29 +85,30 @@ public class DatabaseManager {
 
 	// inserts a new user
 
-	public void insertUser(User user, Database database) throws SQLException {
-		String query = "INSERT INTO User (" + "uuid," + "username," + "userID," + "password," + "fName," + "lName,"
+	public void insertUser(int userId, String username, String password, String fName, String lName,
+			String emailAddress, String phoneNumber, String streetAddress, String state, String zipCode, String bio) {
+
+		String query = "INSERT INTO User (" + "username," + "userId," + "password," + "fName," + "lName,"
 				+ "emailAddress," + "phoneNumber," + "streetAddress," + "state," + "zipCode," + "bio,) VALUES "
 				+ "(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement ps = database.getPreparedStatement(query);
-			ps.setUUID(1, user.getUUID());
-			ps.setInt(2, user.getUserId());
-			ps.setString(3, user.getUserName());
-			ps.setString(4, user.getPassword());
-			ps.setString(5, user.getFirstName());
-			ps.setString(6, user.getLastName());
-			ps.setString(7, user.getEmail());
-			ps.setString(8, user.getPhoneNum());
-			ps.setString(9, user.getAddress());
-			ps.setString(10, user.getState());
-			ps.setString(11, user.getZip());
-			ps.setString(12, user.getBio());
+
+			ps.setInt(1, userId);
+			ps.setString(2, username);
+			ps.setString(3, password);
+			ps.setString(4, fName);
+			ps.setString(5, lName);
+			ps.setString(5, emailAddress);
+			ps.setString(6, phoneNumber);
+			ps.setString(7, streetAddress);
+			ps.setString(8, state);
+			ps.setString(9, zipCode);
+			ps.setString(10, bio);
 
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException se) {
-			throw se;
 
 		}
 	}
@@ -118,7 +121,7 @@ public class DatabaseManager {
 
 	// updates the listing
 
-	public void updateListing(Listing listing, Database database) throws SQLException {
+	public void updateListing(String title, String sex, int age, String type, String zip, String desc) {
 
 		String query = "UPDATE Listing SET title = ?, sex = ?, age = ?, type = ?, zip = ?, desc = ? WHERE uuid = ?";
 
@@ -135,7 +138,6 @@ public class DatabaseManager {
 			ps.close();
 
 		} catch (SQLException se) {
-			throw se;
 
 		}
 
@@ -143,25 +145,25 @@ public class DatabaseManager {
 
 	// updates the user
 
-	public void updateUser(User user, Database database) throws SQLException {
+	public void updateUser(String fName, String lName, String emailAddress, String phoneNumber, String streetAddress,
+			String state, String zipCode, String bio) {
 
 		String query = "UPDATE User SET fName = ?, lName = ?, emailAddress = ?, phoneNumber = ?, streetAddress = ?, state = ?, zipCode = ?, bio =?  WHERE userId = ?";
 
 		try {
 			PreparedStatement ps = database.getPreparedStatement(query);
-			ps.setString(1, "fName");
-			ps.setString(2, "lName");
-			ps.setString(3, "emailAddress");
-			ps.setString(4, "phoneNumber");
-			ps.setString(5, "streetAddress");
-			ps.setString(6, "state");
-			ps.setString(7, "zipCode");
-			ps.setString(8, "bio");
+			ps.setString(1, fName);
+			ps.setString(2, lName);
+			ps.setString(3, emailAddress);
+			ps.setString(4, phoneNumber);
+			ps.setString(5, streetAddress);
+			ps.setString(6, state);
+			ps.setString(7, zipCode);
+			ps.setString(8, bio);
 
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException se) {
-			throw se;
 
 		}
 
@@ -174,39 +176,39 @@ public class DatabaseManager {
 
 	// deletes a Listing record
 
-	public void deleteListing(Listing listing, Database database) throws SQLException {
+	public void deleteListing(int lid) {
 
-		String deleteQuery = "DELETE FROM Listing WHERE uuid = ?";
+		String deleteQuery = "DELETE FROM Listing WHERE lid = ?";
 
 		try {
 			PreparedStatement ps = database.getPreparedStatement(deleteQuery);
-			ps.setString(1, "?");
+			ps.setInt(1, lid);
 
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException se) {
-			throw se;
 
 		}
 	}
 
 	// deletes a User record
 
-	public void deleteUser(User user, Database database) throws SQLException {
+	public void deleteUser(int userID) {
 
 		String deleteQuery = "DELETE FROM User WHERE userId = ?";
 
 		try {
 			PreparedStatement ps = database.getPreparedStatement(deleteQuery);
-			ps.setString(1, "?");
+			ps.setInt(1, userID);
 
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException se) {
-			throw se;
 
 		}
 	}
+
+	// Stop after this
 
 	/*
 	 * PreparedStatement ps = database.getPreparedStatement(""); ps.setString(1,
