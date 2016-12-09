@@ -39,9 +39,9 @@ public class ListingManager {
     		pstatement.executeUpdate();
     		pstatement.close();
     	}
-    	catch(SQLException se)
+    	catch(SQLException e)
     	{
-    		
+    		e.printStackTrace();
     	}
     }
 
@@ -64,9 +64,9 @@ public class ListingManager {
     		pstatement.executeUpdate();
     		pstatement.close();
     	}
-    	catch(SQLException se)
+    	catch(SQLException e)
     	{
-    		
+    		e.printStackTrace();
     	}
     }
 
@@ -81,9 +81,9 @@ public class ListingManager {
     		pstatement.close();
     		
     	}
-    	catch(SQLException se)
+    	catch(SQLException e)
     	{
-    		
+    		e.printStackTrace();
     	}
     }
 

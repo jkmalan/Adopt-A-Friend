@@ -43,9 +43,9 @@ public class UserManager {
     		pstatement.close();
     		
     	}
-    	catch(SQLException se)
+    	catch(SQLException e)
     	{
-    		
+    		e.printStackTrace();
     	}
     }
 
@@ -77,9 +77,9 @@ public class UserManager {
     		pstatement.close();
     		
     	}
-    	catch(SQLException se)
+    	catch(SQLException e)
     	{
-    		
+    		e.printStackTrace();
     	}
     }
 
@@ -93,9 +93,9 @@ public class UserManager {
     		pstatement.close();
     		
     	}
-    	catch(SQLException se)
+    	catch(SQLException e)
     	{
-    		
+    		e.printStackTrace();
     	}
     	
 

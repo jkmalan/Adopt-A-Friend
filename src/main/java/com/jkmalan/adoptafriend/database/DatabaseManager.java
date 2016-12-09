@@ -18,6 +18,8 @@ public class DatabaseManager {
 
 	PreparedStatement preparedStatement=null;
 
+	private String username;
+	private int userID;
 	public DatabaseManager() {
 
 		database = new Database(new File(".\\adoptafriend.db"));
@@ -222,9 +224,10 @@ public class DatabaseManager {
 	// list the users
 	public User selectUser() {
 		try {
-			PreparedStatement ps = database.getPreparedStatement("select ...");
+			Query="SELECT * FROM User WHERE userID= ?";
+			PreparedStatement ps = database.getPreparedStatement(Query);
 			ps.setString(1, "?");
-			ResultSet rs = ps.executeQuery();
+			ResultSet rs = ps.executeQuery(Query);
 
 			while (rs.next()) {
 				String username = rs.getString(1);
@@ -239,19 +242,34 @@ public class DatabaseManager {
 	
 	public Listing SelectListings()
 	{
-		String Query= "SELECT * WHERE=?";
-		return Listing;
+		try{
+			Query= "SELECT * FROM Listings WHERE lid= ?";
+			PreparedStatement ps=database.getPreparedStatement(Query);
+			ps.setString(1, "?");
+			ResultSet rs=ps.executeQuery(Query);
+			
+			while(rs.next())
+			{
+				String username=rs.getString(1);
+			}
+		}
+		catch(SQLException e){
+		
+	e.printStackTrace();
+		}
+		return null;
 	}
 
 	// list the listings
 	public List<Listing> selectListings() {
 		try {
+			Query= "SELECT * FROM Listings";
 			PreparedStatement ps = database.getPreparedStatement("uuid");
 			ps.setString(1, "?");
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				UUID uuid = rs.getUUID(1);
+			//	UUID uuid = rs.getUUID(1);
 
 			}
 		} catch (SQLException e) {
@@ -261,6 +279,7 @@ public class DatabaseManager {
 
 	}
 
+	/*Prelim
 	public Resultset search(String...attributes)
 	{
 
@@ -295,8 +314,9 @@ public class DatabaseManager {
 	}
 	public List<User> getUsers(String...attributes)
 	{
+		Query="SELECT * FROM Users";
 		preparedStatement=dbConnection.prepareStatement(Query);
-		preparedStatement.setArray(username, userId);
+		preparedStatement.setArray(username, userID);
 		ResultSet rs=preparedStatement.executeQuery();
 		
 		while(rs.next())
@@ -345,6 +365,7 @@ public class DatabaseManager {
 		search.execute(query);
 		closeStatement(search);
 	}
+	*/
 }
 
 /*
