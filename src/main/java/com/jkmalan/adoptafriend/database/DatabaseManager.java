@@ -220,9 +220,9 @@ public class DatabaseManager {
 	 */
 
 	// list the users
-	public List<User> getUsers() {
+	public User selectUser() {
 		try {
-			PreparedStatement ps = database.getPreparedStatement("username");
+			PreparedStatement ps = database.getPreparedStatement("select ...");
 			ps.setString(1, "?");
 			ResultSet rs = ps.executeQuery();
 
@@ -236,9 +236,15 @@ public class DatabaseManager {
 		return null;
 
 	}
+	
+	public Listing SelectListings()
+	{
+		String Query= "SELECT * WHERE=?";
+		return Listing;
+	}
 
 	// list the listings
-	public List<Listing> getListings() {
+	public List<Listing> selectListings() {
 		try {
 			PreparedStatement ps = database.getPreparedStatement("uuid");
 			ps.setString(1, "?");
