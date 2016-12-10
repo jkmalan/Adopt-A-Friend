@@ -13,7 +13,7 @@ public class UserManager {
 	PreparedStatement pstatement;
 
     public UserManager() {
-    	
+    	database = new Database(null);
     	user=new UserManager();
     }
 
@@ -86,7 +86,7 @@ public class UserManager {
     public void deleteUser(int uuid) {
     	String Query= "DELETE FROM user WHERE userID= ?";
     	try{
-    		PreparedStatement pstatement=DatabaseManager().getPreparedStatement(Query);
+    		PreparedStatement pstatement=database.getPreparedStatement(Query);
     		pstatement.setInt(1,uuid);
     		
     		pstatement.executeUpdate();
