@@ -1,6 +1,7 @@
 package com.jkmalan.adoptafriend.interfaces;
 
 import java.awt.BorderLayout;
+
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,16 +18,13 @@ public class UserListingFrame extends JFrame{
 	private JLabel Photo1;
 	private JLabel Photo2;
     private JButton EditListingButton;
+    private JButton EditListingButton2;
     private JButton HomeButton;
+    private JButton DeleteButton2;
     private JButton DeleteButton;
-    private JButton CancelButton;
-    private JPanel ListingPanel1;
-    private JPanel ListingPanel2;
+    private JPanel ListingPanel;
     private JPanel UserPanel;
-    private JPanel PhotoPanel;
-    private JPanel PhotoPanel2;
-  
-    private JPanel UserListingPanel;
+ 
     private ActionListener listener;
     
     private static final int FRAME_WIDTH = 400;
@@ -34,61 +32,87 @@ public class UserListingFrame extends JFrame{
    
 	public UserListingFrame()
 	{
-		/*PhotoPanel= new JPanel();
-		Photo1 = new JLabel();
-		PhotoPanel2= new JPanel();
-		Photo1 = new JLabel();
-		PhotoPanel.setLayout(new BorderLayout());
-		PhotoPanel.add(Photo1, BorderLayout.CENTER);
-		PhotoPanel2.setLayout(new BorderLayout());
-		PhotoPanel2.add(Photo2, BorderLayout.CENTER);*/
+		ListingPanel= new JPanel();
+		ListingPanel.setLayout(new GridLayout(2,3));
+		Photo1 = new JLabel(" ");
+		Photo2 = new JLabel(" ");
 		
-		createEditListingButton();
-		createDeleteButton();
-		createHomeButton();
+
+		EditListingButton= new JButton("Edit Current Listing");
+		EditListingButton2= new JButton("Edit Current Listing");
 		
-		ListingPanel1=new JPanel();
-		//ListingPanel1.add(PhotoPanel);
-		ListingPanel1.add(EditListingButton);
-		ListingPanel1.add(DeleteButton);
+		DeleteButton= new JButton("Delete");
+		DeleteButton2= new JButton("Delete");
+		HomeButton= new JButton("Home");
+
 		
-		ListingPanel2= new JPanel();
-		//ListingPanel2.add(PhotoPanel2);
-		ListingPanel2.add(EditListingButton);
-		ListingPanel2.add(DeleteButton);
+		createEditListingListener();
+		createDeleteListener();
 		
-		UserListingPanel=new JPanel();
-		UserListingPanel.add(ListingPanel1);
-		UserListingPanel.add(ListingPanel2);
-		UserListingPanel.add(HomeButton);
-		add(UserListingPanel);
+		createEditListingListener2();
+		createDeleteListener2();
+		createHomeListener();
+		
+		ListingPanel.add(Photo1);
+		ListingPanel.add(EditListingButton);
+		ListingPanel.add(DeleteButton);
+		
+		ListingPanel.add(Photo2);
+		ListingPanel.add(EditListingButton2);
+		ListingPanel.add(DeleteButton2);
+		
+		
+		UserPanel = new JPanel();
+		UserPanel.setLayout(new BorderLayout());
+		UserPanel.add(ListingPanel, BorderLayout.CENTER);
+		UserPanel.add(HomeButton, BorderLayout.SOUTH);
+		add(UserPanel);
+		
+		
 		
 		setSize(FRAME_WIDTH, FRAME_HEIGHT);
 		
 	}
 	
 		
-	private void createEditListingButton()
+	private void createEditListingListener()
 	{
-		EditListingButton= new JButton("Edit Current Listing");
-	
+		
 		class AddEditListener implements ActionListener
 	      {
 	         public void actionPerformed(ActionEvent event)
 	         {
-	        	JFrame frame = new EditListingFrame();
-		      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		      frame.setTitle("Edit Listing");
-		      frame.setVisible(true);   
+	        	 JFrame frame = new EditListingFrame();
+			      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			      frame.setTitle("Edit Listing");
+			      frame.setVisible(true);  
 	         }   
 	      }
 	         ActionListener listener = new AddEditListener();
 		      EditListingButton.addActionListener(listener);
 		
 	}
-	private void createHomeButton()
+	
+	private void createEditListingListener2()
 	{
-		HomeButton= new JButton("Home");
+		
+		class AddEditListener implements ActionListener
+	      {
+	         public void actionPerformed(ActionEvent event)
+	         {
+	        	 JFrame frame = new EditListingFrame();
+			      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			      frame.setTitle("Edit Listing");
+			      frame.setVisible(true);  
+	         }   
+	      }
+	         ActionListener listener = new AddEditListener();
+		      EditListingButton2.addActionListener(listener);
+		
+	}
+	private void createHomeListener()
+	{
+		
 		class AddHomeListener implements ActionListener
 	      {
 	         public void actionPerformed(ActionEvent event)
@@ -104,9 +128,9 @@ public class UserListingFrame extends JFrame{
 	      HomeButton.addActionListener(listener);
 
 }
-	public void createDeleteButton()
+	public void createDeleteListener()
 	{
-		DeleteButton= new JButton("Delete");
+		
 		class AddDeleteListener implements ActionListener
 	      {
 	         public void actionPerformed(ActionEvent event)
@@ -119,7 +143,25 @@ public class UserListingFrame extends JFrame{
 		
 	}
 		 ActionListener listener = new AddDeleteListener();
-	      HomeButton.addActionListener(listener);
+	      DeleteButton.addActionListener(listener);
+
+	}
+	public void createDeleteListener2()
+	{
+		
+		class AddDeleteListener implements ActionListener
+	      {
+	         public void actionPerformed(ActionEvent event)
+	         {
+	        	 JFrame frame = new UserListingFrame();
+	             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	             frame.setTitle("Current Listings: ");
+	             frame.setVisible(true);
+	         }     
+		
+	}
+		 ActionListener listener = new AddDeleteListener();
+	      DeleteButton2.addActionListener(listener);
 
 	}
 }

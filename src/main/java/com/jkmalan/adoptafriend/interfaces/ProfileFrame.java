@@ -23,6 +23,7 @@ public class ProfileFrame extends JFrame
     private static final int AREA_COLUMNS = 25;
 	private static final int FIELD_WIDTH = 20;
 	
+	private JLabel UserNameLabel;
     private JLabel FirstNameLabel;
     private JLabel LastNameLabel;
     private JLabel StreetLabel;
@@ -33,6 +34,7 @@ public class ProfileFrame extends JFrame
     private JLabel DescriptionLabel;
     private JLabel AddPhotoLabel;
     private JLabel Image;
+    private JTextField UserNameField;
     private JTextField FirstNameField;
     private JTextField LastNameField;
     private JTextField StreetField;
@@ -45,10 +47,13 @@ public class ProfileFrame extends JFrame
     private JButton CancelButton;
     private JButton OpenFileButton;
     private JPanel jpanel, panel;
-    
+    /**
+     * 
+     */
     public ProfileFrame()
     {
     	AddPhotoLabel = new JLabel("Add Photo:* ");
+    	UserNameLabel = new JLabel("UserName:*");
     	FirstNameLabel = new JLabel("First Name:* ");
     	LastNameLabel = new JLabel("Last Name:* ");
     	StreetLabel = new JLabel("Street:* ");
@@ -57,6 +62,7 @@ public class ProfileFrame extends JFrame
     	PhoneNumberLabel = new JLabel("Phone Number:* ");
     	EmailLabel = new JLabel("Email:* ");
     	DescriptionLabel = new JLabel("Description: ");
+    	UserNameField = new JTextField(FIELD_WIDTH);
     	FirstNameField = new JTextField(FIELD_WIDTH);
     	LastNameField = new JTextField(FIELD_WIDTH);
     	StreetField = new JTextField(FIELD_WIDTH);
@@ -152,6 +158,8 @@ public class ProfileFrame extends JFrame
 		panel.add(FirstNameField);
 		panel.add(LastNameLabel);
 		panel.add(LastNameField);
+		panel.add(UserNameLabel);
+		panel.add(UserNameField);
 		panel.add(StreetLabel);
 		panel.add(StreetField);
 		panel.add(StateLabel);

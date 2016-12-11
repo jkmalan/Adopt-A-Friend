@@ -99,6 +99,18 @@ public class CreateListingFrame extends JFrame
 	private void createSaveButton()
 	{
 		SaveButton = new JButton("Save");
+		class AddSaveListener implements ActionListener
+		{
+		    public void actionPerformed(ActionEvent e)
+		    {
+		    	 JFrame frame = new MainPageFrame();
+			      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			      frame.setTitle("Main Page");
+			      frame.setVisible(true); 
+		    }
+		}
+	ActionListener listener = new AddSaveListener();
+    SaveButton.addActionListener(listener);
 		
 	}
 
