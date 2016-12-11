@@ -11,32 +11,9 @@ import com.jkmalan.adoptafriend.user.User;
 public class DatabaseManager {
 
 	private final Database database;
-	{
-	try{
-	Connection dbConnection=DriverManager.getConnection("");	//connects to DB
-	Statement search=dbConnection.createStatement();	//creates java statement
-	String Query= "SELECT * FROM ";	//sql query
-	ResultSet rs=search.executeQuery(Query);	//Runs query and gets javaresult
-
-	PreparedStatement preparedStatement=null;
-	} 
-	
-	catch(SQLException e)
-	{}
-	}
-	private String username;
-	private int userID;
-	String Query= "SELECT * FROM ";	//sql query
 	
 	public DatabaseManager() {
-
 		database = new Database(new File(".\\adoptafriend.db"));
-	}
-
-	// check the tables - leave empty for now
-
-	public void checkTables() {
-
 	}
 
 	// creates tables for Profile and Listings
@@ -44,24 +21,32 @@ public class DatabaseManager {
 	// change the names to match the queries
 	public void createTables() throws SQLException {
 
-		String PROFILE_TABLE = "CREATE TABLE PROFILE ( " + " userId    INT(15)   NOT NULL,"
-				+ " username CHAR(20) NOT NULL" + " fName  CHAR(25)  NOT NULL," + " lName   CHAR(25) NOT NULL,"
-				+ " emailAddress CHAR(60)  NOT NULL," + " streetAddress CHAR(45) NOT NULL,"
-				+ " state  CHAR(2) NOT NULL," + " zipCode    CHAR(10) NOT NULL," + " phoneNumber CHAR(10) NOT NULL,"
-				+ " bio CHAR(255)," + " PRIMARY KEY(userId));";
-		String LISTING_TABLE = " CREATE TABLE LISTING ( " + " lid  INT(15)  NOT NULL, " + " title CHAR(40)  NOT NULL, "
-				+ " age   INT(2)    NOT NULL, " + " type  CHAR(40)   NOT NULL, " + " sex   CHAR(1)     NOT NULL, "
-				+ " attributes CHAR(255), " + "desc CHAR(255)," + "photos CHAR(128)," + " zip     CHAR(10)   NOT NULL, "
-				+ " PRIMARY KEY(lid), " + " FOREIGN KEY(lid) REFERENCES PROFILE(userId)); ";
+		String PROFILE_TABLE = "CREATE TABLE PROFILE ( "
+                + " userId    INT(15)   NOT NULL AUTO_INCREMENT,"
+				+ " username CHAR(20) NOT NULL"
+                + " fName  CHAR(25)  NOT NULL,"
+                + " lName   CHAR(25) NOT NULL,"
+				+ " emailAddress CHAR(60)  NOT NULL,"
+                + " streetAddress CHAR(45) NOT NULL,"
+				+ " state  CHAR(2) NOT NULL,"
+                + " zipCode    CHAR(10) NOT NULL,"
+                + " phoneNumber CHAR(10) NOT NULL,"
+				+ " bio CHAR(255),"
+                + " PRIMARY KEY(userId));";
+		String LISTING_TABLE = " CREATE TABLE LISTING ( "
+                + " lid  INT(15)  NOT NULL AUTO_INCREMENT,"
+                + " title CHAR(40)  NOT NULL, "
+				+ " age   INT(2)    NOT NULL, "
+                + " type  CHAR(40)   NOT NULL, "
+                + " sex   CHAR(1)     NOT NULL, "
+				+ " attributes CHAR(255), "
+                + " desc CHAR(255)," + "photos CHAR(128),"
+                + " zip     CHAR(10)   NOT NULL, "
+				+ " PRIMARY KEY(lid), "
+                + " FOREIGN KEY(lid) REFERENCES PROFILE(userId)); ";
 
 		database.executeStatement(PROFILE_TABLE);
 		database.executeStatement(LISTING_TABLE);
-	}
-
-	// updates the tables - leave empty for now
-
-	public void updateTables() {
-
 	}
 
 	// inserts a new listing
@@ -69,20 +54,19 @@ public class DatabaseManager {
 	public void insertListing(int lid, String title, String sex, int age, String type, String zip, String desc,
 			String photos, String attributes) {
 
-		String query = "INSERT INTO Listing (" + "lid," + "title," + "sex," + "age," + "type," + "zip," + "desc,"
-				+ "photos," + "attributes,) VALUES " + "(null, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO Listing (title, sex, age, type, zip, desc, photos, attributes) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try {
 			PreparedStatement ps = database.getPreparedStatement(query);
-			ps.setInt(1, lid);
-			ps.setString(2, title);
-			ps.setString(3, sex);
-			ps.setInt(4, age);
-			ps.setString(5, type);
-			ps.setString(6, zip);
-			ps.setString(7, desc);
-			ps.setString(8, photos);
-			ps.setString(9, attributes);
+			ps.setString(1, title);
+			ps.setString(2, sex);
+			ps.setInt(3, age);
+			ps.setString(4, type);
+			ps.setString(5, zip);
+			ps.setString(6, desc);
+			ps.setString(7, photos);
+			ps.setString(8, attributes);
 
 			ps.executeUpdate();
 			ps.close();
@@ -102,17 +86,15 @@ public class DatabaseManager {
 	public void insertUser(int userId, String username, String password, String fName, String lName,
 			String emailAddress, String phoneNumber, String streetAddress, String state, String zipCode, String bio) {
 
-		String query = "INSERT INTO User (" + "username," + "userId," + "password," + "fName," + "lName,"
-				+ "emailAddress," + "phoneNumber," + "streetAddress," + "state," + "zipCode," + "bio,) VALUES "
-				+ "(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO User (username, password, fName, lName, emailAddress, phoneNumber, streetAddress, state, zipCode, bio) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement ps = database.getPreparedStatement(query);
 
-			ps.setInt(1, userId);
-			ps.setString(2, username);
-			ps.setString(3, password);
-			ps.setString(4, fName);
-			ps.setString(5, lName);
+			ps.setString(1, username);
+			ps.setString(2, password);
+			ps.setString(3, fName);
+			ps.setString(4, lName);
 			ps.setString(5, emailAddress);
 			ps.setString(6, phoneNumber);
 			ps.setString(7, streetAddress);
@@ -135,22 +117,22 @@ public class DatabaseManager {
 
 	// updates the listing
 
-	public void updateListing(String title, String sex, int age, String type, String zip, String desc) {
+	public void updateListing(String title, String sex, int age, String type, String zip, String desc, int lid) {
 
-		String query = "UPDATE Listing SET title = ?, sex = ?, age = ?, type = ?, zip = ?, desc = ? WHERE uuid = ?";
+		String query = "UPDATE Listing SET title = ?, sex = ?, age = ?, type = ?, zip = ?, desc = ? WHERE lid = ?";
 
 		try {
 			PreparedStatement ps = database.getPreparedStatement(query);
-			ps.setString(1, "title");
-			ps.setString(2, "sex");
-			ps.setString(3, "age");
-			ps.setString(4, "type");
-			ps.setString(5, "zip");
-			ps.setString(6, "desc");
+			ps.setString(1, title);
+			ps.setString(2, sex);
+			ps.setInt(3, age);
+			ps.setString(4, type);
+			ps.setString(5, zip);
+			ps.setString(6, desc);
+            ps.setInt(7, lid);
 
 			ps.executeUpdate();
 			ps.close();
-
 		} catch (SQLException se) {
 
 		}
@@ -160,7 +142,7 @@ public class DatabaseManager {
 	// updates the user
 
 	public void updateUser(String fName, String lName, String emailAddress, String phoneNumber, String streetAddress,
-			String state, String zipCode, String bio) {
+			String state, String zipCode, String bio, int uid) {
 
 		String query = "UPDATE User SET fName = ?, lName = ?, emailAddress = ?, phoneNumber = ?, streetAddress = ?, state = ?, zipCode = ?, bio =?  WHERE userId = ?";
 
@@ -174,6 +156,7 @@ public class DatabaseManager {
 			ps.setString(6, state);
 			ps.setString(7, zipCode);
 			ps.setString(8, bio);
+            ps.setInt(9, uid);
 
 			ps.executeUpdate();
 			ps.close();
@@ -230,33 +213,67 @@ public class DatabaseManager {
 	 */
 
 	// list the users
-	public User selectUser() {
+	public User selectUser(int uid) {
 		try {
-			Query = "SELECT * FROM User WHERE userID= ?";
-			PreparedStatement ps = database.getPreparedStatement(Query);
-			ps.setString(1, "?");
-			ResultSet rs = ps.executeQuery(Query);
+			String query = "SELECT * FROM User WHERE userID = ?";
+			PreparedStatement ps = database.getPreparedStatement(query);
+			ps.setInt(1, uid);
 
-			while (rs.next()) {
-				String username = rs.getString(1);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+                User user = new User(rs.getInt("userId"));
 
+				String username = rs.getString("username");
+                String fName = rs.getString("fName");
+                String lName = rs.getString("lName");
+                String emailAddress = rs.getString("emailAddress");
+                String streetAddress = rs.getString("streetAddress");
+                String state = rs.getString("state");
+                String zipCode = rs.getString("zipCode");
+                String phoneNumber = rs.getString("phoneNumber");
+                String bio = rs.getString("bio");
+
+                user.setFistName(fName);
+                user.setLastName(lName);
+                user.setEmail(emailAddress);
+                user.setStreetAddress(streetAddress);
+                user.setState(state);
+                user.setZipCode(zipCode);
+                user.setPhoneNumber(phoneNumber);
+                user.setBio(bio);
+                return user;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+            // TODO Handle the error
 		}
 		return null;
 
 	}
 
-	public Listing SelectListings() {
+	public Listing selectListing(int lid) {
 		try {
-			Query = "SELECT * FROM Listings WHERE lid= ?";
-			PreparedStatement ps = database.getPreparedStatement(Query);
-			ps.setString(1, "?");
-			ResultSet rs = ps.executeQuery(Query);
+			String query = "SELECT * FROM Listings WHERE lid= ?";
+			PreparedStatement ps = database.getPreparedStatement(query);
+			ps.setInt(1, lid);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+                Listing listing = new Listing(rs.getInt("lid"));
 
-			while (rs.next()) {
-				String username = rs.getString(1);
+                String title = rs.getString("title");
+                String sex = rs.getString("sex");
+                int age = rs.getInt("age");
+                String type = rs.getString("type");
+                String zip = rs.getString("zip");
+                String desc = rs.getString("desc");
+
+                listing.setTitle(title);
+                listing.setSex(sex);
+                listing.setAge(age);
+                listing.setType(type);
+                listing.setZip(zip);
+                listing.setDesc(desc);
+
+                return listing;
 			}
 		} catch (SQLException e) {
 
@@ -265,12 +282,19 @@ public class DatabaseManager {
 		return null;
 	}
 
-	// list the listings
-	public List<Listing> selectListings() {
+    /**
+     * Selects all listings that match the search variables
+     *
+     * @param title The title of the listing
+     * @param sex The sex of the listing animal
+     * @param age The age of the listing animal
+     * @return A listing of listings that match the search variables, or null if none found
+     */
+	public List<Listing> selectListings(String title, String sex, int age) {
 		try {
-			Query = "SELECT * FROM Listings";
+			String query = "SELECT * FROM Listings";
 			PreparedStatement ps = database.getPreparedStatement("uuid");
-			ps.setString(1, "?");
+			ps.setString(1, "");
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {

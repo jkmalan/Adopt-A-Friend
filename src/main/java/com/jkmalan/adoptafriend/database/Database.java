@@ -14,6 +14,7 @@ public class Database {
     public Database(File file) {
         try {
             Class d = Class.forName(SQLDRIVER);
+            org.sqlite.JDBC jdbc = null;
             Object o = d.newInstance();
             if (!(o instanceof Driver)) {
                 // Not driver, go away

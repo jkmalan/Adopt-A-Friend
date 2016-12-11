@@ -6,11 +6,11 @@ import java.util.UUID;
 
 public class Listing {
 
-    private final UUID uuid;
+    private final int lid;
 
     private String title;
     private String sex;
-    private String age;
+    private int age;
     private String type;
     private String zip;
     private String desc;
@@ -18,12 +18,12 @@ public class Listing {
     private List<File> photos;
     private List<String> attributes;
 
-    public Listing(UUID uuid) {
-        this.uuid = uuid;
+    public Listing(int lid) {
+        this.lid = lid;
     }
 
-    public UUID getUUID() {
-        return uuid;
+    public int getLid() {
+        return lid;
     }
 
     public String getTitle() {
@@ -42,11 +42,11 @@ public class Listing {
         this.sex = sex;
     }
 
-    public String getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(int age) {
         this.age = age;
     }
 

@@ -4,7 +4,6 @@ import java.util.UUID;
 
 public class User {
 
-	private final UUID uuid;
 	private String username;
     protected Integer userId;
     private String password;
@@ -20,15 +19,10 @@ public class User {
   /*  private List<File> ;
     private List<String>;*/
 
-    public User(UUID uuid)
+    public User(int userId)
     {
 
-        this.uuid=uuid;
-    }
-    
-    public UUID getUUID()
-    {
-	return uuid;
+        this.userId=userId;
     }
 
     public Integer getUserId() 
