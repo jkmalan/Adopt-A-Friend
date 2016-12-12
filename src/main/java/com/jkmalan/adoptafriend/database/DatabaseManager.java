@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class DatabaseManager {
 
-    private final File file = new File("");
+    private final File file = new File(".\\adoptafriend.db");
 	private final Database database;
 
 	public DatabaseManager() {
