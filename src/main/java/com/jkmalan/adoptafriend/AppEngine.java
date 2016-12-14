@@ -18,8 +18,19 @@ public class AppEngine {
         userManager = new UserManager();
     }
 
-    public static void init() {
-        ENGINE = new AppEngine();
+    public static void enable() {
+        if (ENGINE == null) {
+            ENGINE = new AppEngine();
+        }
+    }
+
+    public static void disable() {
+        if (ENGINE != null) {
+            getDatabaseManager().shutdown();
+            getListingManager().shutdown();
+            getUserManager().shutdown();
+            ENGINE = null;
+        }
     }
 
     public static DatabaseManager getDatabaseManager() {

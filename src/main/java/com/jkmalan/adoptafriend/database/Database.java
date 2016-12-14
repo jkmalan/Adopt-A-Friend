@@ -3,46 +3,65 @@ package com.jkmalan.adoptafriend.database;
 import java.io.File;
 import java.sql.*;
 
+/**
+ * Represents a connection to an SQLite database
+ */
 public class Database {
 
-    private final String SQLDRIVER = "org.sqlite.JDBC";
-    private final File file;
-
+    // Holds the database connection
     private Connection connection = null;
 
-    // 1
+    // Holds the local database
+    private final File file;
+
+    /**
+     * Constructs a new SQLite Database object
+     *
+     * @param file The SQLite file to connect to
+     */
     public Database(File file) {
         try {
-            Class d = Class.forName(SQLDRIVER);
-            org.sqlite.JDBC jdbc = null;
+            Class d = Class.forName("org.sqlite.JDBC");
             Object o = d.newInstance();
             if (!(o instanceof Driver)) {
-                // Not driver, go away
+                // TODO Handle errors
             } else {
                 Driver driver = (Driver) o;
                 DriverManager.registerDriver(driver);
             }
         } catch (Exception e) {
-            // Error message
+            // TODO Handle errors
         }
         file.getParentFile().mkdirs();
         this.file = file;
     }
 
-    // Making a connection to the database file
-
+    /**
+     * Opens a Connection to the database
+     *
+     * @throws SQLException
+     */
     public void connect() throws SQLException {
         setConnection(DriverManager.getConnection("jdbc:sqlite://" + file.getAbsolutePath()));
     }
 
+    /**
+     * Closes a Connection to the database
+     *
+     * @throws SQLException
+     */
     public void disconnect() throws SQLException {
         if (connection != null && !connection.isClosed()) {
             connection.close();
         }
     }
 
-    // gets the connection
-
+    /**
+     * Gets an existing Connection to the database
+     *
+     * @return An existing connection to the database
+     * @throws SQLException
+     */
     public Connection getConnection() throws SQLException {
         if (connection == null || connection.isClosed()) {
             connect();
@@ -50,45 +69,75 @@ public class Database {
         return connection;
     }
 
-    // reactivates the connection
-
+    /**
+     * Sets a new Connection to the database
+     *
+     * @param connection A new connection to the database
+     */
     public void setConnection(Connection connection) {
         this.connection = connection;
     }
 
-    // creates a new Statement and executes it
+    /**
+     * Gets a new Statement object
+     *
+     * @return
+     * @throws SQLException
+     */
+    public Statement getStatement() throws SQLException {
+        return getConnection().createStatement();
+    }
 
+    /**
+     * Executes a Statement and then closes the Statement
+     *
+     * @param query A SQL query to execute
+     * @throws SQLException
+     */
     public void executeStatement(String query) throws SQLException {
         Statement statement = getStatement();
         statement.execute(query);
         closeStatement(statement);
     }
 
-    public Statement getStatement() throws SQLException {
-        return getConnection().createStatement();
-    }
-
-    // creates a new PreparedStatement
-
+    /**
+     * Gets a new PreparedStatement object
+     *
+     * @param query A SQL query to prepare
+     * @return A PreparedStatement for a SQL query
+     * @throws SQLException
+     */
     public PreparedStatement getPreparedStatement(String query) throws SQLException {
         return getConnection().prepareStatement(query);
-
-        // return null;
     }
 
-    // closes a Statement
-
-    public void closeStatement(Statement statement) throws SQLException {
+    /**
+     * Closes an open Statement
+     *
+     * @param statement A Statement to be closed
+     */
+    public void closeStatement(Statement statement) {
         if (statement != null) {
-            statement.close();
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                // TODO Handle errors
+            }
         }
     }
 
-    // closes a ResultSet
-
-    public void closeResultSet(ResultSet result) throws SQLException {
+    /**
+     * Closes an open ResultSet
+     *
+     * @param result A ResultSet to be closed
+     */
+    public void closeResultSet(ResultSet result) {
         if (result != null) {
-            result.close();
+            try {
+                result.close();
+            } catch (SQLException e) {
+                // TODO Handle errors
+            }
         }
     }
 

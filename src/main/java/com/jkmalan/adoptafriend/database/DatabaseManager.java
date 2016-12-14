@@ -1,369 +1,460 @@
 package com.jkmalan.adoptafriend.database;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.sql.*;
 
 import com.jkmalan.adoptafriend.listing.Listing;
 import com.jkmalan.adoptafriend.user.User;
 
+/**
+ * Creates, retrieves and modifies data in the Database
+ */
 public class DatabaseManager {
 
-	private final Database database;
-	
-	public DatabaseManager() {
-		database = new Database(new File(".\\adoptafriend.db"));
-	}
+    // Holds the SQLite Database object
+    private final Database database;
 
-	// creates tables for Profile and Listings
+    public DatabaseManager() {
+        database = new Database(new File(".\\adoptafriend.db"));
+        try {
+            database.connect();
+            createTables();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
-	// change the names to match the queries
-	public void createTables() throws SQLException {
+    /*
+     * Closes the connection to the Adopt-A-Friend database
+     */
+    public void shutdown() {
+        try {
+            database.disconnect();
+        } catch (SQLException e) {
+            // TODO Handle errors
+        }
+    }
 
-		String PROFILE_TABLE = "CREATE TABLE PROFILE ( "
-                + " userId    INT(15)   NOT NULL AUTO_INCREMENT,"
-				+ " username CHAR(20) NOT NULL"
-                + " fName  CHAR(25)  NOT NULL,"
-                + " lName   CHAR(25) NOT NULL,"
-				+ " emailAddress CHAR(60)  NOT NULL,"
-                + " streetAddress CHAR(45) NOT NULL,"
-				+ " state  CHAR(2) NOT NULL,"
-                + " zipCode    CHAR(10) NOT NULL,"
-                + " phoneNumber CHAR(10) NOT NULL,"
-				+ " bio CHAR(255),"
-                + " PRIMARY KEY(userId));";
-		String LISTING_TABLE = " CREATE TABLE LISTING ( "
-                + " lid  INT(15)  NOT NULL AUTO_INCREMENT,"
-                + " title CHAR(40)  NOT NULL, "
-				+ " age   INT(2)    NOT NULL, "
-                + " type  CHAR(40)   NOT NULL, "
-                + " sex   CHAR(1)     NOT NULL, "
-				+ " attributes CHAR(255), "
-                + " desc CHAR(255)," + "photos CHAR(128),"
-                + " zip     CHAR(10)   NOT NULL, "
-				+ " PRIMARY KEY(lid), "
-                + " FOREIGN KEY(lid) REFERENCES PROFILE(userId)); ";
-
-		database.executeStatement(PROFILE_TABLE);
-		database.executeStatement(LISTING_TABLE);
-	}
-
-	// inserts a new listing
-
-	public void insertListing(int lid, String title, String sex, int age, String type, String zip, String desc,
-			String photos, String attributes) {
-
-		String query = "INSERT INTO Listing (title, sex, age, type, zip, desc, photos, attributes) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-		try {
-			PreparedStatement ps = database.getPreparedStatement(query);
-			ps.setString(1, title);
-			ps.setString(2, sex);
-			ps.setInt(3, age);
-			ps.setString(4, type);
-			ps.setString(5, zip);
-			ps.setString(6, desc);
-			ps.setString(7, photos);
-			ps.setString(8, attributes);
-
-			ps.executeUpdate();
-			ps.close();
-		} catch (SQLException se) {
-
-		}
-	}
-
-	/*
-	 * try { PreparedStatement ps = database.getPreparedStatement(
-	 * "INSERT INTO Listing (uuid, title, sex, age, type, zip, desc, photos, attributes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
-	 * ); }
-	 */
-
-	// inserts a new user
-
-	public void insertUser(int userId, String username, String password, String fName, String lName,
-			String emailAddress, String phoneNumber, String streetAddress, String state, String zipCode, String bio) {
-
-		String query = "INSERT INTO User (username, password, fName, lName, emailAddress, phoneNumber, streetAddress, state, zipCode, bio) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		try {
-			PreparedStatement ps = database.getPreparedStatement(query);
-
-			ps.setString(1, username);
-			ps.setString(2, password);
-			ps.setString(3, fName);
-			ps.setString(4, lName);
-			ps.setString(5, emailAddress);
-			ps.setString(6, phoneNumber);
-			ps.setString(7, streetAddress);
-			ps.setString(8, state);
-			ps.setString(9, zipCode);
-			ps.setString(10, bio);
-
-			ps.executeUpdate();
-			ps.close();
-		} catch (SQLException se) {
-
-		}
-	}
-	/*
-	 * try { PreparedStatement ps = database.getPreparedStatement(
-	 * "INSERT INTO User (uuid, username, userID, password, fName, lName, emailAddress, phoneNumber, streetAddress, state, zipCode, bio) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-	 * );
-	 * 
-	 */
-
-	// updates the listing
-
-	public void updateListing(String title, String sex, int age, String type, String zip, String desc, int lid) {
-
-		String query = "UPDATE Listing SET title = ?, sex = ?, age = ?, type = ?, zip = ?, desc = ? WHERE lid = ?";
-
-		try {
-			PreparedStatement ps = database.getPreparedStatement(query);
-			ps.setString(1, title);
-			ps.setString(2, sex);
-			ps.setInt(3, age);
-			ps.setString(4, type);
-			ps.setString(5, zip);
-			ps.setString(6, desc);
-            ps.setInt(7, lid);
-
-			ps.executeUpdate();
-			ps.close();
-		} catch (SQLException se) {
-
-		}
-
-	}
-
-	// updates the user
-
-	public void updateUser(String fName, String lName, String emailAddress, String phoneNumber, String streetAddress,
-			String state, String zipCode, String bio, int uid) {
-
-		String query = "UPDATE User SET fName = ?, lName = ?, emailAddress = ?, phoneNumber = ?, streetAddress = ?, state = ?, zipCode = ?, bio =?  WHERE userId = ?";
-
-		try {
-			PreparedStatement ps = database.getPreparedStatement(query);
-			ps.setString(1, fName);
-			ps.setString(2, lName);
-			ps.setString(3, emailAddress);
-			ps.setString(4, phoneNumber);
-			ps.setString(5, streetAddress);
-			ps.setString(6, state);
-			ps.setString(7, zipCode);
-			ps.setString(8, bio);
-            ps.setInt(9, uid);
-
-			ps.executeUpdate();
-			ps.close();
-		} catch (SQLException se) {
-
-		}
-
-	}
-
-	/*
-	 * PreparedStatement ps = database.getPreparedStatement(""); ps.setString(1,
-	 * ""); ps.executeQuery();
-	 */
-
-	// deletes a Listing record
-
-	public void deleteListing(int lid) {
-
-		String deleteQuery = "DELETE FROM Listing WHERE lid = ?";
-
-		try {
-			PreparedStatement ps = database.getPreparedStatement(deleteQuery);
-			ps.setInt(1, lid);
-
-			ps.executeUpdate();
-			ps.close();
-		} catch (SQLException se) {
-
-		}
-	}
-
-	// deletes a User record
-
-	public void deleteUser(int userID) {
-
-		String deleteQuery = "DELETE FROM User WHERE userId = ?";
-
-		try {
-			PreparedStatement ps = database.getPreparedStatement(deleteQuery);
-			ps.setInt(1, userID);
-
-			ps.executeUpdate();
-			ps.close();
-		} catch (SQLException se) {
-
-		}
-	}
-
-	// Stop after this
-
-	/*
-	 * PreparedStatement ps = database.getPreparedStatement(""); ps.setString(1,
-	 * ""); ps.executeQuery();
-	 */
-
-	// list the users
-	public User selectUser(int uid) {
-		try {
-			String query = "SELECT * FROM User WHERE userID = ?";
-			PreparedStatement ps = database.getPreparedStatement(query);
-			ps.setInt(1, uid);
-
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-                User user = new User(rs.getInt("userId"));
-
-				String username = rs.getString("username");
-                String fName = rs.getString("fName");
-                String lName = rs.getString("lName");
-                String emailAddress = rs.getString("emailAddress");
-                String streetAddress = rs.getString("streetAddress");
-                String state = rs.getString("state");
-                String zipCode = rs.getString("zipCode");
-                String phoneNumber = rs.getString("phoneNumber");
-                String bio = rs.getString("bio");
-
-                user.setFistName(fName);
-                user.setLastName(lName);
-                user.setEmail(emailAddress);
-                user.setStreetAddress(streetAddress);
-                user.setState(state);
-                user.setZipCode(zipCode);
-                user.setPhoneNumber(phoneNumber);
-                user.setBio(bio);
-                return user;
-			}
-		} catch (SQLException e) {
-            // TODO Handle the error
-		}
-		return null;
-
-	}
-
-	public Listing selectListing(int lid) {
-		try {
-			String query = "SELECT * FROM Listings WHERE lid= ?";
-			PreparedStatement ps = database.getPreparedStatement(query);
-			ps.setInt(1, lid);
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-                Listing listing = new Listing(rs.getInt("lid"));
-
-                String title = rs.getString("title");
-                String sex = rs.getString("sex");
-                int age = rs.getInt("age");
-                String type = rs.getString("type");
-                String zip = rs.getString("zip");
-                String desc = rs.getString("desc");
-
-                listing.setTitle(title);
-                listing.setSex(sex);
-                listing.setAge(age);
-                listing.setType(type);
-                listing.setZip(zip);
-                listing.setDesc(desc);
-
-                return listing;
-			}
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-		}
-		return null;
-	}
+    /*
+     * Creates the preliminary tables for the Adopt-A-Friend database
+     * If a table already exists, it will avoid creating a table
+     *
+     * @throws SQLException
+     */
+    private void createTables() throws SQLException {
+        String USER_TABLE = "CREATE TABLE IF NOT EXISTS user ( "
+                + "uid INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "username CHAR(20) NOT NULL,"
+                + "firstName CHAR(24) NOT NULL,"
+                + "lastName CHAR(24) NOT NULL,"
+                + "email CHAR(60) NOT NULL,"
+                + "street CHAR(45) NOT NULL,"
+                + "state CHAR(2) NOT NULL,"
+                + "zip CHAR(10) NOT NULL,"
+                + "phone CHAR(10) NOT NULL,"
+                + "desc CHAR(256),"
+                + "photo CHAR(128),"
+                + "UNIQUE (username),"
+                + "UNIQUE (email)"
+                + ");";
+        String LISTING_TABLE = "CREATE TABLE IF NOT EXISTS listing ( "
+                + "lid INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "owner INTEGER NOT NULL,"
+                + "title CHAR(40) NOT NULL, "
+                + "zip CHAR(10) NOT NULL, "
+                + "type CHAR(40) NOT NULL, "
+                + "sex CHAR(1) NOT NULL, "
+                + "age INT(2) NOT NULL, "
+                + "desc CHAR(256),"
+                + "photo CHAR(128),"
+                + "FOREIGN KEY (lid) REFERENCES user (uid)"
+                + "); ";
+        database.executeStatement(USER_TABLE);
+        database.executeStatement(LISTING_TABLE);
+    }
 
     /**
-     * Selects all listings that match the search variables
+     * Inserts a new Listing record into the Database
+     *
+     * @param owner The user id for the listing owner
+     * @param title The title of the listing
+     * @param zip   The zip code for the animal in the listing
+     * @param type  The type of animal in the listing
+     * @param sex   The sex of the animal in the listing
+     * @param age   The age of the animal in the listing
+     * @param desc  The description of the listing
+     * @param photo The photo path of the listing
+     */
+    public void insertListing(int owner, String title, String zip, String type, String sex, int age, String desc, String photo) {
+        String query = "INSERT INTO listing (owner, title, zip, type, sex, age, desc, photo) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        PreparedStatement ps = null;
+        try {
+            ps = database.getPreparedStatement(query);
+            ps.setInt(1, owner);
+            ps.setString(2, title);
+            ps.setString(3, zip);
+            ps.setString(4, type);
+            ps.setString(5, sex);
+            ps.setInt(6, age);
+            ps.setString(7, desc);
+            ps.setString(8, photo);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            // TODO Handle errors
+        } finally {
+            database.closeStatement(ps);
+        }
+    }
+
+    /**
+     * Inserts a new User record into the Database
+     *
+     * @param username  The unique username to use for logins
+     * @param firstName The first name of the user
+     * @param lastName  The last name of the user
+     * @param email     The unique email to use for logins
+     * @param phone     The phone number of the user
+     * @param street    The street address of the user
+     * @param city      The city of the user
+     * @param state     The state of the user
+     * @param zip       The zip code of the user
+     * @param desc      The description of the user
+     * @param photo     The photo path of the user
+     */
+    public void insertUser(String username, String firstName, String lastName, String email, String phone, String street, String city, String state, String zip, String desc, String photo) {
+        String query = "INSERT INTO user (username, firstName, lastName, email, phone, street, city, state, zip, desc, photo) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        PreparedStatement ps = null;
+        try {
+            ps = database.getPreparedStatement(query);
+            ps.setString(1, username);
+            ps.setString(2, firstName);
+            ps.setString(3, lastName);
+            ps.setString(4, email);
+            ps.setString(5, phone);
+            ps.setString(6, street);
+            ps.setString(7, city);
+            ps.setString(8, state);
+            ps.setString(9, zip);
+            ps.setString(10, desc);
+            ps.setString(11, photo);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            // TODO Handle errors
+        } finally {
+            database.closeStatement(ps);
+        }
+    }
+
+    /**
+     * Updates an existing Listing record in the Database
+     *
+     * @param lid   The unique internal id for the listing
+     * @param title The title of the listing
+     * @param zip   The zip code for the animal in the listing
+     * @param type  The type of animal in the listing
+     * @param sex   The sex of the animal in the listing
+     * @param age   The age of the animal in the listing
+     * @param desc  The description of the listing
+     * @param photo The photo path of the listing
+     */
+    public void updateListing(int lid, String title, String zip, String type, String sex, int age, String desc, String photo) {
+        String query = "UPDATE listing SET title = ?, zip = ?, type = ?, sex = ?, age = ?, desc = ? "
+                + "WHERE lid = ?;";
+        PreparedStatement ps = null;
+        try {
+            ps = database.getPreparedStatement(query);
+            ps.setString(1, title);
+            ps.setString(2, zip);
+            ps.setString(3, type);
+            ps.setString(4, sex);
+            ps.setInt(5, age);
+            ps.setString(6, desc);
+            ps.setString(7, photo);
+            ps.setInt(8, lid);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            // TODO Handle errors
+        } finally {
+            database.closeStatement(ps);
+        }
+
+    }
+
+    /**
+     * Updates an existing User record in the Database
+     *
+     * @param uid       The unique internal id for the user
+     * @param username  The unique username to use for logins
+     * @param firstName The first name of the user
+     * @param lastName  The last name of the user
+     * @param email     The unique email to use for logins
+     * @param phone     The phone number of the user
+     * @param street    The street address of the user
+     * @param city      The city of the user
+     * @param state     The state of the user
+     * @param zip       The zip code of the user
+     * @param desc      The description of the user
+     * @param photo     The photo path of the user
+     */
+    public void updateUser(int uid, String username, String firstName, String lastName, String email, String phone, String street, String city, String state, String zip, String desc, String photo) {
+        String query = "UPDATE user SET username = ?, firstName = ?, lastName = ?, email = ?, phone = ?,"
+                + "street = ?, city = ?, state = ?, zip = ?, desc = ?, photo = ? "
+                + "WHERE uid = ?;";
+        PreparedStatement ps = null;
+        try {
+            ps = database.getPreparedStatement(query);
+            ps.setString(1, username);
+            ps.setString(2, firstName);
+            ps.setString(3, lastName);
+            ps.setString(4, email);
+            ps.setString(5, phone);
+            ps.setString(6, street);
+            ps.setString(7, city);
+            ps.setString(8, state);
+            ps.setString(9, zip);
+            ps.setString(10, desc);
+            ps.setString(11, photo);
+            ps.setInt(12, uid);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            // TODO Handle errors
+        } finally {
+            database.closeStatement(ps);
+        }
+
+    }
+
+    /**
+     * Deletes an existing Listing record from the Database
+     *
+     * @param lid The unique internal id for the listing
+     */
+    public void deleteListing(int lid) {
+        String query = "DELETE FROM listing WHERE lid = ?;";
+        PreparedStatement ps = null;
+        try {
+            ps = database.getPreparedStatement(query);
+            ps.setInt(1, lid);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            // TODO Handle errors
+        } finally {
+            database.closeStatement(ps);
+        }
+    }
+
+    /**
+     * Deletes an existing User record from the Database
+     *
+     * @param uid The unique internal id for the user
+     */
+    public void deleteUser(int uid) {
+        String query = "DELETE FROM user WHERE uid = ?;";
+        PreparedStatement ps = null;
+        try {
+            ps = database.getPreparedStatement(query);
+            ps.setInt(1, uid);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            // TODO Handle errors
+        } finally {
+            database.closeStatement(ps);
+        }
+    }
+
+    /**
+     * Selects a User from the Database with the specified username
+     *
+     * @param username The unique username for user logins
+     * @return If a record is found, returns a User object, or else it returns null
+     */
+    public User selectUser(String username) {
+        String query = "SELECT * FROM user WHERE username = ?;";
+        PreparedStatement ps = null;
+        try {
+            ps = database.getPreparedStatement(query);
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                User user = new User(rs.getInt("uid"), rs.getString("username"));
+
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
+                String email = rs.getString("email");
+                String street = rs.getString("street");
+                String city = rs.getString("city");
+                String state = rs.getString("state");
+                String zip = rs.getString("zip");
+                String phone = rs.getString("phone");
+                String desc = rs.getString("desc");
+
+                user.setFistName(firstName);
+                user.setLastName(lastName);
+                user.setEmail(email);
+                user.setStreet(street);
+                user.setCity(city);
+                user.setState(state);
+                user.setZip(zip);
+                user.setPhone(phone);
+                user.setDesc(desc);
+
+                String path = rs.getString("photo");
+                File file = new File(path);
+                user.setPhoto(file);
+
+                return user;
+            }
+        } catch (SQLException e) {
+            // TODO Handle errors
+        } finally {
+            database.closeStatement(ps);
+        }
+        return null;
+
+    }
+
+    /**
+     * Selects a User from the Database with the specified unique internal id
+     *
+     * @param uid The unique internal id for the user
+     * @return If a record is found, returns a User object, or else it returns null
+     */
+    public User selectUser(int uid) {
+        String query = "SELECT * FROM user WHERE uid = ?;";
+        PreparedStatement ps = null;
+        try {
+            ps = database.getPreparedStatement(query);
+            ps.setInt(1, uid);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                User user = new User(rs.getInt("uid"), rs.getString("username"));
+
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
+                String email = rs.getString("email");
+                String street = rs.getString("street");
+                String city = rs.getString("city");
+                String state = rs.getString("state");
+                String zip = rs.getString("zip");
+                String phone = rs.getString("phone");
+                String desc = rs.getString("desc");
+
+                user.setFistName(firstName);
+                user.setLastName(lastName);
+                user.setEmail(email);
+                user.setStreet(street);
+                user.setCity(city);
+                user.setState(state);
+                user.setZip(zip);
+                user.setPhone(phone);
+                user.setDesc(desc);
+
+                String path = rs.getString("photo");
+                File file = new File(path);
+                user.setPhoto(file);
+
+                return user;
+            }
+        } catch (SQLException e) {
+            // TODO Handle errors
+        } finally {
+            database.closeStatement(ps);
+        }
+        return null;
+
+    }
+
+    /**
+     * Selects a Listing from the Database with the specified unique internal id
+     *
+     * @param lid The unique internal id for the listing
+     * @return If a record is found, returns a Listing object, or else it returns null
+     */
+    public Listing selectListing(int lid) {
+        String query = "SELECT * FROM listing WHERE lid = ?;";
+        PreparedStatement ps = null;
+        try {
+            ps = database.getPreparedStatement(query);
+            ps.setInt(1, lid);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Listing listing = new Listing(lid, rs.getInt("owner"));
+
+                listing.setTitle(rs.getString("title"));
+                listing.setZip(rs.getString("zip"));
+                listing.setType(rs.getString("type"));
+                listing.setSex(rs.getString("sex"));
+                listing.setAge(rs.getInt("age"));
+                listing.setDesc(rs.getString("desc"));
+
+                String path = rs.getString("photo");
+                File file = new File(path);
+                listing.setPhoto(file);
+
+                return listing;
+            }
+        } catch (SQLException e) {
+            // TODO Handle errors
+        } finally {
+            database.closeStatement(ps);
+        }
+        return null;
+    }
+
+    /**
+     * Selects all Listings that match the specified variables
      *
      * @param title The title of the listing
-     * @param sex The sex of the listing animal
-     * @param age The age of the listing animal
-     * @return A listing of listings that match the search variables, or null if none found
+     * @param zip   The zip variable in the listing
+     * @param type  The type variable in the listing
+     * @param sex   The sex variable in the listing
+     * @param age   The age variable in the listing
+     * @return If records are found, returns an ArrayList of Listings
      */
-	public List<Listing> selectListings(String title, String sex, int age) {
-		try {
-			String query = "SELECT * FROM Listings";
-			PreparedStatement ps = database.getPreparedStatement("uuid");
-			ps.setString(1, "");
-			ResultSet rs = ps.executeQuery();
+    public List<Listing> selectListings(String title, String zip, String type, String sex, int age) {
+        List<Listing> listings = new ArrayList<>();
+        String query = "SELECT * FROM listing "
+                + "WHERE title LIKE ? ESCAPE ! "
+                + "AND zip LIKE ? ESCAPE ! "
+                + "AND type LIKE ? ESCAPE ! "
+                + "AND sex LIKE ? ESCAPE ! "
+                + "AND age = ?;";
+        PreparedStatement ps = null;
+        try {
+            ps = database.getPreparedStatement(query);
+            ps.setString(1, title);
+            ps.setString(2, zip);
+            ps.setString(3, type);
+            ps.setString(4, sex);
+            ps.setInt(5, age);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Listing listing = new Listing(rs.getInt("lid"), rs.getInt("owner"));
 
-			while (rs.next()) {
-				// UUID uuid = rs.getUUID(1);
+                listing.setTitle(rs.getString("title"));
+                listing.setZip(rs.getString("zip"));
+                listing.setType(rs.getString("type"));
+                listing.setSex(rs.getString("sex"));
+                listing.setAge(rs.getInt("age"));
+                listing.setDesc(rs.getString("desc"));
 
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
+                String path = rs.getString("photo");
+                File file = new File(path);
+                listing.setPhoto(file);
 
-	}
+                listings.add(listing);
+            }
+        } catch (SQLException e) {
+            // TODO Handle errors
+        } finally {
+            database.closeStatement(ps);
+        }
+        return listings;
 
-	/*
-	 * Prelim public Resultset search(String...attributes) {
-	 * 
-	 * preparedStatement=dbConnection.prepareStatement(Query);
-	 * preparedStatement.setArray(attributes); ResultSet
-	 * rs=preparedStatement.executeQuery();
-	 * 
-	 * while(rs.next()) { String attributes=rs.getString("Attributes");
-	 * System.out.println("Attributes: "+ attributes +"\n"); } search.close(); }
-	 * public ResultSet search(String type, String age, String...attributes) {
-	 * preparedStatement=dbConnection.prepareStatement(Query);
-	 * preparedStatement.setArray(type, age, attributes); ResultSet
-	 * rs=preparedStatement.executeQuery();
-	 * 
-	 * while(rs.next()) { String type=rs.getString("breed"); String age=
-	 * rs.getString("age"); String attributes=rs.getString("attributes");
-	 * 
-	 * System.out.println("Breed: " + breed +"\n"); System.out.println("Age: " +
-	 * age +"\n"); System.out.println("Attributes: " + attributes +"\n"); }
-	 * search.close(); } public List<User> getUsers(String...attributes) {
-	 * Query="SELECT * FROM Users";
-	 * preparedStatement=dbConnection.prepareStatement(Query);
-	 * preparedStatement.setArray(username, userID); ResultSet
-	 * rs=preparedStatement.executeQuery();
-	 * 
-	 * while(rs.next()) { String username=rs.getString("User"); String
-	 * userId=rs.getString("userId");
-	 * 
-	 * System.out.println("Username: " + username +"\n UserID: " + userId +
-	 * "\n"); } search.close();
-	 * 
-	 * } public List<Listing>getListings(String...attributes) {
-	 * preparedStatement=dbConnection.prepareStatement(Query);
-	 * preparedStatement.setArray(attributes); ResultSet
-	 * rs=preparedStatement.executeQuery();
-	 * 
-	 * while(rs.next()) { String attribtues=rs.getString("attributes");
-	 * 
-	 * System.out.println("Attributes: " + attributes + "\n"); } search.close();
-	 * } public List<Listing>getListings(String terms) { term.split(" ");
-	 * getListings();
-	 * 
-	 * while(rs.next()) { String terms=rs.getString("Term");
-	 * System.out.println("Terms: "+ terms +"\n"); } } public final
-	 * PreparedStatement getPreparedStatement(String query) { return
-	 * prepareStatement(query);
-	 * 
-	 * } public final void executeStatement(String query) throws SQLException {
-	 * Statement search=getStatement(); search.execute(query);
-	 * closeStatement(search); }
-	 */
+    }
+
 }
-
-/*
- * ResultSet rs = database.getPreparedStatement("").executeQuery(); // name,
- * email, pass, desc while (rs.next()) { String name = rs.getString(1); String
- * email = rs.getString(2); String pass = rs.getString(3); String desc =
- * rs.getString(4); User user = new User(name, email, pass, desc); }
- */
