@@ -1,4 +1,6 @@
-package com.jkmalan.adoptafriend.interfaces;
+package com.jkmalan.adoptafriend.interfaces.viewers;
+
+import com.jkmalan.adoptafriend.interfaces.UserListingFrame;
 
 import javax.swing.JFrame;
 

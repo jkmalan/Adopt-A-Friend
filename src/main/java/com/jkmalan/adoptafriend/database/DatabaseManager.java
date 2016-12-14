@@ -33,7 +33,8 @@ public class DatabaseManager {
         try {
             database.disconnect();
         } catch (SQLException e) {
-            // TODO Handle errors
+            System.err.print("There was an exception!");
+            e.printStackTrace();
         }
     }
 
@@ -51,6 +52,7 @@ public class DatabaseManager {
                 + "lastName CHAR(24) NOT NULL,"
                 + "email CHAR(60) NOT NULL,"
                 + "street CHAR(45) NOT NULL,"
+                + "city CHAR(24) NOT NULL,"
                 + "state CHAR(2) NOT NULL,"
                 + "zip CHAR(10) NOT NULL,"
                 + "phone CHAR(10) NOT NULL,"
@@ -103,7 +105,8 @@ public class DatabaseManager {
             ps.setString(8, photo);
             ps.executeUpdate();
         } catch (SQLException e) {
-            // TODO Handle errors
+            System.err.print("There was an exception!");
+            e.printStackTrace();
         } finally {
             database.closeStatement(ps);
         }
@@ -143,7 +146,8 @@ public class DatabaseManager {
             ps.setString(11, photo);
             ps.executeUpdate();
         } catch (SQLException e) {
-            // TODO Handle errors
+            System.err.print("There was an exception!");
+            e.printStackTrace();
         } finally {
             database.closeStatement(ps);
         }
@@ -177,7 +181,8 @@ public class DatabaseManager {
             ps.setInt(8, lid);
             ps.executeUpdate();
         } catch (SQLException e) {
-            // TODO Handle errors
+            System.err.print("There was an exception!");
+            e.printStackTrace();
         } finally {
             database.closeStatement(ps);
         }
@@ -221,7 +226,8 @@ public class DatabaseManager {
             ps.setInt(12, uid);
             ps.executeUpdate();
         } catch (SQLException e) {
-            // TODO Handle errors
+            System.err.print("There was an exception!");
+            e.printStackTrace();
         } finally {
             database.closeStatement(ps);
         }
@@ -241,7 +247,8 @@ public class DatabaseManager {
             ps.setInt(1, lid);
             ps.executeUpdate();
         } catch (SQLException e) {
-            // TODO Handle errors
+            System.err.print("There was an exception!");
+            e.printStackTrace();
         } finally {
             database.closeStatement(ps);
         }
@@ -260,7 +267,8 @@ public class DatabaseManager {
             ps.setInt(1, uid);
             ps.executeUpdate();
         } catch (SQLException e) {
-            // TODO Handle errors
+            System.err.print("There was an exception!");
+            e.printStackTrace();
         } finally {
             database.closeStatement(ps);
         }
@@ -309,7 +317,8 @@ public class DatabaseManager {
                 return user;
             }
         } catch (SQLException e) {
-            // TODO Handle errors
+            System.err.print("There was an exception!");
+            e.printStackTrace();
         } finally {
             database.closeStatement(ps);
         }
@@ -360,7 +369,8 @@ public class DatabaseManager {
                 return user;
             }
         } catch (SQLException e) {
-            // TODO Handle errors
+            System.err.print("There was an exception!");
+            e.printStackTrace();
         } finally {
             database.closeStatement(ps);
         }
@@ -398,7 +408,8 @@ public class DatabaseManager {
                 return listing;
             }
         } catch (SQLException e) {
-            // TODO Handle errors
+            System.err.print("There was an exception!");
+            e.printStackTrace();
         } finally {
             database.closeStatement(ps);
         }
@@ -449,7 +460,8 @@ public class DatabaseManager {
                 listings.add(listing);
             }
         } catch (SQLException e) {
-            // TODO Handle errors
+            System.err.print("There was an exception!");
+            e.printStackTrace();
         } finally {
             database.closeStatement(ps);
         }
