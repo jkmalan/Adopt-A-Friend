@@ -18,7 +18,7 @@ public class DatabaseManager {
 
 	// creates tables for Profile and Listings
 
-	// change the names to match the queries
+	
 	public void createTables() throws SQLException {
 
 		String PROFILE_TABLE = "CREATE TABLE PROFILE ( "
@@ -75,11 +75,6 @@ public class DatabaseManager {
 		}
 	}
 
-	/*
-	 * try { PreparedStatement ps = database.getPreparedStatement(
-	 * "INSERT INTO Listing (uuid, title, sex, age, type, zip, desc, photos, attributes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
-	 * ); }
-	 */
 
 	// inserts a new user
 
@@ -108,12 +103,6 @@ public class DatabaseManager {
 
 		}
 	}
-	/*
-	 * try { PreparedStatement ps = database.getPreparedStatement(
-	 * "INSERT INTO User (uuid, username, userID, password, fName, lName, emailAddress, phoneNumber, streetAddress, state, zipCode, bio) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-	 * );
-	 * 
-	 */
 
 	// updates the listing
 
@@ -166,10 +155,7 @@ public class DatabaseManager {
 
 	}
 
-	/*
-	 * PreparedStatement ps = database.getPreparedStatement(""); ps.setString(1,
-	 * ""); ps.executeQuery();
-	 */
+	
 
 	// deletes a Listing record
 
@@ -205,12 +191,7 @@ public class DatabaseManager {
 		}
 	}
 
-	// Stop after this
 
-	/*
-	 * PreparedStatement ps = database.getPreparedStatement(""); ps.setString(1,
-	 * ""); ps.executeQuery();
-	 */
 
 	// list the users
 	public User selectUser(int uid) {
