@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class MainPageFrame extends JFrame {
+
     private static final int FRAME_WIDTH = 500;
     private static final int FRAME_HEIGHT = 300;
 

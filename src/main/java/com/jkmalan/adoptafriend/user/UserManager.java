@@ -14,7 +14,7 @@ public class UserManager {
     }
 
     public void shutdown() {
-
+        userCache.clear();
     }
 
     public int validateUser(String username, String password) {

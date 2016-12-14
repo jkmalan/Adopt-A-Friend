@@ -24,13 +24,14 @@ public class Database {
             Class d = Class.forName("org.sqlite.JDBC");
             Object o = d.newInstance();
             if (!(o instanceof Driver)) {
-                // TODO Handle errors
+                System.err.print("This is not an SQLite driver class!");
             } else {
                 Driver driver = (Driver) o;
                 DriverManager.registerDriver(driver);
             }
         } catch (Exception e) {
-            // TODO Handle errors
+            System.err.print("There was an exception!");
+            e.printStackTrace();
         }
         file.getParentFile().mkdirs();
         this.file = file;
@@ -121,7 +122,8 @@ public class Database {
             try {
                 statement.close();
             } catch (SQLException e) {
-                // TODO Handle errors
+                System.err.print("There was an exception!");
+                e.printStackTrace();
             }
         }
     }
@@ -136,7 +138,8 @@ public class Database {
             try {
                 result.close();
             } catch (SQLException e) {
-                // TODO Handle errors
+                System.err.print("There was an exception!");
+                e.printStackTrace();
             }
         }
     }

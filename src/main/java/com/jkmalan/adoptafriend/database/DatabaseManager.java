@@ -300,7 +300,7 @@ public class DatabaseManager {
                 String phone = rs.getString("phone");
                 String desc = rs.getString("desc");
 
-                user.setFistName(firstName);
+                user.setFirstName(firstName);
                 user.setLastName(lastName);
                 user.setEmail(email);
                 user.setStreet(street);
@@ -352,7 +352,7 @@ public class DatabaseManager {
                 String phone = rs.getString("phone");
                 String desc = rs.getString("desc");
 
-                user.setFistName(firstName);
+                user.setFirstName(firstName);
                 user.setLastName(lastName);
                 user.setEmail(email);
                 user.setStreet(street);

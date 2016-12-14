@@ -1,4 +1,8 @@
 Incomplete:
+- Overall
+  - Double check all exception handling
+  - Reformat and properly indent
+  - Clear out test classes and viewers
 - Interface
   - MainPage
     - Hold onto user object
@@ -9,7 +13,7 @@ Incomplete:
     - Edit listings
     - Functional layout
 - Listing
-  - ListingCache maintenance
+- User
 
 Complete:
 - AppEngine/Main
@@ -26,6 +30,7 @@ Complete:
   - UserCache maintenance
 - Listing
   - Retrieve and insert new listings
+  - ListingCache maintenance
 - Interface
   - LoginFrame
     - Validate logins
