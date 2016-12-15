@@ -9,8 +9,8 @@ import javax.swing.*;
 
 public class LoginPage extends JFrame {
 
-    private static final int FRAME_WIDTH = 320;
-    private static final int FRAME_HEIGHT = 480;
+    private static final int FRAME_WIDTH = 480;
+    private static final int FRAME_HEIGHT = 720;
 
     private JLabel usernameLabel;
     private JLabel passwordLabel;

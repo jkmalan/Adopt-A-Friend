@@ -1,17 +1,22 @@
 package com.jkmalan.adoptafriend.interfaces;
 
 import com.jkmalan.adoptafriend.AppEngine;
+import com.jkmalan.adoptafriend.listing.Listing;
 import com.jkmalan.adoptafriend.user.User;
 
-import java.awt.BorderLayout;
+import java.awt.*;
 
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 
 public class UserListingPage extends JFrame {
+
+    private static final int FRAME_WIDTH = 480;
+    private static final int FRAME_HEIGHT = 720;
 
     private JLabel Photo1;
     private JLabel Photo2;
@@ -25,55 +30,36 @@ public class UserListingPage extends JFrame {
 
     private ActionListener listener;
 
-    private static final int FRAME_WIDTH = 320;
-    private static final int FRAME_HEIGHT = 480;
+    private JScrollPane listingScroller;
+    private JPanel userListingPanel;
 
     private User user;
+    private List<Listing> listings;
 
     public UserListingPage(int uid) {
-        user = AppEngine.getDatabaseManager().selectUser(uid);
+        user = AppEngine.getUserManager().getUser(uid);
+        listings = AppEngine.getListingManager().getListings(uid);
 
-        ListingPanel = new JPanel();
-        ListingPanel.setLayout(new GridLayout(2, 3));
-        Photo1 = new JLabel(" ");
-        Photo2 = new JLabel(" ");
-
-
-        EditListingButton = new JButton("Edit Current Listing");
-        EditListingButton2 = new JButton("Edit Current Listing");
-
-        DeleteButton = new JButton("Delete");
-        DeleteButton2 = new JButton("Delete");
-        HomeButton = new JButton("Home");
-
-
-        createEditListingListener();
-        createDeleteListener();
-
-        createEditListingListener2();
-        createDeleteListener2();
-        createHomeListener();
-
-        ListingPanel.add(Photo1);
-        ListingPanel.add(EditListingButton);
-        ListingPanel.add(DeleteButton);
-
-        ListingPanel.add(Photo2);
-        ListingPanel.add(EditListingButton2);
-        ListingPanel.add(DeleteButton2);
-
-
-        UserPanel = new JPanel();
-        UserPanel.setLayout(new BorderLayout());
-        UserPanel.add(ListingPanel, BorderLayout.CENTER);
-        UserPanel.add(HomeButton, BorderLayout.SOUTH);
-        add(UserPanel);
-
+        buildUserListingPanel();
 
         setSize(FRAME_WIDTH, FRAME_HEIGHT);
+        setResizable(false);
 
     }
 
+    public JPanel buildListingPanel(Listing listing) {
+        JPanel listingPanel = new JPanel();
+        JLabel title = new JLabel(listing.getTitle());
+        JLabel photo = new JLabel();
+        ImageIcon icon = new ImageIcon(listing.getPhoto().getPath());
+        photo.setIcon(new ImageIcon(icon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH)));
+        JTextArea desc = new JTextArea(listing.getDesc());
+        desc.setEditable(false);
+        listingPanel.add(title);
+        listingPanel.add(photo);
+        listingPanel.add(desc);
+        return listingPanel;
+    }
 
     private void createEditListingListener() {
 
@@ -152,4 +138,16 @@ public class UserListingPage extends JFrame {
         DeleteButton2.addActionListener(listener);
 
     }
+
+    private void buildUserListingPanel() {
+        userListingPanel = new JPanel();
+
+        for (Listing l : listings) {
+            userListingPanel.add(buildListingPanel(l));
+        }
+
+        // TODO Scrollbar...
+        add(userListingPanel);
+    }
+
 }

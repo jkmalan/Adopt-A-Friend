@@ -9,6 +9,9 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class SearchPage extends JFrame {
+
+    private static final int FRAME_WIDTH = 480;
+    private static final int FRAME_HEIGHT = 720;
     
     private JLabel ResultLabel;
   
@@ -26,8 +29,6 @@ public class SearchPage extends JFrame {
     private JPanel ResultPanel;
     private ActionListener listener;
 
-    private static final int FRAME_WIDTH = 320;
-    private static final int FRAME_HEIGHT = 480;
     private static final int FIELD_WIDTH = 25;
 
     private User user;
@@ -67,7 +68,7 @@ public class SearchPage extends JFrame {
         class AddSearchListener implements ActionListener {
             public void actionPerformed(ActionEvent event) {
                 ResultLabel.setText("Results: ");
-                JFrame frame = new SelectedResultFrame();
+                JFrame frame = new SearchListingPage();
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 frame.setTitle("Selected Pet Lisitng");
                 frame.setVisible(true);

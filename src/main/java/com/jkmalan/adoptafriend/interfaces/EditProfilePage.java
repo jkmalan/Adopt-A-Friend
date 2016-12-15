@@ -15,8 +15,8 @@ import javax.swing.*;
 
 public class EditProfilePage extends JFrame {
 
-    private static final int FRAME_WIDTH = 320;
-    private static final int FRAME_HEIGHT = 480;
+    private static final int FRAME_WIDTH = 480;
+    private static final int FRAME_HEIGHT = 720;
     private static final int FIELD_WIDTH = 15;
 
     private JLabel usernameLabel;
@@ -56,7 +56,7 @@ public class EditProfilePage extends JFrame {
     private File filePhoto;
 
     public EditProfilePage(int uid) {
-        user = AppEngine.getDatabaseManager().selectUser(uid);
+        user = AppEngine.getUserManager().getUser(uid);
         filePhoto = user.getPhoto();
 
         buildProfileFields();

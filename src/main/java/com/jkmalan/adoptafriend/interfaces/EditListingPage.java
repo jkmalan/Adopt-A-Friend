@@ -9,8 +9,9 @@ import javax.swing.*;
 
 public class EditListingPage extends JFrame {
 
-    private static final int FRAME_WIDTH = 320;
-    private static final int FRAME_HEIGHT = 480;
+    private static final int FRAME_WIDTH = 480;
+    private static final int FRAME_HEIGHT = 720;
+
     private static final int AREA_ROWS = 10;
     private static final int AREA_COLUMNS = 25;
     private static final int FIELD_WIDTH = 20;

@@ -5,6 +5,7 @@ import com.jkmalan.adoptafriend.AppEngine;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -14,8 +15,8 @@ import javax.swing.*;
 
 public class CreateProfilePage extends JFrame {
 
-    private static final int FRAME_WIDTH = 320;
-    private static final int FRAME_HEIGHT = 480;
+    private static final int FRAME_WIDTH = 480;
+    private static final int FRAME_HEIGHT = 720;
 
     private JLabel usernameLabel;
     private JLabel passLabel;
@@ -154,7 +155,10 @@ public class CreateProfilePage extends JFrame {
         ActionListener listener = new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Return to the login screen
+                JFrame frame = new LoginPage();
+                frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                frame.setVisible(true);
+                dispose();
             }
         };
         cancelButton.addActionListener(listener);

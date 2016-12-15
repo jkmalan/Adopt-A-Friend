@@ -9,7 +9,11 @@ import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
-public class SelectedResultFrame extends JFrame {
+public class SearchListingPage extends JFrame {
+
+    private static final int FRAME_WIDTH = 480;
+    private static final int FRAME_HEIGHT = 720;
+
     private JLabel photoLabel;
     private JLabel contactLabel;
     private JLabel ProfileLabel;
@@ -19,12 +23,7 @@ public class SelectedResultFrame extends JFrame {
     private JButton homeButton;
     private JPanel p;
 
-
-    private static final int FRAME_WIDTH = 320;
-    private static final int FRAME_HEIGHT = 480;
-
-
-    public SelectedResultFrame() {
+    public SearchListingPage() {
         panel = new JPanel();
         panel.setLayout(new BorderLayout());
         Photo = new JLabel(" ");

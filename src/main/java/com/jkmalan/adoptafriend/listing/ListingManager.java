@@ -19,6 +19,14 @@ public class ListingManager {
         listingCache.clear();
     }
 
+    public List<Listing> getListings(int owner) {
+        List<Listing> listings = AppEngine.getDatabaseManager().selectListings(owner);
+        for (Listing l : listings) {
+            listingCache.put(l.getListingID(), l);
+        }
+        return listings;
+    }
+
     public List<Listing> getListings(String title, String zip, String type, String sex, int age) {
         List<Listing> listings = AppEngine.getDatabaseManager().selectListings(title, zip, type, sex, age);
         for (Listing l : listings) {

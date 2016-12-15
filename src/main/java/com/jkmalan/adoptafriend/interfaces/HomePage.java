@@ -6,8 +6,8 @@ import javax.swing.*;
 
 public class HomePage extends JFrame {
 
-    private static final int FRAME_WIDTH = 320;
-    private static final int FRAME_HEIGHT = 480;
+    private static final int FRAME_WIDTH = 480;
+    private static final int FRAME_HEIGHT = 720;
 
     private final int uid;
 
@@ -54,7 +54,7 @@ public class HomePage extends JFrame {
         JMenuItem profileLogoutItem = new JMenuItem("Logout");
         ActionListener listener = new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent event) {
+            public void actionPerformed(ActionEvent e) {
                 JFrame frame = new LoginPage();
                 frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 frame.setVisible(true);

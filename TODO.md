@@ -8,7 +8,7 @@ Interface:
 - ListingPage
 - SearchPage
 - SearchListingPage (Search listings)
-- UserListingPage (User's listings)
+- ~~UserListingPage (User's listings)~~ Needs layout
 
 Photo Saving:
 - Successfully saving images to the database

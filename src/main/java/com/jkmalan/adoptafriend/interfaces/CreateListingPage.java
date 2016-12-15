@@ -14,8 +14,8 @@ import javax.swing.*;
 
 public class CreateListingPage extends JFrame {
 
-    private static final int FRAME_WIDTH = 320;
-    private static final int FRAME_HEIGHT = 480;
+    private static final int FRAME_WIDTH = 480;
+    private static final int FRAME_HEIGHT = 720;
 
     private JLabel titleLabel;
     private JLabel zipLabel;
@@ -43,7 +43,7 @@ public class CreateListingPage extends JFrame {
     private File filePhoto = null;
 
     public CreateListingPage(int uid) {
-        user = AppEngine.getDatabaseManager().selectUser(uid);
+        user = AppEngine.getUserManager().getUser(uid);
 
         buildListingFields();
 
@@ -65,7 +65,7 @@ public class CreateListingPage extends JFrame {
         typeField = new JTextField(10);
         sexLabel = new JLabel("Sex: ");
         sexField = new JTextField(10);
-        ageLabel = new JLabel("Type: ");
+        ageLabel = new JLabel("Age: ");
         ageField = new JTextField(10);
         descLabel = new JLabel("Description: ");
         descArea = new JTextArea(5, 20);
@@ -121,7 +121,7 @@ public class CreateListingPage extends JFrame {
         ActionListener listener = new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Return to the login screen
+                dispose();
             }
         };
         cancelButton.addActionListener(listener);

@@ -496,6 +496,54 @@ public class DatabaseManager {
         return null;
     }
 
+    public List<Listing> selectListings(int owner) {
+        List<Listing> listings = new ArrayList<>();
+        String query = "SELECT * FROM listing "
+                + "WHERE owner = ?;";
+        PreparedStatement ps = null;
+        try {
+            ps = database.getPreparedStatement(query);
+            ps.setInt(1, owner);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int lid = rs.getInt("lid");
+                int uid = rs.getInt("owner");
+                Listing listing = new Listing(lid, uid);
+
+                listing.setTitle(rs.getString("title"));
+                listing.setZip(rs.getString("zip"));
+                listing.setType(rs.getString("type"));
+                listing.setSex(rs.getString("sex"));
+                listing.setAge(rs.getInt("age"));
+                listing.setDesc(rs.getString("desc"));
+
+                InputStream in = rs.getBinaryStream("photo");
+                ByteArrayOutputStream bout = new ByteArrayOutputStream();
+                int b = in.read();
+                while (b >= 0) {
+                    bout.write((char) b);
+                    b = in.read();
+                }
+                File file = new File(lid + "__" + uid + ".png");
+                FileOutputStream fout = new FileOutputStream(file);
+                fout.write(bout.toByteArray());
+                fout.close();
+                listing.setPhoto(file);
+
+                listings.add(listing);
+            }
+        } catch (SQLException e) {
+            System.err.println("There was a SQL exception!");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.err.println("There was a file exception!");
+            e.printStackTrace();
+        } finally {
+            database.closeStatement(ps);
+        }
+        return listings;
+    }
+
     /**
      * Selects all Listings that match the specified variables
      *
@@ -523,7 +571,7 @@ public class DatabaseManager {
             ps.setString(4, sex);
             ps.setInt(5, age);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
                 int id = rs.getInt("lid");
                 int owner = rs.getInt("owner");
                 Listing listing = new Listing(id, owner);
@@ -560,7 +608,6 @@ public class DatabaseManager {
             database.closeStatement(ps);
         }
         return listings;
-
     }
 
 }
