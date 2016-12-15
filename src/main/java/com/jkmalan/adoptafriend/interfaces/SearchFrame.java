@@ -1,15 +1,25 @@
 package com.jkmalan.adoptafriend.interfaces;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
 public class SearchFrame extends JFrame {
-    private JLabel KeywordLabel;
+    
     private JLabel ResultLabel;
-    private JTextField KeywordField;
+  
+    private JTextField ZipField;
+    private JTextField TypeField;
+    private JTextField SexField;
+    private JTextField AgeField;
+    private JLabel ZipLabel;
+    private JLabel TypeLabel;
+    private JLabel SexLabel;
+    private JLabel AgeLabel;
     private JButton SearchButton;
     private JButton CancelButton;
     private JPanel SearchPanel;
@@ -31,8 +41,16 @@ public class SearchFrame extends JFrame {
     private void createSearchPanel() {
 
         SearchPanel = new JPanel();
-        SearchPanel.add(KeywordLabel);
-        SearchPanel.add(KeywordField);
+     
+        SearchPanel.add(ZipLabel);
+        SearchPanel.add(ZipField);
+        SearchPanel.add(TypeLabel);
+        SearchPanel.add(TypeField);
+        SearchPanel.add(SexLabel);
+        SearchPanel.add(SexField);
+        SearchPanel.add(AgeLabel);
+        SearchPanel.add(AgeField);
+        
         SearchPanel.add(SearchButton);
         SearchPanel.add(ResultLabel);
         add(SearchPanel);
@@ -57,8 +75,16 @@ public class SearchFrame extends JFrame {
     }
 
     private void createTextArea() {
-        KeywordLabel = new JLabel("Enter Keyword ");
-        KeywordField = new JTextField(FIELD_WIDTH);
+        ZipLabel = new JLabel("Enter Zip Code: ");
+        ZipField = new JTextField(FIELD_WIDTH);
+        TypeLabel = new JLabel("Enter Type: ");
+        TypeField = new JTextField(FIELD_WIDTH);
+        SexLabel = new JLabel("Enter Sex of Animal: ");
+        SexField = new JTextField(FIELD_WIDTH);
+        AgeLabel = new JLabel("Enter Age: ");
+        AgeField = new JTextField(FIELD_WIDTH);
+        
+        
     }
 
 
