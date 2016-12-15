@@ -10,9 +10,8 @@ public class EditProfileViewer {
 
     public static void main(String[] args) {
         AppEngine.enable();
-        User user = AppEngine.getDatabaseManager().selectUser(1);
 
-        JFrame frame = new EditProfilePage(user);
+        JFrame frame = new EditProfilePage(1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Edit your account");
         frame.setVisible(true);

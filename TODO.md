@@ -1,14 +1,20 @@
 Interface:
-- ~~LoginPage~~ Needs password management, Needs connections
-- ~~CreateProfilePage~~ Needs layout, Needs connections
-- ~~HomePage~~ Needs connections
-- ~~EditProfilePage~~ Needs layout, Needs password management, Needs connections
+- ~~LoginPage~~
+- ~~CreateProfilePage~~ Needs layout,
+- ~~HomePage~~
+- ~~EditProfilePage~~ Needs layout,
 - ~~CreateListingPage~~ Needs layout, Needs connections
 - EditListingPage
 - ListingPage
 - SearchPage
 - SearchListingPage (Search listings)
 - UserListingPage (User's listings)
+
+Photo Saving:
+- Successfully saving images to the database
+
+Password Storage:
+- Successfully and securely storing passwords in the database
 
 
 

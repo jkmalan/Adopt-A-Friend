@@ -11,6 +11,8 @@ public class User {
     private final Integer uid;
 
     private String username;
+    private byte[] salt;
+    private String hash;
     private String firstName;
     private String lastName;
     private String email;
@@ -49,6 +51,34 @@ public class User {
      */
     public String getUserName() {
         return username;
+    }
+
+    /*
+     * Sets a password salt for this user
+     */
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
+    }
+
+    /*
+     * Gets the password salt for this user
+     */
+    protected byte[] getSalt() {
+        return salt;
+    }
+
+    /*
+     * Sets the password hash for this user
+     */
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    /*
+     * Gets the password hash for this user
+     */
+    protected String getHash() {
+        return hash;
     }
 
     /**

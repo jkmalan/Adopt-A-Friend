@@ -11,9 +11,8 @@ public class CreateListingViewer {
 
     public static void main(String[] args) {
         AppEngine.enable();
-        User user = AppEngine.getDatabaseManager().selectUser(1);
 
-        JFrame frame = new CreateListingPage(user);
+        JFrame frame = new CreateListingPage(1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Create a Listing");
         frame.setVisible(true);

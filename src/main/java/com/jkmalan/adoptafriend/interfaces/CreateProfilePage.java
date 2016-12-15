@@ -5,8 +5,11 @@ import com.jkmalan.adoptafriend.AppEngine;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class CreateProfilePage extends JFrame {
@@ -48,6 +51,8 @@ public class CreateProfilePage extends JFrame {
 
     private JPanel profilePanel;
 
+    private File filePhoto = null;
+
     public CreateProfilePage() {
         buildProfileFields();
 
@@ -85,6 +90,7 @@ public class CreateProfilePage extends JFrame {
         zipField = new JTextField(10);
         descLabel = new JLabel("Description: ");
         descArea = new JTextArea(5, 20);
+        descArea.setEditable(true);
         photoLabel = new JLabel("Photo: ");
         photoBox = new JLabel();
     }
@@ -104,6 +110,7 @@ public class CreateProfilePage extends JFrame {
                     photoBox.setIcon(new ImageIcon(image));
                     profilePanel.revalidate();
                     profilePanel.repaint();
+                    filePhoto = file;
                 }
             }
         };
@@ -116,7 +123,7 @@ public class CreateProfilePage extends JFrame {
         ActionListener listener = new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 String username = usernameField.getText();
-                String password = new String(passField.getPassword());
+                char[] password = passField.getPassword();
                 String firstName = firstnameField.getText();
                 String lastName = lastnameField.getText();
                 String email = emailField.getText();
@@ -126,11 +133,17 @@ public class CreateProfilePage extends JFrame {
                 String state = stateField.getText();
                 String zip = zipField.getText();
                 String desc = descArea.getText();
-                String photo = photoBox.getText();
-                AppEngine.getUserManager().createUser(username, password, firstName, lastName, email, phone, street, city, state, zip, desc, photo);
-                int result = AppEngine.getUserManager().validateUser(username, password);
 
-                // TODO Close the create profile screen, open the user's home screen
+                AppEngine.getUserManager().createUser(username, password, firstName, lastName, email, phone, street, city, state, zip, desc, filePhoto);
+                int result = AppEngine.getUserManager().validateUser(username, password);
+                if (result != -1) {
+                    JFrame frame = new HomePage(result);
+                    frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                    frame.setVisible(true);
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(profilePanel, "Fatal error occurred! Please contact the developers!");
+                }
             }
         };
         createButton.addActionListener(listener);

@@ -1,17 +1,19 @@
 package com.jkmalan.adoptafriend.interfaces.viewers;
 
 import com.jkmalan.adoptafriend.AppEngine;
-import com.jkmalan.adoptafriend.interfaces.UserListingPage;
+import com.jkmalan.adoptafriend.interfaces.SearchPage;
 
 import javax.swing.JFrame;
 
-public class UserListingViewer {
+public class SearchFrameViewer {
+
     public static void main(String[] args) {
         AppEngine.enable();
 
-        JFrame frame = new UserListingPage(1);
+        JFrame frame = new SearchPage(1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("Current Listings");
+        frame.setTitle("Search");
         frame.setVisible(true);
     }
+
 }

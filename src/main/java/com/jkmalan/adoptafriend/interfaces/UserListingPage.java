@@ -1,5 +1,8 @@
 package com.jkmalan.adoptafriend.interfaces;
 
+import com.jkmalan.adoptafriend.AppEngine;
+import com.jkmalan.adoptafriend.user.User;
+
 import java.awt.BorderLayout;
 
 import java.awt.GridLayout;
@@ -25,7 +28,11 @@ public class UserListingPage extends JFrame {
     private static final int FRAME_WIDTH = 320;
     private static final int FRAME_HEIGHT = 480;
 
-    public UserListingPage() {
+    private User user;
+
+    public UserListingPage(int uid) {
+        user = AppEngine.getDatabaseManager().selectUser(uid);
+
         ListingPanel = new JPanel();
         ListingPanel.setLayout(new GridLayout(2, 3));
         Photo1 = new JLabel(" ");
@@ -102,7 +109,7 @@ public class UserListingPage extends JFrame {
 
         class AddHomeListener implements ActionListener {
             public void actionPerformed(ActionEvent event) {
-                JFrame frame = new UserListingPage();
+                JFrame frame = new UserListingPage(user.getUserID());
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 frame.setTitle("Current Listings: ");
                 frame.setVisible(true);
@@ -118,7 +125,7 @@ public class UserListingPage extends JFrame {
 
         class AddDeleteListener implements ActionListener {
             public void actionPerformed(ActionEvent event) {
-                JFrame frame = new UserListingPage();
+                JFrame frame = new UserListingPage(user.getUserID());
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 frame.setTitle("Current Listings: ");
                 frame.setVisible(true);
@@ -134,7 +141,7 @@ public class UserListingPage extends JFrame {
 
         class AddDeleteListener implements ActionListener {
             public void actionPerformed(ActionEvent event) {
-                JFrame frame = new UserListingPage();
+                JFrame frame = new UserListingPage(user.getUserID());
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 frame.setTitle("Current Listings: ");
                 frame.setVisible(true);

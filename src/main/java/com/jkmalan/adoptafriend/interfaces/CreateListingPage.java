@@ -6,7 +6,10 @@ import com.jkmalan.adoptafriend.user.User;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class CreateListingPage extends JFrame {
@@ -37,9 +40,10 @@ public class CreateListingPage extends JFrame {
     private JPanel listingPanel;
 
     private User user;
+    private File filePhoto = null;
 
-    public CreateListingPage(User user) {
-        this.user = user;
+    public CreateListingPage(int uid) {
+        user = AppEngine.getDatabaseManager().selectUser(uid);
 
         buildListingFields();
 
@@ -65,6 +69,7 @@ public class CreateListingPage extends JFrame {
         ageField = new JTextField(10);
         descLabel = new JLabel("Description: ");
         descArea = new JTextArea(5, 20);
+        descArea.setEditable(true);
         photoLabel = new JLabel("Photo: ");
         photoBox = new JLabel();
     }
@@ -84,6 +89,7 @@ public class CreateListingPage extends JFrame {
                     photoBox.setIcon(new ImageIcon(image));
                     listingPanel.revalidate();
                     listingPanel.repaint();
+                    filePhoto = file;
                 }
             }
         };
@@ -101,8 +107,8 @@ public class CreateListingPage extends JFrame {
                 String sex = sexField.getText();
                 int age = Integer.valueOf(ageField.getText());
                 String desc = descArea.getText();
-                String photo = photoBox.getText();
-                AppEngine.getListingManager().createListing(user.getUserID(), title, zip, type, sex, age, desc, photo);
+
+                AppEngine.getListingManager().createListing(user.getUserID(), title, zip, type, sex, age, desc, filePhoto);
 
                 // TODO Close the create listing screen, open the user's listings screen
             }

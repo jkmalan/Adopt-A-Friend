@@ -11,13 +11,13 @@ public class HomePage extends JFrame {
 
     private final int uid;
 
-    private JPanel mainPanel;
+    private JPanel homePanel;
 
     public HomePage(int uid) {
         this.uid = uid;
 
         setJMenuBar(buildMenuBar());
-        buildMainPanel();
+        buildHomePanel();
 
         setSize(FRAME_WIDTH, FRAME_HEIGHT);
     }
@@ -41,7 +41,9 @@ public class HomePage extends JFrame {
         ActionListener listener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                // TODO Open the user's profile screen
+                JFrame frame = new EditProfilePage(uid);
+                frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                frame.setVisible(true);
             }
         };
         profileEditItem.addActionListener(listener);
@@ -53,7 +55,10 @@ public class HomePage extends JFrame {
         ActionListener listener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                // TODO Return to the login screen
+                JFrame frame = new LoginPage();
+                frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                frame.setVisible(true);
+                dispose();
             }
         };
         profileLogoutItem.addActionListener(listener);
@@ -73,7 +78,9 @@ public class HomePage extends JFrame {
         ActionListener listener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Open the user's listings
+                JFrame frame = new UserListingPage(uid);
+                frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                frame.setVisible(true);
             }
         };
         listingViewItem.addActionListener(listener);
@@ -85,7 +92,9 @@ public class HomePage extends JFrame {
         ActionListener listener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                // TODO Open the listing create screen
+                JFrame frame = new CreateListingPage(uid);
+                frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                frame.setVisible(true);
             }
         };
         listingCreateItem.addActionListener(listener);
@@ -97,14 +106,16 @@ public class HomePage extends JFrame {
         ActionListener listener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                // TODO Open the listing search screen
+                JFrame frame = new SearchPage(uid);
+                frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                frame.setVisible(true);
             }
         };
         listingSearchItem.addActionListener(listener);
         return listingSearchItem;
     }
 
-    private void buildMainPanel() {
+    private void buildHomePanel() {
 
     }
 

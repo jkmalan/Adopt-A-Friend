@@ -10,7 +10,7 @@ public class Main {
         AppEngine.enable();
 
         JFrame frame = new LoginPage();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
     }
 

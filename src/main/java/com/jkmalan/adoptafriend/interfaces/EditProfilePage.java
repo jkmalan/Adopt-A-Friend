@@ -6,14 +6,18 @@ import com.jkmalan.adoptafriend.user.User;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class EditProfilePage extends JFrame {
 
     private static final int FRAME_WIDTH = 320;
     private static final int FRAME_HEIGHT = 480;
+    private static final int FIELD_WIDTH = 15;
 
     private JLabel usernameLabel;
     private JLabel firstnameLabel;
@@ -49,9 +53,11 @@ public class EditProfilePage extends JFrame {
     private JPanel profilePanel;
 
     private User user;
+    private File filePhoto;
 
-    public EditProfilePage(User user) {
-        this.user = user;
+    public EditProfilePage(int uid) {
+        user = AppEngine.getDatabaseManager().selectUser(uid);
+        filePhoto = user.getPhoto();
 
         buildProfileFields();
 
@@ -65,32 +71,35 @@ public class EditProfilePage extends JFrame {
 
     private void buildProfileFields() {
         usernameLabel = new JLabel("Username: ");
-        usernameField = new JTextField(user.getUserName(), 10);
+        usernameField = new JTextField(user.getUserName(), FIELD_WIDTH);
         usernameField.setEnabled(false);
         emailLabel = new JLabel("Email: ");
-        emailField = new JTextField(user.getEmail(), 10);
+        emailField = new JTextField(user.getEmail(), FIELD_WIDTH);
         passLabel = new JLabel("Password: ");
-        passField = new JPasswordField(10);
+        passField = new JPasswordField(FIELD_WIDTH);
         passConfirmLabel = new JLabel("Confirm Password: ");
-        passConfirmField = new JPasswordField(10);
+        passConfirmField = new JPasswordField(FIELD_WIDTH);
         firstnameLabel = new JLabel("First Name: ");
-        firstnameField = new JTextField(user.getFirstName(), 10);
+        firstnameField = new JTextField(user.getFirstName(), FIELD_WIDTH);
         lastnameLabel = new JLabel("Last Name: ");
-        lastnameField = new JTextField(user.getLastName(), 10);
+        lastnameField = new JTextField(user.getLastName(), FIELD_WIDTH);
         phoneLabel = new JLabel("Phone: ");
-        phoneField = new JTextField(user.getPhone(), 10);
+        phoneField = new JTextField(user.getPhone(), FIELD_WIDTH);
         streetLabel = new JLabel("Street: ");
-        streetField = new JTextField(user.getStreet(), 10);
+        streetField = new JTextField(user.getStreet(), FIELD_WIDTH);
         cityLabel = new JLabel("City: ");
-        cityField = new JTextField(user.getCity(), 10);
+        cityField = new JTextField(user.getCity(), FIELD_WIDTH);
         stateLabel = new JLabel("State: ");
-        stateField = new JTextField(user.getState(), 10);
+        stateField = new JTextField(user.getState(), FIELD_WIDTH);
         zipLabel = new JLabel("Zip: ");
-        zipField = new JTextField(user.getZip(), 10);
+        zipField = new JTextField(user.getZip(), FIELD_WIDTH);
         descLabel = new JLabel("Description: ");
         descArea = new JTextArea(user.getDesc(), 5, 20);
+        descArea.setEditable(true);
         photoLabel = new JLabel("Photo: ");
         photoBox = new JLabel();
+        ImageIcon icon = new ImageIcon(user.getPhoto().getPath());
+        photoBox.setIcon(new ImageIcon(icon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH)));
     }
 
     private void buildPhotoButton() {
@@ -108,6 +117,7 @@ public class EditProfilePage extends JFrame {
                     photoBox.setIcon(new ImageIcon(image));
                     profilePanel.revalidate();
                     profilePanel.repaint();
+                    filePhoto = file;
                 }
             }
         };
@@ -119,7 +129,8 @@ public class EditProfilePage extends JFrame {
         updateButton = new JButton("Save");
         ActionListener listener = new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                String password = new String(passField.getPassword());
+                char[] password = passField.getPassword();
+                String username = usernameField.getText();
                 String firstName = firstnameField.getText();
                 String lastName = lastnameField.getText();
                 String email = emailField.getText();
@@ -129,8 +140,8 @@ public class EditProfilePage extends JFrame {
                 String state = stateField.getText();
                 String zip = zipField.getText();
                 String desc = descArea.getText();
-                String photo = photoBox.getText();
-                AppEngine.getUserManager().modifyUser(user.getUserID(), password, firstName, lastName, email, phone, street, city, state, zip, desc, photo);
+
+                AppEngine.getUserManager().modifyUser(user.getUserID(), username, password, firstName, lastName, email, phone, street, city, state, zip, desc, filePhoto);
             }
         };
         updateButton.addActionListener(listener);

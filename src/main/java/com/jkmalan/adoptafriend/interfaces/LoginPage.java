@@ -52,10 +52,13 @@ public class LoginPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String username = usernameField.getText();
-                String password = new String(passwordField.getPassword());
+                char[] password = passwordField.getPassword();
                 int result = AppEngine.getUserManager().validateUser(username, password);
                 if (result != -1) {
-                    // TODO Open the user's home screen
+                    JFrame frame = new HomePage(result);
+                    frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                    frame.setVisible(true);
+                    dispose();
                 } else {
                     JOptionPane.showMessageDialog(loginPanel, "Incorrect username or password!");
                 }
@@ -69,7 +72,10 @@ public class LoginPage extends JFrame {
         ActionListener listener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Open the create account screen
+                JFrame frame = new CreateProfilePage();
+                frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                frame.setVisible(true);
+                dispose();
             }
         };
         createButton.addActionListener(listener);

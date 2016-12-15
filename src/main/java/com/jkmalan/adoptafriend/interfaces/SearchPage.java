@@ -1,5 +1,8 @@
 package com.jkmalan.adoptafriend.interfaces;
 
+import com.jkmalan.adoptafriend.AppEngine;
+import com.jkmalan.adoptafriend.user.User;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -27,7 +30,11 @@ public class SearchPage extends JFrame {
     private static final int FRAME_HEIGHT = 480;
     private static final int FIELD_WIDTH = 25;
 
-    public SearchPage() {
+    private User user;
+
+    public SearchPage(int uid) {
+        user = AppEngine.getDatabaseManager().selectUser(uid);
+
         ResultLabel = new JLabel("Results: ");
         createTextArea();
         createSearchButton();
