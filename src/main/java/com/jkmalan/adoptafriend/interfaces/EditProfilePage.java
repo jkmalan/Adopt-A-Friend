@@ -1,6 +1,7 @@
 package com.jkmalan.adoptafriend.interfaces;
 
 import com.jkmalan.adoptafriend.AppEngine;
+import com.jkmalan.adoptafriend.user.User;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,7 +10,7 @@ import java.io.File;
 
 import javax.swing.*;
 
-public class ProfileFrame extends JFrame {
+public class EditProfilePage extends JFrame {
 
     private static final int FRAME_WIDTH = 320;
     private static final int FRAME_HEIGHT = 480;
@@ -43,57 +44,51 @@ public class ProfileFrame extends JFrame {
     private JPasswordField passConfirmField;
 
     private JButton photoButton;
-    private JButton createButton;
-    private JButton cancelButton;
+    private JButton updateButton;
 
     private JPanel profilePanel;
 
-    public ProfileFrame() {
-        buildAccountFields();
+    private User user;
+
+    public EditProfilePage(User user) {
+        this.user = user;
+
         buildProfileFields();
-        buildInfoFields();
 
         buildPhotoButton();
-        buildSaveButton();
-        buildCancelButton();
+        buildUpdateButton();
 
         buildProfilePanel();
 
         setSize(FRAME_WIDTH, FRAME_HEIGHT);
-
     }
 
-    private void buildAccountFields() {
+    private void buildProfileFields() {
         usernameLabel = new JLabel("Username: ");
-        usernameField = new JTextField(10);
+        usernameField = new JTextField(user.getUserName(), 10);
+        usernameField.setEnabled(false);
         emailLabel = new JLabel("Email: ");
-        emailField = new JTextField(10);
+        emailField = new JTextField(user.getEmail(), 10);
         passLabel = new JLabel("Password: ");
         passField = new JPasswordField(10);
         passConfirmLabel = new JLabel("Confirm Password: ");
         passConfirmField = new JPasswordField(10);
-    }
-
-    private void buildProfileFields() {
         firstnameLabel = new JLabel("First Name: ");
-        firstnameField = new JTextField(10);
+        firstnameField = new JTextField(user.getFirstName(), 10);
         lastnameLabel = new JLabel("Last Name: ");
-        lastnameField = new JTextField(10);
+        lastnameField = new JTextField(user.getLastName(), 10);
         phoneLabel = new JLabel("Phone: ");
-        phoneField = new JTextField(10);
+        phoneField = new JTextField(user.getPhone(), 10);
         streetLabel = new JLabel("Street: ");
-        streetField = new JTextField(10);
+        streetField = new JTextField(user.getStreet(), 10);
         cityLabel = new JLabel("City: ");
-        cityField = new JTextField(10);
+        cityField = new JTextField(user.getCity(), 10);
         stateLabel = new JLabel("State: ");
-        stateField = new JTextField(10);
+        stateField = new JTextField(user.getState(), 10);
         zipLabel = new JLabel("Zip: ");
-        zipField = new JTextField(10);
-    }
-
-    private void buildInfoFields() {
+        zipField = new JTextField(user.getZip(), 10);
         descLabel = new JLabel("Description: ");
-        descArea = new JTextArea(10, 20);
+        descArea = new JTextArea(user.getDesc(), 5, 20);
         photoLabel = new JLabel("Photo: ");
         photoBox = new JLabel();
     }
@@ -120,11 +115,10 @@ public class ProfileFrame extends JFrame {
     }
 
 
-    private void buildSaveButton() {
-        createButton = new JButton("Create");
+    private void buildUpdateButton() {
+        updateButton = new JButton("Save");
         ActionListener listener = new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText();
                 String password = new String(passField.getPassword());
                 String firstName = firstnameField.getText();
                 String lastName = lastnameField.getText();
@@ -136,50 +130,14 @@ public class ProfileFrame extends JFrame {
                 String zip = zipField.getText();
                 String desc = descArea.getText();
                 String photo = photoBox.getText();
-                AppEngine.getUserManager().createUser(username, password, firstName, lastName, email, phone, street, city, state, zip, desc, photo);
-                int result = AppEngine.getUserManager().validateUser(username, password);
-
-                JFrame frame = new MainPageFrame(result);
-                frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                frame.setTitle("Main Page");
-                frame.setVisible(true);
-                dispose();
+                AppEngine.getUserManager().modifyUser(user.getUserID(), password, firstName, lastName, email, phone, street, city, state, zip, desc, photo);
             }
         };
-        createButton.addActionListener(listener);
+        updateButton.addActionListener(listener);
     }
-
-    private void buildCancelButton() {
-        cancelButton = new JButton("Cancel");
-        ActionListener listener = new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        };
-        cancelButton.addActionListener(listener);
-    }
-
 
     private void buildProfilePanel() {
         profilePanel = new JPanel();
-        GridBagConstraints label = new GridBagConstraints();
-        label.fill = GridBagConstraints.HORIZONTAL;
-        label.insets = new Insets(20, 30, 0, 30);
-        label.weightx = 0.5;
-        label.gridwidth = 1;
-        GridBagConstraints field = new GridBagConstraints();
-        field.fill = GridBagConstraints.HORIZONTAL;
-        field.insets = new Insets(0, 30, 0, 30);
-        field.weightx = 0.5;
-        field.gridwidth = 3;
-        field.ipadx = 10;
-        field.ipady = 20;
-        GridBagConstraints button = new GridBagConstraints();
-        button.fill = GridBagConstraints.HORIZONTAL;
-        button.insets = new Insets(20, 30, 0, 30);
-        button.weightx = 0.5;
-        button.gridwidth = 1;
 
         profilePanel.add(usernameLabel);
         profilePanel.add(usernameField);
@@ -211,8 +169,7 @@ public class ProfileFrame extends JFrame {
         profilePanel.add(descLabel);
         profilePanel.add(descArea);
 
-        profilePanel.add(createButton);
-        profilePanel.add(cancelButton);
+        profilePanel.add(updateButton);
 
         add(profilePanel);
     }

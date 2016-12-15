@@ -20,8 +20,8 @@ public class SelectedResultFrame extends JFrame {
     private JPanel p;
 
 
-    private static final int FRAME_WIDTH = 400;
-    private static final int FRAME_HEIGHT = 400;
+    private static final int FRAME_WIDTH = 320;
+    private static final int FRAME_HEIGHT = 480;
 
 
     public SelectedResultFrame() {
@@ -64,7 +64,7 @@ public class SelectedResultFrame extends JFrame {
         class AddHomeListener implements ActionListener {
             public void actionPerformed(ActionEvent event) {
 
-                JFrame frame = new MainPageFrame(0);
+                JFrame frame = new HomePage(0);
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 frame.setTitle("Main Page");
                 frame.setVisible(true);

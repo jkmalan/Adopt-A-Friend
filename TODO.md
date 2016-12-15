@@ -1,3 +1,18 @@
+Interface:
+- ~~LoginPage~~ Needs password management, Needs connections
+- ~~CreateProfilePage~~ Needs layout, Needs connections
+- ~~HomePage~~ Needs connections
+- ~~EditProfilePage~~ Needs layout, Needs password management, Needs connections
+- ~~CreateListingPage~~ Needs layout, Needs connections
+- EditListingPage
+- ListingPage
+- SearchPage
+- SearchListingPage (Search listings)
+- UserListingPage (User's listings)
+
+
+
+
 Incomplete:
 - Overall
   - Double check all exception handling

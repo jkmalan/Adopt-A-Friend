@@ -1,14 +1,13 @@
 package com.jkmalan.adoptafriend.interfaces;
 
 import com.jkmalan.adoptafriend.AppEngine;
-import com.jkmalan.adoptafriend.user.User;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class LoginFrame extends JFrame {
+public class LoginPage extends JFrame {
 
     private static final int FRAME_WIDTH = 320;
     private static final int FRAME_HEIGHT = 480;
@@ -24,7 +23,7 @@ public class LoginFrame extends JFrame {
 
     private JPanel loginPanel;
 
-    public LoginFrame() {
+    public LoginPage() {
         buildUsernameField();
         buildPasswordField();
 
@@ -56,11 +55,7 @@ public class LoginFrame extends JFrame {
                 String password = new String(passwordField.getPassword());
                 int result = AppEngine.getUserManager().validateUser(username, password);
                 if (result != -1) {
-                    JFrame frame = new MainPageFrame(result);
-                    frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                    frame.setTitle("Main Page");
-                    frame.setVisible(true);
-                    dispose();
+                    // TODO Open the user's home screen
                 } else {
                     JOptionPane.showMessageDialog(loginPanel, "Incorrect username or password!");
                 }
@@ -74,11 +69,7 @@ public class LoginFrame extends JFrame {
         ActionListener listener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame frame = new ProfileFrame();
-                frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                frame.setTitle("Create your account");
-                frame.setVisible(true);
-                dispose();
+                // TODO Open the create account screen
             }
         };
         createButton.addActionListener(listener);

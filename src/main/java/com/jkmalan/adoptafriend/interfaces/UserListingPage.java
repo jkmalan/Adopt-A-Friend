@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-public class UserListingFrame extends JFrame {
+public class UserListingPage extends JFrame {
 
     private JLabel Photo1;
     private JLabel Photo2;
@@ -22,10 +22,10 @@ public class UserListingFrame extends JFrame {
 
     private ActionListener listener;
 
-    private static final int FRAME_WIDTH = 400;
-    private static final int FRAME_HEIGHT = 400;
+    private static final int FRAME_WIDTH = 320;
+    private static final int FRAME_HEIGHT = 480;
 
-    public UserListingFrame() {
+    public UserListingPage() {
         ListingPanel = new JPanel();
         ListingPanel.setLayout(new GridLayout(2, 3));
         Photo1 = new JLabel(" ");
@@ -72,7 +72,7 @@ public class UserListingFrame extends JFrame {
 
         class AddEditListener implements ActionListener {
             public void actionPerformed(ActionEvent event) {
-                JFrame frame = new EditListingFrame();
+                JFrame frame = new EditListingPage();
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 frame.setTitle("Edit Listing");
                 frame.setVisible(true);
@@ -87,7 +87,7 @@ public class UserListingFrame extends JFrame {
 
         class AddEditListener implements ActionListener {
             public void actionPerformed(ActionEvent event) {
-                JFrame frame = new EditListingFrame();
+                JFrame frame = new EditListingPage();
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 frame.setTitle("Edit Listing");
                 frame.setVisible(true);
@@ -102,7 +102,7 @@ public class UserListingFrame extends JFrame {
 
         class AddHomeListener implements ActionListener {
             public void actionPerformed(ActionEvent event) {
-                JFrame frame = new UserListingFrame();
+                JFrame frame = new UserListingPage();
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 frame.setTitle("Current Listings: ");
                 frame.setVisible(true);
@@ -118,7 +118,7 @@ public class UserListingFrame extends JFrame {
 
         class AddDeleteListener implements ActionListener {
             public void actionPerformed(ActionEvent event) {
-                JFrame frame = new UserListingFrame();
+                JFrame frame = new UserListingPage();
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 frame.setTitle("Current Listings: ");
                 frame.setVisible(true);
@@ -134,7 +134,7 @@ public class UserListingFrame extends JFrame {
 
         class AddDeleteListener implements ActionListener {
             public void actionPerformed(ActionEvent event) {
-                JFrame frame = new UserListingFrame();
+                JFrame frame = new UserListingPage();
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 frame.setTitle("Current Listings: ");
                 frame.setVisible(true);

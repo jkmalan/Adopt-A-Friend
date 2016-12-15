@@ -1,14 +1,11 @@
 package com.jkmalan.adoptafriend.interfaces;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-public class SearchFrame extends JFrame {
+public class SearchPage extends JFrame {
     
     private JLabel ResultLabel;
   
@@ -26,11 +23,11 @@ public class SearchFrame extends JFrame {
     private JPanel ResultPanel;
     private ActionListener listener;
 
-    private static final int FRAME_WIDTH = 600;
-    private static final int FRAME_HEIGHT = 600;
+    private static final int FRAME_WIDTH = 320;
+    private static final int FRAME_HEIGHT = 480;
     private static final int FIELD_WIDTH = 25;
 
-    public SearchFrame() {
+    public SearchPage() {
         ResultLabel = new JLabel("Results: ");
         createTextArea();
         createSearchButton();

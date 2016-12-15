@@ -7,10 +7,10 @@ import java.io.File;
 
 import javax.swing.*;
 
-public class EditListingFrame extends JFrame {
+public class EditListingPage extends JFrame {
 
-    private static final int FRAME_WIDTH = 1000;
-    private static final int FRAME_HEIGHT = 600;
+    private static final int FRAME_WIDTH = 320;
+    private static final int FRAME_HEIGHT = 480;
     private static final int AREA_ROWS = 10;
     private static final int AREA_COLUMNS = 25;
     private static final int FIELD_WIDTH = 20;
@@ -36,7 +36,7 @@ public class EditListingFrame extends JFrame {
     private JButton OpenFileButton;
     private JPanel jpanel, panel;
 
-    public EditListingFrame() {
+    public EditListingPage() {
         AddPhotoLabel = new JLabel("Change Photo:* ");
         TitleLabel = new JLabel("Title:* ");
         TypeLabel = new JLabel("Type of Animal:* ");
@@ -92,7 +92,7 @@ public class EditListingFrame extends JFrame {
         UpdateButton = new JButton("Update");
         class AddUpdateListener implements ActionListener {
             public void actionPerformed(ActionEvent e) {
-                JFrame frame = new MainPageFrame(0);
+                JFrame frame = new HomePage(0);
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 frame.setTitle("Main Page");
                 frame.setVisible(true);
