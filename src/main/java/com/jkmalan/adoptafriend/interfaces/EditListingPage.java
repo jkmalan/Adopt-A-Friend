@@ -37,7 +37,7 @@ public class EditListingPage extends JFrame {
     private JButton OpenFileButton;
     private JPanel jpanel, panel;
 
-    public EditListingPage() {
+    public EditListingPage(int lid) {
         AddPhotoLabel = new JLabel("Change Photo:* ");
         TitleLabel = new JLabel("Title:* ");
         TypeLabel = new JLabel("Type of Animal:* ");

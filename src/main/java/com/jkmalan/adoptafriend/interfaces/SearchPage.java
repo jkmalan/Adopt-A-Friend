@@ -1,10 +1,12 @@
 package com.jkmalan.adoptafriend.interfaces;
 
 import com.jkmalan.adoptafriend.AppEngine;
+import com.jkmalan.adoptafriend.listing.Listing;
 import com.jkmalan.adoptafriend.user.User;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -12,85 +14,83 @@ public class SearchPage extends JFrame {
 
     private static final int FRAME_WIDTH = 480;
     private static final int FRAME_HEIGHT = 720;
-    
-    private JLabel ResultLabel;
-  
-    private JTextField ZipField;
-    private JTextField TypeField;
-    private JTextField SexField;
-    private JTextField AgeField;
-    private JLabel ZipLabel;
-    private JLabel TypeLabel;
-    private JLabel SexLabel;
-    private JLabel AgeLabel;
-    private JButton SearchButton;
-    private JButton CancelButton;
-    private JPanel SearchPanel;
-    private JPanel ResultPanel;
-    private ActionListener listener;
 
-    private static final int FIELD_WIDTH = 25;
+    private JLabel titleLabel;
+    private JLabel zipLabel;
+    private JLabel typeLabel;
+    private JLabel sexLabel;
+    private JLabel ageLabel;
+
+    private JTextField titleField;
+    private JFormattedTextField zipField;
+    private JTextField typeField;
+    private JFormattedTextField sexField;
+    private JFormattedTextField ageField;
+
+    private JButton searchButton;
+
+    private JPanel searchPanel;
 
     private User user;
 
     public SearchPage(int uid) {
         user = AppEngine.getDatabaseManager().selectUser(uid);
 
-        ResultLabel = new JLabel("Results: ");
-        createTextArea();
-        createSearchButton();
-        createSearchPanel();
+        buildSearchPanel();
+
         setSize(FRAME_WIDTH, FRAME_HEIGHT);
     }
 
-    private void createSearchPanel() {
-
-        SearchPanel = new JPanel();
-     
-        SearchPanel.add(ZipLabel);
-        SearchPanel.add(ZipField);
-        SearchPanel.add(TypeLabel);
-        SearchPanel.add(TypeField);
-        SearchPanel.add(SexLabel);
-        SearchPanel.add(SexField);
-        SearchPanel.add(AgeLabel);
-        SearchPanel.add(AgeField);
-        
-        SearchPanel.add(SearchButton);
-        SearchPanel.add(ResultLabel);
-        add(SearchPanel);
-
-
+    public void buildSearchFields() {
+        titleLabel = new JLabel("Title: ");
+        titleField = new JTextField();
+        zipLabel = new JLabel("Zip (5 digit zip code): ");
+        zipField = new JFormattedTextField();
+        typeLabel = new JLabel("Type: ");
+        typeField = new JTextField();
+        sexLabel = new JLabel("Sex (M/F):");
+        sexField = new JFormattedTextField();
+        ageLabel = new JLabel("Age (Integers only):");
+        ageField = new JFormattedTextField();
     }
 
-    private void createSearchButton() {
-        SearchButton = new JButton("Search");
-        class AddSearchListener implements ActionListener {
-            public void actionPerformed(ActionEvent event) {
-                ResultLabel.setText("Results: ");
-                JFrame frame = new SearchListingPage();
-                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                frame.setTitle("Selected Pet Lisitng");
+    private void buildSearchButton() {
+        searchButton = new JButton("Search");
+        ActionListener listener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String title = titleField.getText();
+                String zip = zipField.getText();
+                String type = typeField.getText();
+                String sex = sexField.getText();
+                int age = Integer.parseInt(ageField.getText());
+
+                List<Listing> listings = AppEngine.getListingManager().getListings(title, zip, type, sex, age);
+
+                JFrame frame = new SearchListingPage(listings);
+                frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 frame.setVisible(true);
+                dispose();
             }
-        }
-
-        ActionListener listener = new AddSearchListener();
-        SearchButton.addActionListener(listener);
+        };
+        searchButton.addActionListener(listener);
     }
 
-    private void createTextArea() {
-        ZipLabel = new JLabel("Enter Zip Code: ");
-        ZipField = new JTextField(FIELD_WIDTH);
-        TypeLabel = new JLabel("Enter Type: ");
-        TypeField = new JTextField(FIELD_WIDTH);
-        SexLabel = new JLabel("Enter Sex of Animal: ");
-        SexField = new JTextField(FIELD_WIDTH);
-        AgeLabel = new JLabel("Enter Age: ");
-        AgeField = new JTextField(FIELD_WIDTH);
-        
-        
-    }
+    private void buildSearchPanel() {
+        searchPanel = new JPanel();
 
+        searchPanel.add(titleLabel);
+        searchPanel.add(titleField);
+        searchPanel.add(zipLabel);
+        searchPanel.add(zipField);
+        searchPanel.add(typeLabel);
+        searchPanel.add(typeField);
+        searchPanel.add(sexLabel);
+        searchPanel.add(sexField);
+        searchPanel.add(ageLabel);
+        searchPanel.add(ageField);
+
+        add(searchPanel);
+    }
 
 }

@@ -1,9 +1,12 @@
 package com.jkmalan.adoptafriend.interfaces;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import com.jkmalan.adoptafriend.AppEngine;
+import com.jkmalan.adoptafriend.listing.Listing;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -14,65 +17,72 @@ public class SearchListingPage extends JFrame {
     private static final int FRAME_WIDTH = 480;
     private static final int FRAME_HEIGHT = 720;
 
-    private JLabel photoLabel;
-    private JLabel contactLabel;
-    private JLabel ProfileLabel;
-    private JPanel panel;
-    private JPanel resultPanel;
-    private JLabel Photo;
-    private JButton homeButton;
-    private JPanel p;
+    private JPanel searchListingPanel;
 
-    public SearchListingPage() {
-        panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        Photo = new JLabel(" ");
-        panel.add(Photo, BorderLayout.NORTH);
+    private List<Listing> listings;
 
-        photoLabel = new JLabel("Photo: ");
-        ProfileLabel = new JLabel("Pet Profile: ");
-        contactLabel = new JLabel("Contact Information : ");
+    public SearchListingPage(List<Listing> listings) {
+        this.listings = listings;
 
-        createHomeButton();
-        createSelectedResultPanel();
+        buildUserListingPanel();
 
         setSize(FRAME_WIDTH, FRAME_HEIGHT);
     }
 
-    private void createSelectedResultPanel() {
-        resultPanel = new JPanel(new GridLayout(5, 1));
-        resultPanel.setBorder(new TitledBorder(new EtchedBorder(), "Selected Pet Information"));
-        resultPanel.add(Photo);
-        resultPanel.add(photoLabel);
-        resultPanel.add(ProfileLabel);
-        resultPanel.add(contactLabel);
-        resultPanel.add(homeButton);
-        /*
-		p =new JPanel();
-		p.setLayout(new BorderLayout());
-		p.add(resultPanel, BorderLayout.CENTER);
-		
-		p.add(homeButton, BorderLayout.SOUTH);*/
-        add(resultPanel);
-
-
+    public JPanel buildListingPanel(Listing listing) {
+        JPanel listingPanel = new JPanel();
+        JLabel title = new JLabel(listing.getTitle());
+        JLabel photo = new JLabel();
+        ImageIcon icon = new ImageIcon(listing.getPhoto().getPath());
+        photo.setIcon(new ImageIcon(icon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH)));
+        JTextArea desc = new JTextArea(listing.getDesc());
+        desc.setEditable(false);
+        listingPanel.add(title);
+        listingPanel.add(photo);
+        listingPanel.add(desc);
+        listingPanel.add(buildEditButton(listing));
+        listingPanel.add(buildDeleteButton(listing));
+        return listingPanel;
     }
 
-    private void createHomeButton() {
-        homeButton = new JButton("Home");
-        class AddHomeListener implements ActionListener {
-            public void actionPerformed(ActionEvent event) {
-
-                JFrame frame = new HomePage(0);
-                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                frame.setTitle("Main Page");
+    private JButton buildEditButton(Listing listing) {
+        JButton editButton = new JButton("Edit");
+        ActionListener listener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new EditListingPage(listing.getListingID());
+                frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 frame.setVisible(true);
-
             }
+        };
+        editButton.addActionListener(listener);
+        return editButton;
+    }
+
+    public JButton buildDeleteButton(Listing listing) {
+        JButton deleteButton = new JButton("Delete");
+        ActionListener listener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AppEngine.getListingManager().deleteListing(listing.getListingID());
+                JOptionPane.showMessageDialog(searchListingPanel, "Listing successfully deleted!");
+                searchListingPanel.revalidate();
+                searchListingPanel.repaint();
+            }
+        };
+        deleteButton.addActionListener(listener);
+        return deleteButton;
+    }
+
+    private void buildUserListingPanel() {
+        searchListingPanel = new JPanel();
+
+        for (Listing l : listings) {
+            searchListingPanel.add(buildListingPanel(l));
         }
 
-        ActionListener listener = new AddHomeListener();
-        homeButton.addActionListener(listener);
+        // TODO Scrollbar...
+        add(searchListingPanel);
     }
 
 }
