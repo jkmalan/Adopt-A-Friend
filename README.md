@@ -1,8 +1,11 @@
-# CUS1166-PhaseTwo
-The Adopt-A-Friend project for CUS1166
+Adopt-A-Friend
+--------
+The Adopt-A-Friend project
 
-### Compiling the Project
-To compile the maven project, you must convert the Java project to a Maven project, then run the maven goal "clean install"
-
-### Running the Jar
-To run the produced jar file, you must use the command line and run "java -jar 'jar-file-name'.jar"
+Authors
+--------
+* [jkmalan](https://github.com/jkmalan) (John Malandrakis)
+* [CelesteGallardo](https://github.com/CelesteGallardo) (Celeste Gallardo)
+* [brian2014sju](https://github.com/brian2014sju) (Brian Lin)
+* [kkudyba](https://github.com/kkudyba) (Kamila Kudyba)
+* [uchuk250](https://github.com/uchuk250) (Uche Chukwu)
