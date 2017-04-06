@@ -4,7 +4,11 @@
     <groupId>com.jkmalan</groupId>
     <artifactId>Adopt-A-Friend</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <modules>
+        <module>client</module>
+        <module>server</module>
+    </modules>
+    <packaging>pom</packaging>
     <inceptionYear>2016</inceptionYear>
 
     <properties>

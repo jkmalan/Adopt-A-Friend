@@ -4,9 +4,11 @@ The Adopt-A-Friend project
 
 Tasks and Goals
 ---------------
-* Client
+* Client (Frontend)
   * Interface
   * Single Thread
-* Server
+* Server (Backend)
   * Database
-  * User Validation
+    * User Storage
+    * Listing Storage
+  * User Validation (Username/Password)
