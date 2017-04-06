@@ -1,5 +1,5 @@
 Adopt-A-Friend
---------
+========
 The Adopt-A-Friend project
 
 Authors

@@ -25,6 +25,9 @@ package com.jkmalan.adoptafriend.listing;
 
 import java.io.File;
 
+/**
+ * Represents a Listing in the system
+ */
 public class Listing {
 
     private final int lid;
