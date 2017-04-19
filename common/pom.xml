@@ -9,20 +9,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>server</artifactId>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.jkmalan</groupId>
-            <artifactId>common</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.xerial</groupId>
-            <artifactId>sqlite-jdbc</artifactId>
-            <version>3.8.7</version>
-        </dependency>
-    </dependencies>
-
+    <artifactId>common</artifactId>
 
 </project>

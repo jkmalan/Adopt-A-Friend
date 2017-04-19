@@ -27,4 +27,7 @@ package com.jkmalan.adoptafriend.server;
  * @author jkmalan (John Malandrakis)
  */
 public class Main {
+
+
+
 }

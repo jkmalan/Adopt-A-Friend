@@ -7,6 +7,7 @@
     <modules>
         <module>client</module>
         <module>server</module>
+        <module>common</module>
     </modules>
     <packaging>pom</packaging>
     <inceptionYear>2016</inceptionYear>

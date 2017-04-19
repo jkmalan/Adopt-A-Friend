@@ -23,49 +23,14 @@
 */
 package com.jkmalan.adoptafriend.client.gui;
 
-import com.jkmalan.adoptafriend.common.user.User;
-
 import javax.swing.*;
-import java.awt.*;
 
 /**
- * @author jkmalan (John Malandrakis)
+ * @author jkmalan (aka John Malandrakis)
  */
-public class PanelManager extends JFrame {
+public class LoginPanel extends JPanel {
 
-    private static PanelManager PANELMANAGER = null;
-
-    private static final int FRAME_WIDTH = 540;
-    private static final int FRAME_HEIGHT = 960;
-
-    private PanelManager() {
-        setSize(FRAME_WIDTH, FRAME_HEIGHT);
-
-
-    }
-
-    public static PanelManager getPanelManager() {
-        if (PANELMANAGER == null) {
-            PANELMANAGER = new PanelManager();
-        }
-        return PANELMANAGER;
-    }
-
-    private User loggedinUser= null;
-
-    private void buildLoginPanel() {
-
-    }
-
-    public void showLoginPage(boolean show) {
-
-    }
-
-    public void showHomePage(boolean show) {
-
-    }
-
-    public void showProfilePage(boolean show) {
+    public LoginPanel() {
 
     }
 

@@ -23,8 +23,18 @@
 */
 package com.jkmalan.adoptafriend.client;
 
+import com.jkmalan.adoptafriend.client.gui.PanelManager;
+
+import javax.swing.*;
+
 /**
  * @author jkmalan (John Malandrakis)
  */
 public class Main {
+
+    public static void main(String[] args) {
+        PanelManager.getPanelManager().setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        PanelManager.getPanelManager().setVisible(true);
+    }
+
 }
