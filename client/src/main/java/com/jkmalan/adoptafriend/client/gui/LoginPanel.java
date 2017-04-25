@@ -24,14 +24,80 @@
 package com.jkmalan.adoptafriend.client.gui;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author jkmalan (aka John Malandrakis)
  */
 public class LoginPanel extends JPanel {
 
-    public LoginPanel() {
+    private JLabel usernameLabel;
+    private JTextField usernameField;
+    private JLabel passwordLabel;
+    private JPasswordField passwordField;
 
+    private JButton loginButton;
+    private JButton createButton;
+
+    public LoginPanel() {
+        buildComponents();
+
+        addComponents();
+    }
+
+    private void addComponents() {
+        add(usernameLabel);
+        add(usernameField);
+        add(passwordLabel);
+        add(passwordField);
+
+        add(loginButton);
+        add(createButton);
+    }
+
+    private void buildComponents() {
+        buildUsernameField();
+        buildPasswordField();
+        buildLoginButton();
+        buildCreateButton();
+    }
+
+    private void buildUsernameField() {
+        usernameLabel = new JLabel("UserName: ");
+        usernameField = new JTextField();
+    }
+
+    private void buildPasswordField() {
+        passwordLabel = new JLabel("Password: ");
+        passwordField = new JPasswordField();
+    }
+
+    private void buildLoginButton() {
+        loginButton = new JButton("Sign In");
+        ActionListener listener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PanelManager.getPanelManager().showLoginPanel(false);
+                PanelManager.getPanelManager().showHomePanel(true);
+            }
+
+        };
+        loginButton.addActionListener(listener);
+    }
+
+    private void buildCreateButton() {
+        createButton = new JButton("Create Account");
+        ActionListener listener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+
+        };
+        createButton.addActionListener(listener);
     }
 
 }
