@@ -26,6 +26,7 @@ package com.jkmalan.adoptafriend.client.gui;
 import com.jkmalan.adoptafriend.common.user.User;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author jkmalan (John Malandrakis)
@@ -34,18 +35,15 @@ public class PanelManager extends JFrame {
 
     private static PanelManager PANELMANAGER = null;
 
-    private static final int FRAME_WIDTH = 540;
-    private static final int FRAME_HEIGHT = 960;
+    public static final int FRAME_WIDTH = 540;
+    public static final int FRAME_HEIGHT = 960;
 
-    private JPanel loginPanel;
-    private JPanel homePanel;
+    private JMenuBar menuBar;
 
     private PanelManager() {
         setSize(FRAME_WIDTH, FRAME_HEIGHT);
 
-        buildPanels();
 
-        showLoginPanel(true);
     }
 
     public static PanelManager getPanelManager() {
@@ -55,37 +53,15 @@ public class PanelManager extends JFrame {
         return PANELMANAGER;
     }
 
-    private User loggedinUser= null;
-
-    private void buildPanels() {
-        buildLoginPanel();
-        buildHomePanel();
-    }
+    private User loggedin = null;
 
     private void buildLoginPanel() {
-        loginPanel = new LoginPanel();
+
     }
 
-    private void buildHomePanel() {
-        homePanel = new HomePanel();
-    }
-
-    public void showLoginPanel(boolean show) {
-        if (show) {
-            add(loginPanel);
-        } else {
-            remove(loginPanel);
-        }
-        update(getGraphics());
-    }
-
-    public void showHomePanel(boolean show) {
-        if (show) {
-            add(homePanel);
-        } else {
-            remove(homePanel);
-        }
-        update(getGraphics());
+    private void buildPanelLayout() {
+        getContentPane().setLayout(new CardLayout());
+        getContentPane().add(new HomePanel(loggedin), "HomePanel");
     }
 
 }

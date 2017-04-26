@@ -23,122 +23,19 @@
 */
 package com.jkmalan.adoptafriend.client.gui;
 
+import com.jkmalan.adoptafriend.common.user.User;
+
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @author jkmalan (aka John Malandrakis)
  */
 public class HomePanel extends JPanel {
 
-    private JMenuBar menuBar;
+    private User user;
 
-    public HomePanel() {
-        buildComponents();
-
-        addComponents();
-    }
-
-    private void addComponents() {
-        setLayout(new BorderLayout());
-        add(menuBar, BorderLayout.PAGE_START);
-    }
-
-    private void buildComponents() {
-        buildMenuBar();
-    }
-
-    private void buildMenuBar() {
-        menuBar = new JMenuBar();
-        menuBar.add(buildProfileMenu());
-        menuBar.add(buildListingMenu());
-    }
-
-    private JMenu buildProfileMenu() {
-        JMenu profileMenu = new JMenu("Profile");
-        profileMenu.add(buildProfileEditItem());
-        profileMenu.add(buildProfileLogoutItem());
-        return profileMenu;
-    }
-
-    private JMenuItem buildProfileEditItem() {
-        JMenuItem profileEditItem = new JMenuItem("Edit");
-        ActionListener listener = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent event) {
-
-            }
-
-        };
-        profileEditItem.addActionListener(listener);
-        return profileEditItem;
-    }
-
-    private JMenuItem buildProfileLogoutItem() {
-        JMenuItem profileLogoutItem = new JMenuItem("Logout");
-        ActionListener listener = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-
-        };
-        profileLogoutItem.addActionListener(listener);
-        return profileLogoutItem;
-    }
-
-    private JMenu buildListingMenu() {
-        JMenu listingMenu = new JMenu("Listing");
-        listingMenu.add(buildListingViewItem());
-        listingMenu.add(buildListingCreateItem());
-        listingMenu.add(buildListingSearchItem());
-        return listingMenu;
-    }
-
-    private JMenuItem buildListingViewItem() {
-        JMenuItem listingViewItem = new JMenuItem("View");
-        ActionListener listener = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-
-        };
-        listingViewItem.addActionListener(listener);
-        return listingViewItem;
-    }
-
-    private JMenuItem buildListingCreateItem() {
-        JMenuItem listingCreateItem = new JMenuItem("Create");
-        ActionListener listener = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent event) {
-
-            }
-
-        };
-        listingCreateItem.addActionListener(listener);
-        return listingCreateItem;
-    }
-
-    private JMenuItem buildListingSearchItem() {
-        JMenuItem listingSearchItem = new JMenuItem("Search");
-        ActionListener listener = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent event) {
-
-            }
-
-        };
-        listingSearchItem.addActionListener(listener);
-        return listingSearchItem;
+    public HomePanel(User user) {
+        this.user = user;
     }
 
 }

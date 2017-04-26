@@ -41,63 +41,41 @@ public class LoginPanel extends JPanel {
     private JButton createButton;
 
     public LoginPanel() {
-        buildComponents();
 
-        addComponents();
-    }
-
-    private void addComponents() {
-        add(usernameLabel);
-        add(usernameField);
-        add(passwordLabel);
-        add(passwordField);
-
-        add(loginButton);
-        add(createButton);
-    }
-
-    private void buildComponents() {
-        buildUsernameField();
-        buildPasswordField();
-        buildLoginButton();
-        buildCreateButton();
     }
 
     private void buildUsernameField() {
-        usernameLabel = new JLabel("UserName: ");
+        usernameLabel = new JLabel("Username");
         usernameField = new JTextField();
     }
 
     private void buildPasswordField() {
-        passwordLabel = new JLabel("Password: ");
+        passwordLabel = new JLabel("Password");
         passwordField = new JPasswordField();
     }
 
     private void buildLoginButton() {
-        loginButton = new JButton("Sign In");
-        ActionListener listener = new ActionListener() {
+        loginButton = new JButton("Login");
+        loginButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                PanelManager.getPanelManager().showLoginPanel(false);
-                PanelManager.getPanelManager().showHomePanel(true);
+
             }
 
-        };
-        loginButton.addActionListener(listener);
+        });
     }
 
     private void buildCreateButton() {
-        createButton = new JButton("Create Account");
-        ActionListener listener = new ActionListener() {
+        createButton = new JButton("Login");
+        createButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
 
             }
 
-        };
-        createButton.addActionListener(listener);
+        });
     }
 
 }

@@ -27,4 +27,5 @@ package com.jkmalan.adoptafriend.client.net;
  * @author jkmalan (John Malandrakis)
  */
 public class Connection {
+
 }
