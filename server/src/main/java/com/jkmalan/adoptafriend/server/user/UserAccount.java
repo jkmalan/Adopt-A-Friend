@@ -21,15 +21,56 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package com.jkmalan.adoptafriend.server;
+package com.jkmalan.adoptafriend.server.user;
+
+import com.jkmalan.adoptafriend.common.user.User;
 
 /**
- * Initializes the AppEngine and begins the server
+ * Represents a user account used for authentication
  */
-public class Main {
+public class UserAccount extends User {
 
-    public static void main(String[] args) {
-        AppEngine.enable();
+    private byte[] salt;
+    private String hash;
+
+    public UserAccount(int uid, String username) {
+        super(uid, username);
+    }
+
+    /**
+     * Gets the salt value
+     *
+     * @return The salt value
+     */
+    public byte[] getSalt() {
+        return salt;
+    }
+
+    /**
+     * Sets the salt value
+     *
+     * @param salt The salt value
+     */
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
+    }
+
+    /**
+     * Gets the complete hash value
+     *
+     * @return The hash value
+     */
+    public String getHash() {
+        return hash;
+    }
+
+    /**
+     * Sets the complete hash value
+     *
+     * @param hash The hash value
+     */
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 
 }

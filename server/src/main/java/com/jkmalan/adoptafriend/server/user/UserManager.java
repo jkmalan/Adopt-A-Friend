@@ -23,9 +23,9 @@
 */
 package com.jkmalan.adoptafriend.server.user;
 
+import com.jkmalan.adoptafriend.common.user.User;
 import com.jkmalan.adoptafriend.server.AppEngine;
 
-import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -33,71 +33,114 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
+/**
+ * Creates, retrieves, validates, and modifies users
+ */
 public class UserManager {
-
-    private final Map<Integer, User> userCache = new HashMap<>();
 
     public UserManager() {
 
     }
 
-    public void shutdown() {
-        userCache.clear();
-    }
-
-    public int validateUser(String username, char[] password) {
+    /**
+     * Validates the credentials provided by the user
+     *
+     * @param username The username
+     * @param password The password as a character array
+     * @return If login is valid, return the unique internal id, else return -1
+     */
+    public int validateCredentials(String username, char[] password) {
         int result = -1;
-        User user = AppEngine.getDatabaseManager().selectUser(username);
+        UserAccount user = (UserAccount) AppEngine.getDatabaseManager().selectUser(username);
         if (user != null) {
             byte[] salt = user.getSalt();
             String hash = user.getHash();
             String testHash = generateHash(password, salt);
             if (hash.equals(testHash)) {
-                result = user.getUserID();
+                result = user.getUID();
             }
         }
         return result;
     }
 
+    /**
+     * Retrieve the User object for the specified unique internal id
+     *
+     * @param uid The user id
+     * @return The User object
+     */
     public User getUser(int uid) {
-        User user = null;
-        if (userCache.containsKey(uid)) {
-            user = userCache.get(uid);
-        } else {
-            user = AppEngine.getDatabaseManager().selectUser(uid);
-            userCache.put(user.getUserID(), user);
-        }
-        return user;
+        return AppEngine.getDatabaseManager().selectUser(uid);
     }
 
+    /**
+     * Retrieve the User object for the specified unique username
+     *
+     * @param username The username
+     * @return The User object
+     */
+    public User getUser(String username) {
+        return AppEngine.getDatabaseManager().selectUser(username);
+    }
+
+    /**
+     * Creates a new user using the specified information
+     *
+     * @param username  The unique username to use for logins
+     * @param password  The password for the user
+     * @param firstName The first name of the user
+     * @param lastName  The last name of the user
+     * @param email     The unique email to use for logins
+     * @param phone     The phone number of the user
+     * @param street    The street address of the user
+     * @param city      The city of the user
+     * @param state     The state of the user
+     * @param zip       The zip code of the user
+     */
     public void createUser(String username, char[] password, String firstName, String lastName,
-                           String email, String phone, String street, String city, String state, String zip,
-                           String desc, File photo) {
+                           String email, String phone, String street, String city, String state, String zip) {
         byte[] salt = generateSalt();
         String hash = generateHash(password, salt);
-        AppEngine.getDatabaseManager().insertUser(username, salt, hash, firstName, lastName, email, phone, street, city, state, zip, desc, photo);
-        User user = AppEngine.getDatabaseManager().selectUser(username);
-        userCache.put(user.getUserID(), user);
+        AppEngine.getDatabaseManager().insertUser(username, salt, hash, firstName, lastName, email, phone, street, city, state, zip);
     }
 
+    /**
+     * Modifies a user with the specified information
+     *
+     * @param uid       The unique internal id for the user
+     * @param username  The unique username to use for logins
+     * @param password  The password for the user
+     * @param firstName The first name of the user
+     * @param lastName  The last name of the user
+     * @param email     The unique email to use for logins
+     * @param phone     The phone number of the user
+     * @param street    The street address of the user
+     * @param city      The city of the user
+     * @param state     The state of the user
+     * @param zip       The zip code of the user
+     */
     public void modifyUser(int uid, String username, char[] password, String firstName, String lastName,
-                           String email, String phone, String street, String city, String state, String zip,
-                           String desc, File photo) {
+                           String email, String phone, String street, String city, String state, String zip) {
         byte[] salt = generateSalt();
         String hash = generateHash(password, salt);
-        AppEngine.getDatabaseManager().updateUser(uid, username, salt, hash, firstName, lastName, email, phone, street, city, state, zip, desc, photo);
-        User user = AppEngine.getDatabaseManager().selectUser(username);
-        userCache.put(user.getUserID(), user);
+        AppEngine.getDatabaseManager().updateUser(uid, username, salt, hash, firstName, lastName, email, phone, street, city, state, zip);
     }
 
+    /**
+     * Deletes a user with the specified unique internal id
+     *
+     * @param uid The unique internal id for the user
+     */
     public void deleteUser(int uid) {
         AppEngine.getDatabaseManager().deleteUser(uid);
-        userCache.remove(uid);
     }
 
+    /*
+     * Generates a random salt to be used for hashing purposes
+     *
+     * @return A random salt
+     */
     private byte[] generateSalt() {
         SecureRandom rand = null;
         byte[] salt = new byte[16];
@@ -110,6 +153,13 @@ public class UserManager {
         return salt;
     }
 
+    /*
+     * Generates a password hash using the provided salt and message
+     *
+     * @param message A character array to hash
+     * @param salt A salt for the hash
+     * @return The salted hash
+     */
     private String generateHash(char[] message, byte[] salt) {
         String hash = null;
         try {
@@ -124,7 +174,7 @@ public class UserManager {
             }
             hash = sb.toString();
         } catch (NoSuchAlgorithmException e) {
-            // TODO Handle errors
+            // TODO Failure to find algorithm
         }
         return hash;
     }

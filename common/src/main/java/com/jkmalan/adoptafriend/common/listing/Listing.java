@@ -24,7 +24,110 @@
 package com.jkmalan.adoptafriend.common.listing;
 
 /**
- * @author jkmalan (aka John Malandrakis)
+ * Represents a Listing for a pet
  */
 public class Listing {
+
+    private final int lid;
+    private final int ownerid;
+
+    private String title;
+    private String type;
+    private String sex;
+    private String desc;
+
+    public Listing(int lid, int ownerid) {
+        this.lid = lid;
+        this.ownerid = ownerid;
+    }
+
+    /**
+     * Gets the listing id
+     *
+     * @return The unique internal id for the listing
+     */
+    public int getLID() {
+        return lid;
+    }
+
+    /**
+     * Gets the owner id
+     *
+     * @return The unique internal id for the owner
+     */
+    public int getOwnerID() {
+        return ownerid;
+    }
+
+    /**
+     * Gets the title of the listing
+     *
+     * @return The title of the listing
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * Sets the title of the listing
+     *
+     * @param title The title of the listing
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    /**
+     * Gets the type of the pet
+     *
+     * @return The type of the pet
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * Sets the type of the pet
+     *
+     * @param type The type of the pet
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    /**
+     * Gets the sex of the pet
+     *
+     * @return The sex of the pet
+     */
+    public String getSex() {
+        return sex;
+    }
+
+    /**
+     * Sets the sex of the pet
+     *
+     * @param sex The sex of the pet
+     */
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    /**
+     * Gets the description of the pet
+     *
+     * @return The description of the pet
+     */
+    public String getDesc() {
+        return desc;
+    }
+
+    /**
+     * Sets the description of the pet
+     *
+     * @param desc The description of the pet
+     */
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 }

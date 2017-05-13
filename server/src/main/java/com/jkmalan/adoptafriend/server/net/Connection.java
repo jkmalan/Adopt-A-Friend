@@ -23,8 +23,33 @@
 */
 package com.jkmalan.adoptafriend.server.net;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
 /**
  * @author jkmalan (John Malandrakis)
  */
-public class Connection {
+public class Connection implements Runnable {
+
+    private final Socket client;
+
+    public Connection(Socket client) {
+        this.client = client;
+    }
+
+    @Override
+    public void run() {
+        try {
+            BufferedReader input = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            PrintWriter output = new PrintWriter(client.getOutputStream(), true);
+
+
+        } catch (IOException e) {
+            // TODO Failure to send/receive data
+        }
+    }
+
 }

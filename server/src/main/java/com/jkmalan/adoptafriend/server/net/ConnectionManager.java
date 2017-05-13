@@ -23,8 +23,49 @@
 */
 package com.jkmalan.adoptafriend.server.net;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 /**
  * @author jkmalan (John Malandrakis)
  */
 public class ConnectionManager {
+
+    private final int PORT = 32000;
+
+    private ServerSocket server;
+
+    private boolean listening = true;
+
+    public ConnectionManager() {
+        try {
+            server = new ServerSocket(PORT);
+        } catch (IOException ex) {
+            // TODO Failure to start server
+        }
+
+        startListening();
+    }
+
+    private void startListening() {
+        while (listening) {
+            try {
+                Socket client = server.accept();
+                Thread connection = new Thread(new Connection(client));
+                connection.start();
+            } catch (IOException e) {
+                // TODO Failure to accept client
+            }
+        }
+    }
+
+    public boolean isListening() {
+        return listening;
+    }
+
+    public void setListening(boolean listening) {
+        this.listening = listening;
+    }
+
 }

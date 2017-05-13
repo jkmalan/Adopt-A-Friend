@@ -23,8 +23,9 @@
 */
 package com.jkmalan.adoptafriend.server.database;
 
-import com.jkmalan.adoptafriend.server.listing.Listing;
-import com.jkmalan.adoptafriend.server.user.User;
+import com.jkmalan.adoptafriend.common.listing.Listing;
+import com.jkmalan.adoptafriend.common.user.User;
+import com.jkmalan.adoptafriend.server.user.UserAccount;
 
 import java.io.*;
 import java.sql.PreparedStatement;
@@ -47,19 +48,7 @@ public class DatabaseManager {
             database.connect();
             createTables();
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /*
-     * Closes the connection to the Adopt-A-Friend database
-     */
-    public void shutdown() {
-        try {
-            database.disconnect();
-        } catch (SQLException e) {
-            System.err.print("There was an exception!");
-            e.printStackTrace();
+            // TODO Failure to connect database
         }
     }
 
@@ -83,8 +72,6 @@ public class DatabaseManager {
                 + "state CHAR(2) NOT NULL,"
                 + "zip CHAR(10) NOT NULL,"
                 + "phone CHAR(10) NOT NULL,"
-                + "desc CHAR(256),"
-                + "photo BLOB,"
                 + "UNIQUE (username),"
                 + "UNIQUE (email)"
                 + ");";
@@ -92,13 +79,10 @@ public class DatabaseManager {
                 + "lid INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "owner INTEGER NOT NULL,"
                 + "title CHAR(40) NOT NULL, "
-                + "zip CHAR(10) NOT NULL, "
                 + "type CHAR(40) NOT NULL, "
                 + "sex CHAR(1) NOT NULL, "
-                + "age INT(2) NOT NULL, "
                 + "desc CHAR(256),"
-                + "photo BLOB,"
-                + "FOREIGN KEY (lid) REFERENCES user (uid)"
+                + "FOREIGN KEY (owner) REFERENCES user (uid)"
                 + "); ";
         database.executeStatement(USER_TABLE);
         database.executeStatement(LISTING_TABLE);
@@ -109,34 +93,24 @@ public class DatabaseManager {
      *
      * @param owner The user id for the listing owner
      * @param title The title of the listing
-     * @param zip   The zip code for the animal in the listing
      * @param type  The type of animal in the listing
      * @param sex   The sex of the animal in the listing
-     * @param age   The age of the animal in the listing
      * @param desc  The description of the listing
-     * @param photo The photo file of the listing
      */
-    public void insertListing(int owner, String title, String zip, String type, String sex, int age, String desc, File photo) {
-        String query = "INSERT INTO listing (owner, title, zip, type, sex, age, desc, photo) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+    public void insertListing(int owner, String title, String type, String sex, String desc) {
+        String query = "INSERT INTO listing (owner, title, type, sex, desc) "
+                + "VALUES (?, ?, ?, ?, ?);";
         PreparedStatement ps = null;
         try {
             ps = database.getPreparedStatement(query);
             ps.setInt(1, owner);
             ps.setString(2, title);
-            ps.setString(3, zip);
-            ps.setString(4, type);
-            ps.setString(5, sex);
-            ps.setInt(6, age);
-            ps.setString(7, desc);
-            ps.setBinaryStream(8, new FileInputStream(photo), (int) photo.length());
+            ps.setString(3, type);
+            ps.setString(4, sex);
+            ps.setString(5, desc);
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("There was a SQL exception!");
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            System.err.print("There was a file exception!");
-            e.printStackTrace();
+            // TODO Failure to insert listing
         } finally {
             database.closeStatement(ps);
         }
@@ -156,12 +130,10 @@ public class DatabaseManager {
      * @param city      The city of the user
      * @param state     The state of the user
      * @param zip       The zip code of the user
-     * @param desc      The description of the user
-     * @param photo     The photo file of the user
      */
-    public void insertUser(String username, byte[] salt, String hash, String firstName, String lastName, String email, String phone, String street, String city, String state, String zip, String desc, File photo) {
-        String query = "INSERT INTO user (username, passSalt, passHash, firstName, lastName, email, phone, street, city, state, zip, desc, photo) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    public void insertUser(String username, byte[] salt, String hash, String firstName, String lastName, String email, String phone, String street, String city, String state, String zip) {
+        String query = "INSERT INTO user (username, passSalt, passHash, firstName, lastName, email, phone, street, city, state, zip) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         PreparedStatement ps = null;
         try {
             ps = database.getPreparedStatement(query);
@@ -176,15 +148,9 @@ public class DatabaseManager {
             ps.setString(9, city);
             ps.setString(10, state);
             ps.setString(11, zip);
-            ps.setString(12, desc);
-            ps.setBinaryStream(13, new FileInputStream(photo), (int) photo.length());
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("There was a SQL exception!");
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            System.err.print("There was a file exception!");
-            e.printStackTrace();
+            // TODO Failure to insert user
         } finally {
             database.closeStatement(ps);
         }
@@ -195,34 +161,24 @@ public class DatabaseManager {
      *
      * @param lid   The unique internal id for the listing
      * @param title The title of the listing
-     * @param zip   The zip code for the animal in the listing
      * @param type  The type of animal in the listing
      * @param sex   The sex of the animal in the listing
-     * @param age   The age of the animal in the listing
      * @param desc  The description of the listing
-     * @param photo The photo file of the listing
      */
-    public void updateListing(int lid, String title, String zip, String type, String sex, int age, String desc, File photo) {
-        String query = "UPDATE listing SET title = ?, zip = ?, type = ?, sex = ?, age = ?, desc = ? "
+    public void updateListing(int lid, String title, String type, String sex, String desc) {
+        String query = "UPDATE listing SET title = ?, type = ?, sex = ?, desc = ? "
                 + "WHERE lid = ?;";
         PreparedStatement ps = null;
         try {
             ps = database.getPreparedStatement(query);
             ps.setString(1, title);
-            ps.setString(2, zip);
-            ps.setString(3, type);
-            ps.setString(4, sex);
-            ps.setInt(5, age);
-            ps.setString(6, desc);
-            ps.setBinaryStream(7, new FileInputStream(photo), (int) photo.length());
-            ps.setInt(8, lid);
+            ps.setString(2, type);
+            ps.setString(3, sex);
+            ps.setString(4, desc);
+            ps.setInt(5, lid);
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("There was a SQL exception!");
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            System.err.print("There was a file exception!");
-            e.printStackTrace();
+            // TODO Failure to update listing
         } finally {
             database.closeStatement(ps);
         }
@@ -244,12 +200,10 @@ public class DatabaseManager {
      * @param city      The city of the user
      * @param state     The state of the user
      * @param zip       The zip code of the user
-     * @param desc      The description of the user
-     * @param photo     The photo file of the user
      */
-    public void updateUser(int uid, String username, byte[] salt, String hash, String firstName, String lastName, String email, String phone, String street, String city, String state, String zip, String desc, File photo) {
+    public void updateUser(int uid, String username, byte[] salt, String hash, String firstName, String lastName, String email, String phone, String street, String city, String state, String zip) {
         String query = "UPDATE user SET username = ?, passSalt = ?, passHash = ?, firstName = ?, lastName = ?, email = ?, "
-                + "phone = ?, street = ?, city = ?, state = ?, zip = ?, desc = ?, photo = ? "
+                + "phone = ?, street = ?, city = ?, state = ?, zip = ? "
                 + "WHERE uid = ?;";
         PreparedStatement ps = null;
         try {
@@ -265,16 +219,10 @@ public class DatabaseManager {
             ps.setString(9, city);
             ps.setString(10, state);
             ps.setString(11, zip);
-            ps.setString(12, desc);
-            ps.setBinaryStream(13, new FileInputStream(photo), (int) photo.length());
-            ps.setInt(14, uid);
+            ps.setInt(12, uid);
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("There was a SQL exception!");
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            System.err.print("There was a file exception!");
-            e.printStackTrace();
+            // TODO Failure to update user
         } finally {
             database.closeStatement(ps);
         }
@@ -294,8 +242,7 @@ public class DatabaseManager {
             ps.setInt(1, lid);
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("There was a SQL exception!");
-            e.printStackTrace();
+            // TODO Failure to delete listing
         } finally {
             database.closeStatement(ps);
         }
@@ -314,8 +261,7 @@ public class DatabaseManager {
             ps.setInt(1, uid);
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("There was a SQL exception!");
-            e.printStackTrace();
+            // TODO Failure to delete user
         } finally {
             database.closeStatement(ps);
         }
@@ -337,11 +283,13 @@ public class DatabaseManager {
             if (rs.next()) {
                 int uid = rs.getInt("uid");
                 String uname = rs.getString("username");
-                User user = new User(uid, uname);
-
+                UserAccount user = new UserAccount(uid, uname);
 
                 byte[] salt = rs.getBytes("passSalt");
                 String hash = rs.getString("passHash");
+                user.setSalt(salt);
+                user.setHash(hash);
+
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
                 String email = rs.getString("email");
@@ -350,10 +298,7 @@ public class DatabaseManager {
                 String state = rs.getString("state");
                 String zip = rs.getString("zip");
                 String phone = rs.getString("phone");
-                String desc = rs.getString("desc");
 
-                user.setSalt(salt);
-                user.setHash(hash);
                 user.setFirstName(firstName);
                 user.setLastName(lastName);
                 user.setEmail(email);
@@ -362,29 +307,11 @@ public class DatabaseManager {
                 user.setState(state);
                 user.setZip(zip);
                 user.setPhone(phone);
-                user.setDesc(desc);
-
-                InputStream in = rs.getBinaryStream("photo");
-                ByteArrayOutputStream bout = new ByteArrayOutputStream();
-                int b = in.read();
-                while (b >= 0) {
-                    bout.write((char) b);
-                    b = in.read();
-                }
-                File file = new File(uname + ".png");
-                FileOutputStream fout = new FileOutputStream(file);
-                fout.write(bout.toByteArray());
-                fout.close();
-                user.setPhoto(file);
 
                 return user;
             }
         } catch (SQLException e) {
-            System.err.println("There was a SQL exception!");
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.err.println("There was a file exception!");
-            e.printStackTrace();
+            // TODO Failure to send query
         } finally {
             database.closeStatement(ps);
         }
@@ -408,10 +335,13 @@ public class DatabaseManager {
             if (rs.next()) {
                 int id = rs.getInt("uid");
                 String uname = rs.getString("username");
-                User user = new User(id, uname);
+                UserAccount user = new UserAccount(id, uname);
 
                 byte[] salt = rs.getBytes("passSalt");
                 String hash = rs.getString("passHash");
+                user.setSalt(salt);
+                user.setHash(hash);
+
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
                 String email = rs.getString("email");
@@ -420,10 +350,7 @@ public class DatabaseManager {
                 String state = rs.getString("state");
                 String zip = rs.getString("zip");
                 String phone = rs.getString("phone");
-                String desc = rs.getString("desc");
 
-                user.setSalt(salt);
-                user.setHash(hash);
                 user.setFirstName(firstName);
                 user.setLastName(lastName);
                 user.setEmail(email);
@@ -432,29 +359,11 @@ public class DatabaseManager {
                 user.setState(state);
                 user.setZip(zip);
                 user.setPhone(phone);
-                user.setDesc(desc);
-
-                InputStream in = rs.getBinaryStream("photo");
-                ByteArrayOutputStream bout = new ByteArrayOutputStream();
-                int b = in.read();
-                while (b >= 0) {
-                    bout.write((char) b);
-                    b = in.read();
-                }
-                File file = new File(uname + ".png");
-                FileOutputStream fout = new FileOutputStream(file);
-                fout.write(bout.toByteArray());
-                fout.close();
-                user.setPhoto(file);
 
                 return user;
             }
         } catch (SQLException e) {
-            System.err.println("There was a SQL exception!");
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.err.println("There was a file exception!");
-            e.printStackTrace();
+            // TODO Failure to send query
         } finally {
             database.closeStatement(ps);
         }
@@ -481,46 +390,31 @@ public class DatabaseManager {
                 Listing listing = new Listing(id, owner);
 
                 String title = rs.getString("title");
-                String zip = rs.getString("zip");
                 String type = rs.getString("type");
                 String sex = rs.getString("sex");
-                int age = rs.getInt("age");
                 String desc = rs.getString("desc");
 
                 listing.setTitle(title);
-                listing.setZip(zip);
                 listing.setType(type);
                 listing.setSex(sex);
-                listing.setAge(age);
                 listing.setDesc(desc);
-
-                InputStream in = rs.getBinaryStream("photo");
-                ByteArrayOutputStream bout = new ByteArrayOutputStream();
-                int b = in.read();
-                while (b >= 0) {
-                    bout.write((char) b);
-                    b = in.read();
-                }
-                File file = new File(id + "__" + owner + ".png");
-                FileOutputStream fout = new FileOutputStream(file);
-                fout.write(bout.toByteArray());
-                fout.close();
-                listing.setPhoto(file);
 
                 return listing;
             }
         } catch (SQLException e) {
-            System.err.println("There was a SQL exception!");
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.err.println("There was a file exception!");
-            e.printStackTrace();
+            // TODO Failure to send query
         } finally {
             database.closeStatement(ps);
         }
         return null;
     }
 
+    /**
+     * Selects a series of Listings from the database with the specified internal owner id
+     *
+     * @param owner The internal owner id
+     * @return If records are found, returns a List containing the Listings, else returns an empty List
+     */
     public List<Listing> selectListings(int owner) {
         List<Listing> listings = new ArrayList<>();
         String query = "SELECT * FROM listing "
@@ -536,99 +430,14 @@ public class DatabaseManager {
                 Listing listing = new Listing(lid, uid);
 
                 listing.setTitle(rs.getString("title"));
-                listing.setZip(rs.getString("zip"));
                 listing.setType(rs.getString("type"));
                 listing.setSex(rs.getString("sex"));
-                listing.setAge(rs.getInt("age"));
                 listing.setDesc(rs.getString("desc"));
-
-                InputStream in = rs.getBinaryStream("photo");
-                ByteArrayOutputStream bout = new ByteArrayOutputStream();
-                int b = in.read();
-                while (b >= 0) {
-                    bout.write((char) b);
-                    b = in.read();
-                }
-                File file = new File(lid + "__" + uid + ".png");
-                FileOutputStream fout = new FileOutputStream(file);
-                fout.write(bout.toByteArray());
-                fout.close();
-                listing.setPhoto(file);
 
                 listings.add(listing);
             }
         } catch (SQLException e) {
-            System.err.println("There was a SQL exception!");
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.err.println("There was a file exception!");
-            e.printStackTrace();
-        } finally {
-            database.closeStatement(ps);
-        }
-        return listings;
-    }
-
-    /**
-     * Selects all Listings that match the specified variables
-     *
-     * @param title The title of the listing
-     * @param zip   The zip variable in the listing
-     * @param type  The type variable in the listing
-     * @param sex   The sex variable in the listing
-     * @param age   The age variable in the listing
-     * @return If records are found, returns an ArrayList of Listings
-     */
-    public List<Listing> selectListings(String title, String zip, String type, String sex, int age) {
-        List<Listing> listings = new ArrayList<>();
-        String query = "SELECT * FROM listing "
-                + "WHERE UPPER(title) LIKE ? "
-                + "AND UPPER(zip) = ? "
-                + "AND UPPER(type) LIKE ? "
-                + "AND UPPER(sex) = ? "
-                + "AND age = ?;";
-        PreparedStatement ps = null;
-        try {
-            ps = database.getPreparedStatement(query);
-            ps.setString(1, "%" + title + "%");
-            ps.setString(2, zip);
-            ps.setString(3, "%" + type + "%");
-            ps.setString(4, sex);
-            ps.setInt(5, age);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                int id = rs.getInt("lid");
-                int owner = rs.getInt("owner");
-                Listing listing = new Listing(id, owner);
-
-                listing.setTitle(rs.getString("title"));
-                listing.setZip(rs.getString("zip"));
-                listing.setType(rs.getString("type"));
-                listing.setSex(rs.getString("sex"));
-                listing.setAge(rs.getInt("age"));
-                listing.setDesc(rs.getString("desc"));
-
-                InputStream in = rs.getBinaryStream("photo");
-                ByteArrayOutputStream bout = new ByteArrayOutputStream();
-                int b = in.read();
-                while (b >= 0) {
-                    bout.write((char) b);
-                    b = in.read();
-                }
-                File file = new File(id + "__" + owner + ".png");
-                FileOutputStream fout = new FileOutputStream(file);
-                fout.write(bout.toByteArray());
-                fout.close();
-                listing.setPhoto(file);
-
-                listings.add(listing);
-            }
-        } catch (SQLException e) {
-            System.err.println("There was a SQL exception!");
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.err.println("There was a file exception!");
-            e.printStackTrace();
+            // TODO Failure to send query
         } finally {
             database.closeStatement(ps);
         }

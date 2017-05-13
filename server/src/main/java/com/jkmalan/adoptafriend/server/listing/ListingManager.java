@@ -23,67 +23,73 @@
 */
 package com.jkmalan.adoptafriend.server.listing;
 
+import com.jkmalan.adoptafriend.common.listing.Listing;
 import com.jkmalan.adoptafriend.server.AppEngine;
 
-import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+/**
+ * Creates, retrieves, and modifies listings
+ */
 public class ListingManager {
-
-    private final Map<Integer, Listing> listingCache = new HashMap<>();
 
     public ListingManager() {
 
     }
 
-    public void shutdown() {
-        listingCache.clear();
-    }
-
+    /**
+     * Retrieves a list of listings with the specified owner id
+     *
+     * @param owner The owner id
+     * @return If listings are found, returns a List of Listing objects, or else it returns an empty List
+     */
     public List<Listing> getListings(int owner) {
-        List<Listing> listings = AppEngine.getDatabaseManager().selectListings(owner);
-        for (Listing l : listings) {
-            listingCache.put(l.getListingID(), l);
-        }
-        return listings;
+        return AppEngine.getDatabaseManager().selectListings(owner);
     }
 
-    public List<Listing> getListings(String title, String zip, String type, String sex, int age) {
-        List<Listing> listings = AppEngine.getDatabaseManager().selectListings(title, zip, type, sex, age);
-        for (Listing l : listings) {
-            listingCache.put(l.getListingID(), l);
-        }
-        return listings;
-    }
-
+    /**
+     * Retrieves a listing with the specified unique internal id
+     *
+     * @param lid The listing id
+     * @return The Listing Object
+     */
     public Listing getListing(int lid) {
-        Listing listing = null;
-        if (listingCache.containsKey(lid)) {
-            listing = listingCache.get(lid);
-        } else {
-            listing = AppEngine.getDatabaseManager().selectListing(lid);
-            listingCache.put(listing.getListingID(), listing);
-        }
-        return listing;
+        return AppEngine.getDatabaseManager().selectListing(lid);
     }
 
-    public void createListing(int owner, String title, String zip, String type, String sex, int age, String desc,
-                              File photo) {
-        AppEngine.getDatabaseManager().insertListing(owner, title, zip, type, sex, age, desc, photo);
+    /**
+     * Creates a new listing using the specified information
+     *
+     * @param owner The owner id of the listing
+     * @param title The title of the listing
+     * @param type The type of pet for the listing
+     * @param sex The sex of pet for the listing
+     * @param desc The description of the listing
+     */
+    public void createListing(int owner, String title, String type, String sex, String desc) {
+        AppEngine.getDatabaseManager().insertListing(owner, title, type, sex, desc);
     }
 
-    public void modifyListing(int lid, String title, String zip, String type, String sex, int age, String desc,
-                              File photo) {
-        AppEngine.getDatabaseManager().updateListing(lid, title, zip, type, sex, age, desc, photo);
-        Listing listing = AppEngine.getDatabaseManager().selectListing(lid);
-        listingCache.put(listing.getListingID(), listing);
+    /**
+     * Modifies a listing with the specified information
+     *
+     * @param lid The unique internal id for the listing
+     * @param title The title of the listing
+     * @param type The type of pet for the listing
+     * @param sex The sex of pet for the listing
+     * @param desc The description of the listing
+     */
+    public void modifyListing(int lid, String title, String type, String sex, String desc) {
+        AppEngine.getDatabaseManager().updateListing(lid, title, type, sex, desc);
     }
 
+    /**
+     * Deletes a listing with the specified unique internal id
+     *
+     * @param lid The unique internal id for the listing
+     */
     public void deleteListing(int lid) {
         AppEngine.getDatabaseManager().deleteListing(lid);
-        listingCache.remove(lid);
     }
 
 }

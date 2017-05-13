@@ -25,6 +25,7 @@ package com.jkmalan.adoptafriend.server;
 
 import com.jkmalan.adoptafriend.server.database.DatabaseManager;
 import com.jkmalan.adoptafriend.server.listing.ListingManager;
+import com.jkmalan.adoptafriend.server.net.ConnectionManager;
 import com.jkmalan.adoptafriend.server.user.UserManager;
 
 /**
@@ -38,6 +39,7 @@ public class AppEngine {
     private final DatabaseManager databaseManager;
     private final ListingManager listingManager;
     private final UserManager userManager;
+    private final ConnectionManager connectionManager;
 
     /*
      * Constructs the AppEngine instance
@@ -47,6 +49,7 @@ public class AppEngine {
         databaseManager = new DatabaseManager();
         listingManager = new ListingManager();
         userManager = new UserManager();
+        connectionManager = new ConnectionManager();
     }
 
     /**
@@ -55,19 +58,6 @@ public class AppEngine {
     public static void enable() {
         if (ENGINE == null) {
             ENGINE = new AppEngine();
-        }
-    }
-
-    /**
-     * Shuts down the AppEngine backend
-     * Individually disables the managers
-     */
-    public static void disable() {
-        if (ENGINE != null) {
-            getDatabaseManager().shutdown();
-            getListingManager().shutdown();
-            getUserManager().shutdown();
-            ENGINE = null;
         }
     }
 
@@ -96,6 +86,15 @@ public class AppEngine {
      */
     public static UserManager getUserManager() {
         return ENGINE.userManager;
+    }
+
+    /**
+     * Gets the main instance of the ConnectionManager
+     *
+     * @return The AppEngine ConnectionManager
+     */
+    public static ConnectionManager getConnectionManager() {
+        return ENGINE.connectionManager;
     }
 
 }
