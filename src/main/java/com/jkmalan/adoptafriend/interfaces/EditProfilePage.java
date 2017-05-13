@@ -23,17 +23,14 @@
 */
 package com.jkmalan.adoptafriend.interfaces;
 
-import com.jkmalan.adoptafriend.AppEngine;
+import com.jkmalan.adoptafriend.ServerEngine;
 import com.jkmalan.adoptafriend.user.User;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class EditProfilePage extends JFrame {
@@ -79,7 +76,7 @@ public class EditProfilePage extends JFrame {
     private File filePhoto;
 
     public EditProfilePage(int uid) {
-        user = AppEngine.getUserManager().getUser(uid);
+        user = ServerEngine.getUserManager().getUser(uid);
         filePhoto = user.getPhoto();
 
         buildProfileFields();
@@ -164,7 +161,7 @@ public class EditProfilePage extends JFrame {
                 String zip = zipField.getText();
                 String desc = descArea.getText();
 
-                AppEngine.getUserManager().modifyUser(user.getUserID(), username, password, firstName, lastName, email, phone, street, city, state, zip, desc, filePhoto);
+                ServerEngine.getUserManager().modifyUser(user.getUserID(), username, password, firstName, lastName, email, phone, street, city, state, zip, desc, filePhoto);
             }
         };
         updateButton.addActionListener(listener);

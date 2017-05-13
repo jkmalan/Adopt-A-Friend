@@ -21,10 +21,24 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package com.jkmalan.adoptafriend.common;
+package com.jkmalan.adoptafriend.client.gui.profile;
+
+import com.jkmalan.adoptafriend.client.ClientEngine;
+
+import javax.swing.*;
 
 /**
- * @author jkmalan (aka John Malandrakis)
+ * A simple profile creation page
+ *
+ * User may input personal data to create a profile
  */
-public class AppEngine {
+public class CreateProfileFrame extends JFrame {
+
+    public CreateProfileFrame() {
+        setSize(ClientEngine.FRAME_WIDTH, ClientEngine.FRAME_HEIGHT);
+        setTitle("Create Profile");
+
+
+    }
+
 }

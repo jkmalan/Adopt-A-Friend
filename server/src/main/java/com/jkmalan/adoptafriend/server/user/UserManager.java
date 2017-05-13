@@ -24,7 +24,7 @@
 package com.jkmalan.adoptafriend.server.user;
 
 import com.jkmalan.adoptafriend.common.user.User;
-import com.jkmalan.adoptafriend.server.AppEngine;
+import com.jkmalan.adoptafriend.server.ServerEngine;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -52,7 +52,7 @@ public class UserManager {
      */
     public int validateCredentials(String username, char[] password) {
         int result = -1;
-        UserAccount user = (UserAccount) AppEngine.getDatabaseManager().selectUser(username);
+        UserAccount user = (UserAccount) ServerEngine.getDatabaseManager().selectUser(username);
         if (user != null) {
             byte[] salt = user.getSalt();
             String hash = user.getHash();
@@ -71,7 +71,7 @@ public class UserManager {
      * @return The User object
      */
     public User getUser(int uid) {
-        return AppEngine.getDatabaseManager().selectUser(uid);
+        return ServerEngine.getDatabaseManager().selectUser(uid);
     }
 
     /**
@@ -81,7 +81,7 @@ public class UserManager {
      * @return The User object
      */
     public User getUser(String username) {
-        return AppEngine.getDatabaseManager().selectUser(username);
+        return ServerEngine.getDatabaseManager().selectUser(username);
     }
 
     /**
@@ -102,7 +102,7 @@ public class UserManager {
                            String email, String phone, String street, String city, String state, String zip) {
         byte[] salt = generateSalt();
         String hash = generateHash(password, salt);
-        AppEngine.getDatabaseManager().insertUser(username, salt, hash, firstName, lastName, email, phone, street, city, state, zip);
+        ServerEngine.getDatabaseManager().insertUser(username, salt, hash, firstName, lastName, email, phone, street, city, state, zip);
     }
 
     /**
@@ -124,7 +124,7 @@ public class UserManager {
                            String email, String phone, String street, String city, String state, String zip) {
         byte[] salt = generateSalt();
         String hash = generateHash(password, salt);
-        AppEngine.getDatabaseManager().updateUser(uid, username, salt, hash, firstName, lastName, email, phone, street, city, state, zip);
+        ServerEngine.getDatabaseManager().updateUser(uid, username, salt, hash, firstName, lastName, email, phone, street, city, state, zip);
     }
 
     /**
@@ -133,7 +133,7 @@ public class UserManager {
      * @param uid The unique internal id for the user
      */
     public void deleteUser(int uid) {
-        AppEngine.getDatabaseManager().deleteUser(uid);
+        ServerEngine.getDatabaseManager().deleteUser(uid);
     }
 
     /*

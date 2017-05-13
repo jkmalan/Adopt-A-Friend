@@ -21,50 +21,60 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package com.jkmalan.adoptafriend.server;
+package com.jkmalan.adoptafriend;
 
-import com.jkmalan.adoptafriend.server.database.DatabaseManager;
-import com.jkmalan.adoptafriend.server.listing.ListingManager;
-import com.jkmalan.adoptafriend.server.net.ConnectionManager;
-import com.jkmalan.adoptafriend.server.user.UserManager;
+import com.jkmalan.adoptafriend.database.DatabaseManager;
+import com.jkmalan.adoptafriend.listing.ListingManager;
+import com.jkmalan.adoptafriend.user.UserManager;
 
 /**
  * Provides direct access to the DatabaseManager, ListingManager, and UserManager
  */
-public class AppEngine {
+public class ServerEngine {
 
-    // The singleton instance of AppEngine
-    private static AppEngine ENGINE = null;
+    // The singleton instance of ServerEngine
+    private static ServerEngine ENGINE = null;
 
     private final DatabaseManager databaseManager;
     private final ListingManager listingManager;
     private final UserManager userManager;
-    private final ConnectionManager connectionManager;
 
     /*
-     * Constructs the AppEngine instance
+     * Constructs the ServerEngine instance
      * Initializes all the managers
      */
-    private AppEngine() {
+    private ServerEngine() {
         databaseManager = new DatabaseManager();
         listingManager = new ListingManager();
         userManager = new UserManager();
-        connectionManager = new ConnectionManager();
     }
 
     /**
-     * Initializes the AppEngine backend
+     * Initializes the ServerEngine backend
      */
     public static void enable() {
         if (ENGINE == null) {
-            ENGINE = new AppEngine();
+            ENGINE = new ServerEngine();
+        }
+    }
+
+    /**
+     * Shuts down the ServerEngine backend
+     * Individually disables the managers
+     */
+    public static void disable() {
+        if (ENGINE != null) {
+            getDatabaseManager().shutdown();
+            getListingManager().shutdown();
+            getUserManager().shutdown();
+            ENGINE = null;
         }
     }
 
     /**
      * Gets the main instance of the DatabaseManager
      *
-     * @return The AppEngine DatabaseManager
+     * @return The ServerEngine DatabaseManager
      */
     public static DatabaseManager getDatabaseManager() {
         return ENGINE.databaseManager;
@@ -73,7 +83,7 @@ public class AppEngine {
     /**
      * Gets the main instance of the ListingManager
      *
-     * @return The AppEngine ListingManager
+     * @return The ServerEngine ListingManager
      */
     public static ListingManager getListingManager() {
         return ENGINE.listingManager;
@@ -82,19 +92,10 @@ public class AppEngine {
     /**
      * Gets the main instance of the UserManager
      *
-     * @return The AppEngine UserManager
+     * @return The ServerEngine UserManager
      */
     public static UserManager getUserManager() {
         return ENGINE.userManager;
-    }
-
-    /**
-     * Gets the main instance of the ConnectionManager
-     *
-     * @return The AppEngine ConnectionManager
-     */
-    public static ConnectionManager getConnectionManager() {
-        return ENGINE.connectionManager;
     }
 
 }

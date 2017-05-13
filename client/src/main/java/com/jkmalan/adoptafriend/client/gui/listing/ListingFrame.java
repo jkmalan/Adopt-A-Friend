@@ -21,10 +21,30 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package com.jkmalan.adoptafriend.client.gui.profile;
+package com.jkmalan.adoptafriend.client.gui.listing;
+
+import com.jkmalan.adoptafriend.client.ClientEngine;
+import com.jkmalan.adoptafriend.common.listing.Listing;
+import com.jkmalan.adoptafriend.common.user.User;
+
+import javax.swing.*;
 
 /**
- * @author jkmalan (aka John Malandrakis)
+ * A simple listing viewer page
+ *
+ * User may view any listing data
  */
-public class CreateProfilePanel {
+public class ListingFrame extends JFrame {
+
+    private User user;
+    private Listing listing;
+
+    public ListingFrame(User user, Listing listing) {
+        this.user = user;
+        this.listing = listing;
+
+        setSize(ClientEngine.FRAME_WIDTH, ClientEngine.FRAME_HEIGHT);
+        setTitle("View Listing");
+    }
+
 }

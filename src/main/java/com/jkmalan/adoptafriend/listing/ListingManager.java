@@ -23,7 +23,7 @@
 */
 package com.jkmalan.adoptafriend.listing;
 
-import com.jkmalan.adoptafriend.AppEngine;
+import com.jkmalan.adoptafriend.ServerEngine;
 
 import java.io.File;
 import java.util.HashMap;
@@ -43,7 +43,7 @@ public class ListingManager {
     }
 
     public List<Listing> getListings(int owner) {
-        List<Listing> listings = AppEngine.getDatabaseManager().selectListings(owner);
+        List<Listing> listings = ServerEngine.getDatabaseManager().selectListings(owner);
         for (Listing l : listings) {
             listingCache.put(l.getListingID(), l);
         }
@@ -51,7 +51,7 @@ public class ListingManager {
     }
 
     public List<Listing> getListings(String title, String zip, String type, String sex, int age) {
-        List<Listing> listings = AppEngine.getDatabaseManager().selectListings(title, zip, type, sex, age);
+        List<Listing> listings = ServerEngine.getDatabaseManager().selectListings(title, zip, type, sex, age);
         for (Listing l : listings) {
             listingCache.put(l.getListingID(), l);
         }
@@ -63,7 +63,7 @@ public class ListingManager {
         if (listingCache.containsKey(lid)) {
             listing = listingCache.get(lid);
         } else {
-            listing = AppEngine.getDatabaseManager().selectListing(lid);
+            listing = ServerEngine.getDatabaseManager().selectListing(lid);
             listingCache.put(listing.getListingID(), listing);
         }
         return listing;
@@ -71,18 +71,18 @@ public class ListingManager {
 
     public void createListing(int owner, String title, String zip, String type, String sex, int age, String desc,
                               File photo) {
-        AppEngine.getDatabaseManager().insertListing(owner, title, zip, type, sex, age, desc, photo);
+        ServerEngine.getDatabaseManager().insertListing(owner, title, zip, type, sex, age, desc, photo);
     }
 
     public void modifyListing(int lid, String title, String zip, String type, String sex, int age, String desc,
                               File photo) {
-        AppEngine.getDatabaseManager().updateListing(lid, title, zip, type, sex, age, desc, photo);
-        Listing listing = AppEngine.getDatabaseManager().selectListing(lid);
+        ServerEngine.getDatabaseManager().updateListing(lid, title, zip, type, sex, age, desc, photo);
+        Listing listing = ServerEngine.getDatabaseManager().selectListing(lid);
         listingCache.put(listing.getListingID(), listing);
     }
 
     public void deleteListing(int lid) {
-        AppEngine.getDatabaseManager().deleteListing(lid);
+        ServerEngine.getDatabaseManager().deleteListing(lid);
         listingCache.remove(lid);
     }
 

@@ -23,7 +23,7 @@
 */
 package com.jkmalan.adoptafriend.interfaces;
 
-import com.jkmalan.adoptafriend.AppEngine;
+import com.jkmalan.adoptafriend.ServerEngine;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -76,7 +76,7 @@ public class LoginPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String username = usernameField.getText();
                 char[] password = passwordField.getPassword();
-                int result = AppEngine.getUserManager().validateUser(username, password);
+                int result = ServerEngine.getUserManager().validateUser(username, password);
                 if (result != -1) {
                     JFrame frame = new HomePage(result);
                     frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

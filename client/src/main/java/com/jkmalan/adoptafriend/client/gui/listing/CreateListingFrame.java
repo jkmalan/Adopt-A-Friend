@@ -21,21 +21,27 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package com.jkmalan.adoptafriend.client.gui;
+package com.jkmalan.adoptafriend.client.gui.listing;
 
+import com.jkmalan.adoptafriend.client.ClientEngine;
 import com.jkmalan.adoptafriend.common.user.User;
 
 import javax.swing.*;
 
 /**
- * @author jkmalan (aka John Malandrakis)
+ * A simple listing creation page
+ *
+ * User may input pet data to create a listing
  */
-public class HomePanel extends JPanel {
+public class CreateListingFrame extends JFrame {
 
     private User user;
 
-    public HomePanel(User user) {
+    public CreateListingFrame(User user) {
         this.user = user;
+
+        setSize(ClientEngine.FRAME_WIDTH, ClientEngine.FRAME_HEIGHT);
+        setTitle("Create Listing");
     }
 
 }

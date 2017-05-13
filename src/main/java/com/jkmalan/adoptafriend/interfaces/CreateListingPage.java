@@ -23,16 +23,13 @@
 */
 package com.jkmalan.adoptafriend.interfaces;
 
-import com.jkmalan.adoptafriend.AppEngine;
+import com.jkmalan.adoptafriend.ServerEngine;
 import com.jkmalan.adoptafriend.user.User;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class CreateListingPage extends JFrame {
@@ -66,7 +63,7 @@ public class CreateListingPage extends JFrame {
     private File filePhoto = null;
 
     public CreateListingPage(int uid) {
-        user = AppEngine.getUserManager().getUser(uid);
+        user = ServerEngine.getUserManager().getUser(uid);
 
         buildListingFields();
 
@@ -131,7 +128,7 @@ public class CreateListingPage extends JFrame {
                 int age = Integer.valueOf(ageField.getText());
                 String desc = descArea.getText();
 
-                AppEngine.getListingManager().createListing(user.getUserID(), title, zip, type, sex, age, desc, filePhoto);
+                ServerEngine.getListingManager().createListing(user.getUserID(), title, zip, type, sex, age, desc, filePhoto);
 
                 // TODO Close the create listing screen, open the user's listings screen
             }

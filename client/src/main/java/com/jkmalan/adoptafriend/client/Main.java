@@ -23,18 +23,13 @@
 */
 package com.jkmalan.adoptafriend.client;
 
-import com.jkmalan.adoptafriend.client.gui.PanelManager;
-
 /**
- * @author jkmalan (John Malandrakis)
+ * Initializes the ClientEngine and begins the client
  */
 public class Main {
 
-    private static PanelManager panelManager;
-
     public static void main(String[] args) {
-        panelManager = PanelManager.getPanelManager();
-
+        ClientEngine.enable();
     }
 
 }

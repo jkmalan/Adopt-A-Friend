@@ -23,7 +23,7 @@
 */
 package com.jkmalan.adoptafriend.user;
 
-import com.jkmalan.adoptafriend.AppEngine;
+import com.jkmalan.adoptafriend.ServerEngine;
 
 import java.io.File;
 import java.nio.ByteBuffer;
@@ -50,7 +50,7 @@ public class UserManager {
 
     public int validateUser(String username, char[] password) {
         int result = -1;
-        User user = AppEngine.getDatabaseManager().selectUser(username);
+        User user = ServerEngine.getDatabaseManager().selectUser(username);
         if (user != null) {
             byte[] salt = user.getSalt();
             String hash = user.getHash();
@@ -67,7 +67,7 @@ public class UserManager {
         if (userCache.containsKey(uid)) {
             user = userCache.get(uid);
         } else {
-            user = AppEngine.getDatabaseManager().selectUser(uid);
+            user = ServerEngine.getDatabaseManager().selectUser(uid);
             userCache.put(user.getUserID(), user);
         }
         return user;
@@ -78,8 +78,8 @@ public class UserManager {
                            String desc, File photo) {
         byte[] salt = generateSalt();
         String hash = generateHash(password, salt);
-        AppEngine.getDatabaseManager().insertUser(username, salt, hash, firstName, lastName, email, phone, street, city, state, zip, desc, photo);
-        User user = AppEngine.getDatabaseManager().selectUser(username);
+        ServerEngine.getDatabaseManager().insertUser(username, salt, hash, firstName, lastName, email, phone, street, city, state, zip, desc, photo);
+        User user = ServerEngine.getDatabaseManager().selectUser(username);
         userCache.put(user.getUserID(), user);
     }
 
@@ -88,13 +88,13 @@ public class UserManager {
                            String desc, File photo) {
         byte[] salt = generateSalt();
         String hash = generateHash(password, salt);
-        AppEngine.getDatabaseManager().updateUser(uid, username, salt, hash, firstName, lastName, email, phone, street, city, state, zip, desc, photo);
-        User user = AppEngine.getDatabaseManager().selectUser(username);
+        ServerEngine.getDatabaseManager().updateUser(uid, username, salt, hash, firstName, lastName, email, phone, street, city, state, zip, desc, photo);
+        User user = ServerEngine.getDatabaseManager().selectUser(username);
         userCache.put(user.getUserID(), user);
     }
 
     public void deleteUser(int uid) {
-        AppEngine.getDatabaseManager().deleteUser(uid);
+        ServerEngine.getDatabaseManager().deleteUser(uid);
         userCache.remove(uid);
     }
 

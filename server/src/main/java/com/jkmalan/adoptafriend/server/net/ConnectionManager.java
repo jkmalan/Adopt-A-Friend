@@ -28,7 +28,18 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * @author jkmalan (John Malandrakis)
+ * Listens for connections from clients
+ *
+ * DEFAULT HOST: 127.0.0.1 (localhost)
+ * DEFAULT PORT: 32000
+ *
+ * This is a slightly different type of manager class than
+ * the others due to the ability to start and stop the server
+ * without crashing the entire server program. It must be done
+ * programmatically and as such it may be added as a server
+ * management command from a terminal at some point in the future.
+ * As of right now, there is no way to stop the server without
+ * crashing the program since it is running in the main thread.
  */
 public class ConnectionManager {
 
@@ -44,11 +55,16 @@ public class ConnectionManager {
         } catch (IOException ex) {
             // TODO Failure to start server
         }
-
-        startListening();
     }
 
-    private void startListening() {
+    /**
+     * Start listening for connections
+     */
+    public void startListening() {
+        if (!listening) {
+            listening = true;
+        }
+
         while (listening) {
             try {
                 Socket client = server.accept();
@@ -60,12 +76,25 @@ public class ConnectionManager {
         }
     }
 
-    public boolean isListening() {
-        return listening;
+    /**
+     * Stop listening for connections
+     *
+     * Does not force the server to stop
+     * It will no longer accept new clients
+     */
+    public void stopListening() {
+        if (listening) {
+            listening = false;
+        }
     }
 
-    public void setListening(boolean listening) {
-        this.listening = listening;
+    /**
+     * Checks if the server is accepting connections
+     *
+     * @return If server is accepting, returns true
+     */
+    public boolean isListening() {
+        return listening;
     }
 
 }

@@ -24,12 +24,13 @@
 package com.jkmalan.adoptafriend.server;
 
 /**
- * Initializes the AppEngine and begins the server
+ * Initializes the ServerEngine and begins the server
  */
 public class Main {
 
     public static void main(String[] args) {
-        AppEngine.enable();
+        ServerEngine.enable();
+        ServerEngine.getConnectionManager().startListening();
     }
 
 }

@@ -23,8 +23,28 @@
 */
 package com.jkmalan.adoptafriend.client.gui.listing;
 
+import com.jkmalan.adoptafriend.client.ClientEngine;
+import com.jkmalan.adoptafriend.common.listing.Listing;
+import com.jkmalan.adoptafriend.common.user.User;
+
+import javax.swing.*;
+
 /**
- * @author jkmalan (aka John Malandrakis)
+ * A simple listing editor page
+ *
+ * User may alter any listing data
  */
-public class ListingsPanel {
+public class EditListingFrame extends JFrame {
+
+    private User user;
+    private Listing listing;
+
+    public EditListingFrame(User user, Listing listing) {
+        this.user = user;
+        this.listing = listing;
+
+        setSize(ClientEngine.FRAME_WIDTH, ClientEngine.FRAME_HEIGHT);
+        setTitle("Edit Listing");
+    }
+
 }

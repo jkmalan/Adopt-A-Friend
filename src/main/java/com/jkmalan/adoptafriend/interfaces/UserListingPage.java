@@ -23,16 +23,14 @@
 */
 package com.jkmalan.adoptafriend.interfaces;
 
-import com.jkmalan.adoptafriend.AppEngine;
+import com.jkmalan.adoptafriend.ServerEngine;
 import com.jkmalan.adoptafriend.listing.Listing;
 import com.jkmalan.adoptafriend.user.User;
-import jdk.nashorn.internal.scripts.JO;
 
 import java.awt.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
@@ -49,8 +47,8 @@ public class UserListingPage extends JFrame {
     private List<Listing> listings;
 
     public UserListingPage(int uid) {
-        user = AppEngine.getUserManager().getUser(uid);
-        listings = AppEngine.getListingManager().getListings(uid);
+        user = ServerEngine.getUserManager().getUser(uid);
+        listings = ServerEngine.getListingManager().getListings(uid);
 
         buildUserListingPanel();
 
@@ -92,7 +90,7 @@ public class UserListingPage extends JFrame {
         ActionListener listener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AppEngine.getListingManager().deleteListing(listing.getListingID());
+                ServerEngine.getListingManager().deleteListing(listing.getListingID());
                 JOptionPane.showMessageDialog(userListingPanel, "Listing successfully deleted!");
                 userListingPanel.revalidate();
                 userListingPanel.repaint();

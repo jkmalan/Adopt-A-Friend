@@ -23,8 +23,25 @@
 */
 package com.jkmalan.adoptafriend.client.gui.profile;
 
+import com.jkmalan.adoptafriend.client.ClientEngine;
+import com.jkmalan.adoptafriend.common.user.User;
+
+import javax.swing.*;
+
 /**
- * @author jkmalan (aka John Malandrakis)
+ * A simple profile viewer page
+ *
+ * User may view any profile data
  */
-public class EditProfilePanel {
+public class ProfileFrame extends JFrame {
+
+    private User user;
+
+    public ProfileFrame(User user) {
+        this.user = user;
+
+        setSize(ClientEngine.FRAME_WIDTH, ClientEngine.FRAME_HEIGHT);
+        setTitle(user.getUsername() + " Profile");
+    }
+
 }

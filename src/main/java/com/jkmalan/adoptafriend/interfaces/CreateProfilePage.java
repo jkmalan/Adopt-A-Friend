@@ -23,17 +23,13 @@
 */
 package com.jkmalan.adoptafriend.interfaces;
 
-import com.jkmalan.adoptafriend.AppEngine;
+import com.jkmalan.adoptafriend.ServerEngine;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class CreateProfilePage extends JFrame {
@@ -158,8 +154,8 @@ public class CreateProfilePage extends JFrame {
                 String zip = zipField.getText();
                 String desc = descArea.getText();
 
-                AppEngine.getUserManager().createUser(username, password, firstName, lastName, email, phone, street, city, state, zip, desc, filePhoto);
-                int result = AppEngine.getUserManager().validateUser(username, password);
+                ServerEngine.getUserManager().createUser(username, password, firstName, lastName, email, phone, street, city, state, zip, desc, filePhoto);
+                int result = ServerEngine.getUserManager().validateUser(username, password);
                 if (result != -1) {
                     JFrame frame = new HomePage(result);
                     frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

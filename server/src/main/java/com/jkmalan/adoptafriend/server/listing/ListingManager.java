@@ -24,7 +24,7 @@
 package com.jkmalan.adoptafriend.server.listing;
 
 import com.jkmalan.adoptafriend.common.listing.Listing;
-import com.jkmalan.adoptafriend.server.AppEngine;
+import com.jkmalan.adoptafriend.server.ServerEngine;
 
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class ListingManager {
      * @return If listings are found, returns a List of Listing objects, or else it returns an empty List
      */
     public List<Listing> getListings(int owner) {
-        return AppEngine.getDatabaseManager().selectListings(owner);
+        return ServerEngine.getDatabaseManager().selectListings(owner);
     }
 
     /**
@@ -54,7 +54,7 @@ public class ListingManager {
      * @return The Listing Object
      */
     public Listing getListing(int lid) {
-        return AppEngine.getDatabaseManager().selectListing(lid);
+        return ServerEngine.getDatabaseManager().selectListing(lid);
     }
 
     /**
@@ -67,7 +67,7 @@ public class ListingManager {
      * @param desc The description of the listing
      */
     public void createListing(int owner, String title, String type, String sex, String desc) {
-        AppEngine.getDatabaseManager().insertListing(owner, title, type, sex, desc);
+        ServerEngine.getDatabaseManager().insertListing(owner, title, type, sex, desc);
     }
 
     /**
@@ -80,7 +80,7 @@ public class ListingManager {
      * @param desc The description of the listing
      */
     public void modifyListing(int lid, String title, String type, String sex, String desc) {
-        AppEngine.getDatabaseManager().updateListing(lid, title, type, sex, desc);
+        ServerEngine.getDatabaseManager().updateListing(lid, title, type, sex, desc);
     }
 
     /**
@@ -89,7 +89,7 @@ public class ListingManager {
      * @param lid The unique internal id for the listing
      */
     public void deleteListing(int lid) {
-        AppEngine.getDatabaseManager().deleteListing(lid);
+        ServerEngine.getDatabaseManager().deleteListing(lid);
     }
 
 }

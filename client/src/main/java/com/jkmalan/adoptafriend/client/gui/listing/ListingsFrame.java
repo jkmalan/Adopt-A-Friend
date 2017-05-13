@@ -23,8 +23,32 @@
 */
 package com.jkmalan.adoptafriend.client.gui.listing;
 
+import com.jkmalan.adoptafriend.client.ClientEngine;
+import com.jkmalan.adoptafriend.common.listing.Listing;
+import com.jkmalan.adoptafriend.common.user.User;
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * @author jkmalan (aka John Malandrakis)
+ * A simple listings viewer page
+ *
+ * User may populate and view multiple listings
  */
-public class EditListingPanel {
+public class ListingsFrame extends JFrame {
+
+    private User user;;
+    private List<Listing> listings;
+
+    public ListingsFrame(User user) {
+        this.user = user;
+        this.listings = new ArrayList<>();
+        // TODO Send UID
+        // TODO Receive List<Listing>
+
+        setSize(ClientEngine.FRAME_WIDTH, ClientEngine.FRAME_HEIGHT);
+        setTitle("View Listings");
+    }
+
 }

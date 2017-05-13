@@ -23,7 +23,7 @@
 */
 package com.jkmalan.adoptafriend.interfaces;
 
-import com.jkmalan.adoptafriend.AppEngine;
+import com.jkmalan.adoptafriend.ServerEngine;
 import com.jkmalan.adoptafriend.listing.Listing;
 import com.jkmalan.adoptafriend.user.User;
 
@@ -57,7 +57,7 @@ public class SearchPage extends JFrame {
     private User user;
 
     public SearchPage(int uid) {
-        user = AppEngine.getDatabaseManager().selectUser(uid);
+        user = ServerEngine.getDatabaseManager().selectUser(uid);
 
         buildSearchPanel();
 
@@ -88,7 +88,7 @@ public class SearchPage extends JFrame {
                 String sex = sexField.getText();
                 int age = Integer.parseInt(ageField.getText());
 
-                List<Listing> listings = AppEngine.getListingManager().getListings(title, zip, type, sex, age);
+                List<Listing> listings = ServerEngine.getListingManager().getListings(title, zip, type, sex, age);
 
                 JFrame frame = new SearchListingPage(listings);
                 frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
