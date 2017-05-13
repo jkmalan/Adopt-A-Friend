@@ -52,7 +52,7 @@ public class Connection implements Runnable {
             ois = client.getInputStream();
             oos = client.getOutputStream();
         } catch (IOException e) {
-            e.printStackTrace();
+            // TODO Failure to access client
         }
     }
 
@@ -71,6 +71,8 @@ public class Connection implements Runnable {
 
             // Eventually abstract this into its own method/class
             // Command API?
+            // Currently relying on single space for argument separation
+            // Prevents use of spaces in arguments such as addresses
             String response = "";
             if (args.length == 3 && args[0].equals("USER-VALIDATE")) {
                 response = handleUserValidate(args);
@@ -78,9 +80,9 @@ public class Connection implements Runnable {
                 response = handleUserGetUID(args);
             } else if (args.length == 2 && args[0].equals("USER-GET-NAME")) {
                 response = handleUserGetName(args);
-            } else if (args.length == 2 && args[0].equals("USER-CREATE")) {
+            } else if (args.length == 11 && args[0].equals("USER-CREATE")) {
                 response = handleUserCreate(args);
-            } else if (args.length == 2 && args[0].equals("USER-MODIFY")) {
+            } else if (args.length == 11 && args[0].equals("USER-MODIFY")) {
                 response = handleUserModify(args);
             } else if (args.length == 2 && args[0].equals("USER-DELETE")) {
                 response = handleUserDelete(args);

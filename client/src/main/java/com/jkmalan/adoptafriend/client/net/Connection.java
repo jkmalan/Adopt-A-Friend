@@ -40,6 +40,14 @@ public class Connection {
         this.port = port;
     }
 
+    /**
+     * A simple method designed to send data and receive data
+     *
+     * It does not loop and is used as necessary by the program
+     *
+     * @param send The command and arguments
+     * @return The command results
+     */
     public String exchangeData(String send) {
         String receive = "";
         try {
@@ -50,17 +58,16 @@ public class Connection {
             Scanner input = new Scanner(is);
             PrintWriter output = new PrintWriter(os);
 
-            System.out.println(send);
-
             output.println(send);
             output.flush();
 
-            receive = input.nextLine();
-            System.out.println(receive);
+            if (input.hasNextLine()) {
+                receive = input.nextLine();
+            }
 
             server.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            // TODO Failure to access server
         }
         return receive;
     }

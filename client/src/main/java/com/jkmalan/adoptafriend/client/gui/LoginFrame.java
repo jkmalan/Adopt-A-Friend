@@ -27,6 +27,7 @@ import com.jkmalan.adoptafriend.client.ClientEngine;
 import com.jkmalan.adoptafriend.client.gui.profile.CreateProfileFrame;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -93,7 +94,7 @@ public class LoginFrame extends JFrame {
                  * Send username, password
                  * Receive UID
                  */
-                int uid = 0;
+                int uid = -1;
                 String data = ClientEngine.getConnection().exchangeData("USER-VALIDATE " + username + " " + new String(password));
                 String[] args = data.split(" ");
                 if (args[0].equals("DATA")) {
@@ -129,15 +130,47 @@ public class LoginFrame extends JFrame {
 
     /*
      * Constructs the login panel for the frame
+     *
+     * GridBayLayout used for a quick and dirty layout
      */
     private void buildLoginPanel() {
-        loginPanel = new JPanel();
-        loginPanel.add(usernameLabel);
-        loginPanel.add(usernameField);
-        loginPanel.add(passwordLabel);
-        loginPanel.add(passwordField);
-        loginPanel.add(loginButton);
-        loginPanel.add(createButton);
+        loginPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints label = new GridBagConstraints();
+        label.fill = GridBagConstraints.HORIZONTAL;
+        label.insets = new Insets(20, 30, 0, 30);
+        label.weightx = 0.5;
+        label.gridwidth = 1;
+        GridBagConstraints field = new GridBagConstraints();
+        field.fill = GridBagConstraints.HORIZONTAL;
+        field.insets = new Insets(0, 30, 0, 30);
+        field.weightx = 0.5;
+        field.gridwidth = 3;
+        field.ipadx = 10;
+        field.ipady = 20;
+        GridBagConstraints button = new GridBagConstraints();
+        button.fill = GridBagConstraints.HORIZONTAL;
+        button.insets = new Insets(20, 30, 0, 30);
+        button.weightx = 0.5;
+        button.gridwidth = 1;
+
+        label.gridx = 0;
+        label.gridy = 0;
+        loginPanel.add(usernameLabel, label);
+        field.gridx = 0;
+        field.gridy = 1;
+        loginPanel.add(usernameField, field);
+        label.gridx = 0;
+        label.gridy = 2;
+        loginPanel.add(passwordLabel, label);
+        field.gridx = 0;
+        field.gridy = 3;
+        loginPanel.add(passwordField, field);
+        button.gridx = 0;
+        button.gridy = 4;
+        loginPanel.add(loginButton, button);
+        button.gridx = 2;
+        button.gridy = 4;
+        loginPanel.add(createButton, button);
     }
 
 }
